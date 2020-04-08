@@ -27,7 +27,7 @@ There will be functions that allow user interaction: users can "like" the word u
 The application allows searching on standard languages, on dialects if the user knows the spelling, and on the location (city, province or state, country) if users want to learn the dialect in certain places.
 
 ## Wireframes ##
-###1.Homepage
+### 1.Homepage
 ![Homepage](homepage.png)
 In the homepage, There are two mode: guest and sign in mode
 ![Homepage_guest](home_guest.png)
@@ -38,7 +38,7 @@ However, user must sign in to see the history.
 In the sign in mode, user can upload new word, check his history and sign in or sign out.
 
 
-###2.Upload & Content
+### 2.Upload & Content
 
 ![wordPageFrame](wireframes_screenshot.PNG)
 ![wordPage](page_screenshot.PNG)
