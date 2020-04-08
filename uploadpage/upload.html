@@ -9,12 +9,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-    header
+    header, div.forms
     {
     color:blanchedalmond;
     background: url(https://i2.wp.com/www.beststartcompton.org/wp-content/uploads/2019/02/39875853-header-wallpapers.jpg?w=1500&ssl=1) no-repeat 50% 50%;
     /* position: fixed; */
     /* z-index: -1; */
+    }
+    div.forms
+    {
+    color:blanchedalmond;
+    background: url(https://i2.wp.com/www.beststartcompton.org/wp-content/uploads/2019/02/39875853-header-wallpapers.jpg?w=1500&ssl=1) no-repeat 50% 50%;
     }
     </style>
 </head>
@@ -107,7 +112,6 @@
     </header>
    
 <div class="forms">
-   <header>
     <img src="https://res.cloudinary.com/mhmd/image/upload/v1564991372/image_pxlho1.svg" alt="" width="150" class="mb-4"><br>
     <div class="imageform">
         <form>
@@ -143,13 +147,15 @@
              <input type="text" id="spelling" name="spelling">
         </form>
     </div> 
-    <body>
-      <h3>My Google Maps Demo</h3>
+    <br>
+    <div>
+      <h3>Select Location of the Dialect</h3>
+      <br>
       <!--The div element for the map -->
       <div id="map"></div>
       <script>
   // Initialize and add the map
-  function initMap() {
+    function initMap() {
     // The location of Uluru
     var uluru = {lat: -25.344, lng: 131.036};
     // The map, centered at Uluru
@@ -165,12 +171,10 @@
       * The callback parameter executes the initMap() function
       -->
       <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIO2BHXVUvKscoFPXT4coHlhZs--LQwg0&callback=initMap">
       </script>
-    </body>
-    
-  </header> 
-</div>
+    </div>
+  </div>
 </div>
 
 </html>
