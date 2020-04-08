@@ -49,12 +49,7 @@ body{
 }
 
 .imageform{
-  text-align: center;
-}
-form{
-  display: inline-block;
-}
-
-#myfile{
-  margin: auto;
+  width:100px;
+  height:100px;
+  margin:0 auto;
 }
