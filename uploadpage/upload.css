@@ -9,7 +9,12 @@ header{
   text-align: center;
 }
 */
-div div{
+div.forms{
+  height: 500px;
+  width: 100%;
+  background: url(https://raw.githubusercontent.com/hudsonmarinho/header-and-footer-parallax-effect/master/assets/images/bg-header.jpg) no-repeat 50% 50%;
+}
+div.forms div{
   margin: 0 auto;
   display: flex;
 }
@@ -24,7 +29,7 @@ form{
   margin-right:auto;
 }
 #map {
-  height: 50px;  /* The height is 400 pixels */
+  height: 400px;  /* The height is 400 pixels */
   width: 30%;  /* The width is the width of the web page */
  }
 
@@ -35,4 +40,9 @@ form{
 
  #spelling{
    width: 250px;
+ }
+ html{
+   height:100%;
+   margin:0;
+   padding:0;
  }
