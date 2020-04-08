@@ -103,7 +103,7 @@
 
 <div class="container">    
     <header>
-            <h2>Upload a New Word!</h2>
+            <h2>Upload a New Dialect!</h2>
     </header>
    
 <div class="forms">
@@ -118,17 +118,57 @@
     <br>
     <div class="pronounciation">
         <form>
-            <label for="voicefile">Select a voice file:</label>
+            <label for="voicefile">Select a voice file for pronounciation:</label><br>
             <input type="file" id="voicefile" name="voicefile">
         </form>
     </div>
     <br>
+    <div>
+      <form>
+           <label for="language">Standard Language:</label><br>
+           <select id= "language" class="selectpicker">
+            <option value="arabic">Arabic</option>
+            <option value="english">English</option>
+            <option value="hindi">Hindi</option>
+            <option value="japanese">Japanese</option>
+            <option value="mandarin">Mandarin</option>
+            <option value="russian">Russian</option>
+        </select>
+      </form>
+    </div> 
+    <br>
     <div class="spell">
         <form>
-             <label for="spelling">Spell the word:</label>
+             <label for="spelling">Spell the word(optional):</label><br>
              <input type="text" id="spelling" name="spelling">
         </form>
     </div> 
+    <body>
+      <h3>My Google Maps Demo</h3>
+      <!--The div element for the map -->
+      <div id="map"></div>
+      <script>
+  // Initialize and add the map
+  function initMap() {
+    // The location of Uluru
+    var uluru = {lat: -25.344, lng: 131.036};
+    // The map, centered at Uluru
+    var map = new google.maps.Map(
+        document.getElementById('map'), {zoom: 4, center: uluru});
+    // The marker, positioned at Uluru
+    var marker = new google.maps.Marker({position: uluru, map: map});
+  }
+      </script>
+      <!--Load the API from the specified URL
+      * The async attribute allows the browser to render the page while the API loads
+      * The key parameter will contain your own API key (which is not needed for this tutorial)
+      * The callback parameter executes the initMap() function
+      -->
+      <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+      </script>
+    </body>
+    
   </header> 
 </div>
 </div>
