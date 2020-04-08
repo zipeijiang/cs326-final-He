@@ -5,23 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="upload.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-        /* Remove the navbar's default rounded borders and increase the bottom margin */ 
-        header
-        {
-        color:blanchedalmond;
-        background: url(https://i2.wp.com/www.beststartcompton.org/wp-content/uploads/2019/02/39875853-header-wallpapers.jpg?w=1500&ssl=1) no-repeat 50% 50%;
-        /* position: fixed; */
-        /* z-index: -1; */
-        }
-        /* Add a gray background color and some padding to the footer */
-        footer {
-        background-color: #f2f2f2;
-        padding: 25px;
-        }
-    
+    header
+    {
+    color:blanchedalmond;
+    background: url(https://i2.wp.com/www.beststartcompton.org/wp-content/uploads/2019/02/39875853-header-wallpapers.jpg?w=1500&ssl=1) no-repeat 50% 50%;
+    /* position: fixed; */
+    /* z-index: -1; */
+    }
     </style>
 </head>
 <body>
@@ -111,35 +105,32 @@
     <header>
             <h2>Upload a New Word!</h2>
     </header>
-</div>
-
-      <div class="container">
-
-        <!-- For demo purpose -->
-        <header>
-                <div class="imageform">
-                    <img src="https://res.cloudinary.com/mhmd/image/upload/v1564991372/image_pxlho1.svg" alt="" width="150" class="mb-4">
-                    <form>
-                        <label for="myfile">Select an image:</label>
-                        <input type="file" id="myfile" name="myfile">
-                    </form>
-                </div>
-
-                <div class="pronounciation">
-                    <form>
-                        <label for="voicefile">Select a voice file:</label>
-                        <input type="file" id="voicefile" name="voicefile">
-                    </form>
-                </div>
-
-                <div class="spell">
-                    <form>
-                        <label for="spelling">Spell the word:</label>
-                        <input type="text" id="spelling" name="spelling">
-                    </form>
-                </div>  
-        </header>
-    
+   
+<div class="forms">
+   <header>
+    <div class="imageform">
+        <img src="https://res.cloudinary.com/mhmd/image/upload/v1564991372/image_pxlho1.svg" alt="" width="150" class="mb-4">
+        <form>
+            <label for="myfile">Select an image:</label>
+            <input type="file" id="myfile" name="myfile">
+        </form>
     </div>
+
+    <div class="pronounciation">
+        <form>
+            <label for="voicefile">Select a voice file:</label>
+            <input type="file" id="voicefile" name="voicefile">
+        </form>
+    </div>
+
+    <div class="spell">
+        <form>
+             <label for="spelling">Spell the word:</label>
+             <input type="text" id="spelling" name="spelling">
+        </form>
+    </div> 
+  </header> 
+</div>
+</div>
 
 </html>
