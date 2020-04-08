@@ -1,0 +1,51 @@
+div.left{
+    width: 40%;
+    height: 1000px;
+    float: left;
+    border-style: groove; 
+    border-width: 0px 1px 0px 0px;
+    border-color: rgba(70, 156, 226, 0.678);
+}
+div.right{
+    width: 60%;
+    height: 1000px;
+    float: left;
+    border-style: groove; 
+    border-width: 0px 0px 0px 1px;
+    border-color: rgba(70, 156, 226, 0.678);
+}
+div.search{
+    width: 100%;
+    height:50px;
+    background-color: white;
+    float: right;
+}
+div.userData{
+    background-color: rgb(232, 244, 253);
+    border-radius: 25px;
+    padding: 10px;
+}
+p.definition{
+    background-color: rgb(241, 241, 241);
+    border-radius: 25px;
+    padding: 20px;
+}
+img.head{
+    height: 300px
+}
+img.portrait{
+    height:75px;
+    width: 75px;
+    object-fit: cover;
+    border-radius: 50%;
+    float:left;
+}
+p.names{
+    font-weight:bold;
+    font-size:20px;
+}
+
+.listen{
+    width:16px; 
+    height:16px;
+}
