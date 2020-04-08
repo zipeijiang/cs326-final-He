@@ -27,7 +27,7 @@ There will be functions that allow user interaction: users can "like" the word u
 The application allows searching on standard languages, on dialects if the user knows the spelling, and on the location (city, province or state, country) if users want to learn the dialect in certain places.
 
 ## Wireframes ##
-1.Homepage
+###1.Homepage
 ![Homepage](homepage.png)
 In the homepage, There are two mode: guest and sign in mode
 ![Homepage_guest](home_guest.png)
@@ -38,8 +38,8 @@ However, user must sign in to see the history.
 In the sign in mode, user can upload new word, check his history and sign in or sign out.
 
 
-2.Upload & Content
-![wordPage](page_screenshot.PNG)
+###2.Upload & Content
+
 ![wordPageFrame](wireframes_screenshot.PNG)
 ![wordPage](page_screenshot.PNG)
 Above are the framework and screenshot of the word page for our project. Each image in our dataset corresponds to one unique word page. This page consists of three parts: the navigation bar is the same as other pages. The left-hand side contains the word definition for the image in various languages that users are able to select.  And users are allowed to update definitions on languages either existing or not. The right-hand side is the pronunciation of the word describes the image in different dialects uploaded by users. By clicking the speaker button, users can listen to those pronunciations. And by clicking the line for uploaders' locations, users can find where the dialect comes from through the map. 
