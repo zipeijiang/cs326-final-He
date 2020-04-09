@@ -26,14 +26,18 @@ There will be functions that allow user interaction: users can "like" the word u
 ### 4.Search function
 The application allows searching on standard languages, on dialects if the user knows the spelling, and on the location (city, province or state, country) if users want to learn the dialect in certain places.
 
-## Wireframes ##
+## Wireframes And HTML ##
 ### 1.Homepage
+Our wireframs for homepage is:
 ![Homepage](homepage.png)
-In the homepage, There are two mode: guest and sign in mode
+And In the actual html homepage, There are two mode: guest and sign in mode
 ![Homepage_guest](home_guest.png)
 In the guest mode, user can browse and search any word they want. Dialect has been categorized by 3 types: the most popular word, the most popular language and the user history.
-![login](login.png)
+![Homepage_guest_history](guesthistory.png)
 However, user must sign in to see the history.
+![login](login.png)
+After login in they can see the history word they browsed.
+![Homepage_john_history](johnhistory.png)
 ![Homepage_test](home_test.png)
 In the sign in mode, user can upload new word, check his history and sign in or sign out.
 
