@@ -43,3 +43,8 @@ In the sign in mode, user can upload new word, check his history and sign in or 
 ![wordPageFrame](wireframes_screenshot.PNG)
 ![wordPage](page_screenshot.PNG)
 Above are the framework and screenshot of the word page for our project. Each image in our dataset corresponds to one unique word page. This page consists of three parts: the navigation bar is the same as other pages. The left-hand side contains the word definition for the image in various languages that users are able to select.  And users are allowed to update definitions on languages either existing or not. The right-hand side is the pronunciation of the word describes the image in different dialects uploaded by users. By clicking the speaker button, users can listen to those pronunciations. And by clicking the line for uploaders' locations, users can find where the dialect comes from through the map. 
+
+## Division of labor##
+Addis Gunst: HTML and CSS for the page for users to submit data
+Haoqin Liang: HTML and CSS for the homepage of the website and the navigation bar of the website
+Zipei Jiang: HTML and CSS for the page for users to view data of each words
