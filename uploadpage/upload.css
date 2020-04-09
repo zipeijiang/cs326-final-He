@@ -18,7 +18,10 @@ div.forms div{
   margin: 0 auto;
   display: flex;
 }
+div.forms div.googlemap{
+  margin: 0 auto;
 
+}
 form{
   margin: auto;
 }
@@ -28,10 +31,6 @@ form{
   margin-left:auto;
   margin-right:auto;
 }
-#map {
-  height: 400px;  /* The height is 400 pixels */
-  width: 30%;  /* The width is the width of the web page */
- }
 
  #language{
    color:black;
@@ -40,6 +39,10 @@ form{
 
  #spelling{
    width: 250px;
+ }
+
+ #city{
+   width:250px;
  }
  html{
    height:100%;
