@@ -38,11 +38,17 @@ However, user must sign in to see the history.
 In the sign in mode, user can upload new word, check his history and sign in or sign out.
 
 
-### 2.Upload & Content
+### 2. Wordpage Content
 
 ![wordPageFrame](wireframes_screenshot.PNG)
 ![wordPage](page_screenshot.PNG)
-Above are the framework and screenshot of the word page for our project. Each image in our dataset corresponds to one unique word page. This page consists of three parts: the navigation bar is the same as other pages. The left-hand side contains the word definition for the image in various languages that users are able to select.  And users are allowed to update definitions on languages either existing or not. The right-hand side is the pronunciation of the word describes the image in different dialects uploaded by users. By clicking the speaker button, users can listen to those pronunciations. And by clicking the line for uploaders' locations, users can find where the dialect comes from through the map. 
+Above are the framework and screenshot of the word page for our project. Each image in our dataset corresponds to one unique word page. This page consists of three parts: the navigation bar is the same as other pages. The left-hand side contains the word definition for the image in various languages that users are able to select.  And users are allowed to update definitions on languages either existing or not. The right-hand side is the pronunciation of the word that describes the image in different dialects uploaded by users. By clicking the speaker button, users can listen to those pronunciations. And by clicking the line for uploaders' locations, users can find where the dialect comes from through the map. 
+
+### 3. Upload New Dialect
+![UploadPageFram](UploadWireFrame.PNG)
+![UploadPage](UploadPage.PNG)
+Above are screenshots of the framework and page of the upload page. On this page, users can navigate through the website and login to their account, similar to other pages. Users can also upload a new dialect. They will see a form where they can select an image and select a voice file that has the prnounciation of the word. There is also a drop down menue where they can select the standard language of the word. In addition, there are text boxes where they can type the spelling of the word and location of the dialect. Finally there is a submit button to submit the data.
+
 
 ## Division of labor##
 Addis Gunst: HTML and CSS for the page for users to submit data
