@@ -50,7 +50,7 @@ Above are the framework and screenshot of the word page for our project. Each im
 Above are screenshots of the framework and page of the upload page. On this page, users can navigate through the website and login to their account, similar to other pages. Users can also upload a new dialect. They will see a form where they can select an image and select a voice file that has the prnounciation of the word. There is also a drop down menue where they can select the standard language of the word. In addition, there are text boxes where they can type the spelling of the word and location of the dialect. Finally there is a submit button to submit the data.
 
 
-## Division of labor##
+## Division of labor
 Addis Gunst: HTML and CSS for the page for users to submit data
 Haoqin Liang: HTML and CSS for the homepage of the website and the navigation bar of the website
 Zipei Jiang: HTML and CSS for the page for users to view data of each words
