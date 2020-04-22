@@ -45,14 +45,15 @@ function wordRead() {
 	let wordName = document.getElementById("word_read").value;
 	// let userName = "John";
 	const data = { 'word' : wordName}; // -- (1)
+	console.log("word"+wordName);
 	const newURL = url +"/view";
 	console.log("counterRead: fetching " + newURL);
 	const resp = await postData(newURL,data)
 	const j = await resp.json();
 	if (j['result'] !== 'error') {
-	    document.getElementById("output").innerHTML = "201: <b>"  + j[img] + "," + wordName + ", " + j[definition] +" in "+j[languages]+ "</b>";
+	    document.getElementById("output_get").innerHTML = "201: <b>"  + "," + wordName + ", " + j[definition] +" in "+j[languages]+ "</b>";
 	} else {
-	    document.getElementById("output").innerHTML = "200: " +  wordName  + " not found.</b>";
+	    document.getElementById("output_get").innerHTML = "200: " +  wordName  + " not found.</b>";
 	}	    
     })();
 }
@@ -72,10 +73,10 @@ function wordUpdate() {
 		const j = await resp.json();
 		if (j['result'] !== 'error') {
 			console.log("update!")
-			document.getElementById("output").innerHTML = "301: <b>" + wordName + ": " + definition +" in "+languages+" updated.</b>";
+			document.getElementById("output_update").innerHTML = "301: <b>" + wordName + ": " + definition +" in "+languages+" updated.</b>";
 		} else {
 			console.log("error")
-			document.getElementById("output").innerHTML = "300: <b>" + wordName + ", " + definition +" in"+languages+" not found.</b>";
+			document.getElementById("output_update").innerHTML = "300: <b>" + wordName + ", " + definition +" in"+languages+" not found.</b>";
 		}
 		})();
 }
@@ -90,10 +91,10 @@ function wordDelete() {
 	const j = await resp.json();
 	if (j['result'] !== 'error') {
 		console.log("deleted!")
-	    document.getElementById("output").innerHTML = "401: <b>" + wordName + " deleted.</b>";
+	    document.getElementById("output_delete").innerHTML = "401: <b>" + wordName + " deleted.</b>";
 	} else {
 		console.log("error!")
-	    document.getElementById("output").innerHTML = "400: " + wordName + " not found.</b>";
+	    document.getElementById("output_delete").innerHTML = "400: " + wordName + " not found.</b>";
 	}	    
     })();
 }

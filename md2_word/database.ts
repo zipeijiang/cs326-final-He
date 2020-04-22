@@ -39,7 +39,7 @@ export class Database {
         curlanguage.push(lang);
         curDefinition.push({key:lang, value:def})
         let result = await collection.updateOne({'word':name},{$set:{'languages':curlanguage, 'definition': curDefinition}}, { 'upsert' : true } );
-        console.log(result);
+        
     }
 
     public async get(name:string): Promise<any>{
@@ -60,7 +60,7 @@ export class Database {
     let collection = db.collection('wordCollection');
 	console.log("delete: word = " + name);
 	let result = await collection.deleteMany({'word' : name });
-	console.log("result = " + result);
+	// console.log("result = " + result);
     }
     
     public async isFound(name:string) : Promise<boolean>  {
