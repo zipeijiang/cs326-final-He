@@ -60,7 +60,7 @@ export class Server{
         }
     
     private async pronHandler(request, response) : Promise<void> {
-        await this.addPronunciation(request.body.word, request.body.pron, request.addr, response);
+        await this.addPronunciation(request.body.word, request.body.pron, request.body.addr, request.body.language, request.body.spelling, response);
         }
     
     private async delpronHandler(request, response) : Promise<void> {
@@ -138,15 +138,14 @@ export class Server{
 	    response.end();
     }
 
-    public async addPronunciation(workerData:string, pron:string, addr:string, response): Promise<void>{
-        console.log("add pronunciation to word '" + workerData)
+    public async addPronunciation(word:string, pron:string, addr:string, language:string, spelling:string, response): Promise<void>{
+        console.log("add pronunciation to word '" + word)
         let id = this.dataBase.getNewPronID();
-        await this.dataBase.addPron(workerData, pron, addr);
-        let info = await this.dataBase.get(workerData);
+        await this.dataBase.addPron(id, word, pron, addr, language, spelling);
         response.write(JSON.stringify(
             {'result' : 'pronunciation added',
-            'word' : workerData,
-            'id' : info['id']
+            'word' : word,
+            'id' : id
         }
         ));
         response.end();
