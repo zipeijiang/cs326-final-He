@@ -104,12 +104,19 @@ export class Server{
     public async getDefinition(workerData:string, language:string, response): Promise<void>{
         console.log('get word: '+workerData + "', language: "+language);
         let info = await this.dataBase.getDef(workerData, language);
-        response.write(JSON.stringify(
+        if(info[language]==null){
+            response.write(JSON.stringify(
+                {'result' : 'error',
+                'word' : workerData
+            }
+            ));
+        } else{
+            response.write(JSON.stringify(
             {'result' : 'created',
             'word' : workerData,
             language: info[language]
+            }));
         }
-        ));
 	    response.end();
     }
 
