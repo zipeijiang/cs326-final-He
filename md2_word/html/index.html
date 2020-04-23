@@ -106,30 +106,31 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">word</span>
               </div>
-              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "word">
             </div>
             <div class="input-group input-group-sm ">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">languages</span>
               </div>
-              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = languages>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "languages">
             </div>
             <div class="input-group input-group-sm ">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">definition</span>
               </div>
-              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = definition>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "definition">
             </div>
             <button onclick="wordCreate()" class="btn btn-primary">Submit</button>
-            <header>Output:</header>
+            <header>Create Output:</header>
             <div class="col">
               <p id="output" style="font-size: xx-large;">
                 <small style="font-size: small;"></small>
               </p>
             </div>
           </div>
-          </div>
-        <div class="tab-pane" id="secondtab">
+        </div>
+          
+        <div class="tab-pane active" id="secondtab">
           <div class="justify-content-center align-items-center">
             <header>
               <h2>Updated/Modified the word</h2>
@@ -163,7 +164,7 @@
             <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = definition_update>
           </div>
           <button onclick="wordUpdate()" class="btn btn-primary">Submit</button>
-          <header>Output:</header>
+          <header>Update Output:</header>
           <div class="col">
             <p id="output_update" style="font-size: xx-large;">
               <small style="font-size: small;"></small>
@@ -184,7 +185,7 @@
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_delete>
             </div>
             <button onclick="wordDelete()" class="btn btn-primary">Submit</button>
-            <header>Output:</header>
+            <header>Delete Output:</header>
             <div class="col">
               <p id="output_delete" style="font-size: xx-large;">
                 <small style="font-size: small;"></small>
@@ -205,7 +206,7 @@
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_read>
             </div>
             <button onclick="wordRead()" class="btn btn-primary">Submit</button>
-            <header>Output:</header>
+            <header>Read Output:</header>
             <div class="col">
               <p id="output_get" style="font-size: xx-large;">
                 <small style="font-size: small;"></small>

@@ -1,4 +1,4 @@
-const url = "http://0.0.0.0:8080/word"; // NOTE NEW URL
+const url = "http://localhost:8080/word"; // NOTE NEW URL
 
 async function postData(url, data) {
     const resp = await fetch(url,
@@ -17,17 +17,20 @@ async function postData(url, data) {
 }
 
 function wordCreate() {
+
     (async () => {
 		
 		// let userName = "John";
 		let wordName = document.getElementById("word").value;
 		let definition = document.getElementById("definition").value;
 		let languages = document.getElementById("languages").value;
+		
 		// NEW: we no longer add info to the URL (for GET) but instead put it in a JSON object.
 		const data = { 'word' : wordName, 'img':'./haha.png','languages':languages, 'definition':definition}; // -- (1)
 		const newURL = url + "/new"; // used to be ?name=" + counterName; -- (2)
 		console.log("counterCreate: fetching " + newURL);
 		const resp = await postData(newURL, data); // used to be fetch -- (3)
+		
 		const j = await resp.json();
 		console.log(document.getElementById("output"));
 		if (j['result'] !== 'error') {
@@ -45,13 +48,13 @@ function wordRead() {
 	let wordName = document.getElementById("word_read").value;
 	// let userName = "John";
 	const data = { 'word' : wordName}; // -- (1)
-	console.log("word"+wordName);
 	const newURL = url +"/view";
 	console.log("counterRead: fetching " + newURL);
 	const resp = await postData(newURL,data)
 	const j = await resp.json();
+	let languages = j['lang'].join();
 	if (j['result'] !== 'error') {
-	    document.getElementById("output_get").innerHTML = "201: <b>"  + "," + wordName + ", " + j[definition] +" in "+j[languages]+ "</b>";
+	    document.getElementById("output_get").innerHTML = "201: <b>"  + j['img'] + "," + wordName + ", avaliable languages:" + +languages+ "</b>";
 	} else {
 	    document.getElementById("output_get").innerHTML = "200: " +  wordName  + " not found.</b>";
 	}	    
