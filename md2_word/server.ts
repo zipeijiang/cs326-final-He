@@ -1,3 +1,5 @@
+import { workerData } from "worker_threads";
+
 let http = require('http');
 let url = require('url');
 let express = require('express');
@@ -37,21 +39,21 @@ export class Server{
     }
 
     private async viewHandler(request, response) : Promise<void> {
-		await this.view(request.body.name, response);
+		await this.view(request.body.word, response);
     }
 
     private async defHandler(request, response): Promise<void> {
-		await this.updateDefinition(request.body.name, request.body.lang, request.body.def, response);
+		await this.updateDefinition(request.body.word, request.body.lang, request.body.def, response);
     }
 
     private async deleteHandler(request, response) : Promise<void> {
-        await this.delete(request.body.name, response);
+        await this.delete(request.body.word, response);
         }
 
 
 
     private async errorHandler(request, response, next) : Promise<void> {
-	let value : boolean = await this.dataBase.isFound(request.body.name);
+	let value : boolean = await this.dataBase.isFound(request.body.word);
 	if (!value) {
 	    response.write(JSON.stringify({'result' : 'error'}));
 	    response.end();
@@ -70,31 +72,31 @@ export class Server{
                            'word' : word }));
         response.end();
     }
-    public async view(name:string, response): Promise<void>{
-        console.log('checking word: '+name);
-        let info = await this.dataBase.get(name);
+    public async view(workerData:string, response): Promise<void>{
+        console.log('checking word: '+workerData);
+        let info = await this.dataBase.get(workerData);
         let url = info['img'];
         let languages = info['languages'];
         let def = info['definition'];
         response.write(JSON.stringify({'result' : 'success',
-        'word' : name, 'img': url, 'lang': languages, 'def': def}))
+        'word' : workerData, 'img': url, 'lang': languages, 'def': def}))
 	    response.end();
     }
-    public async updateDefinition(name:string, lang:string, def:string, response): Promise<void>{
-        console.log("updated word '" + name + "' with language '" + lang + "'")
-        await this.dataBase.def(name, lang, def);
-        let info = await this.dataBase.get(name);
+    public async updateDefinition(workerData:string, lang:string, def:string, response): Promise<void>{
+        console.log("updated word '" + workerData + "' with language '" + lang + "'")
+        await this.dataBase.def(workerData, lang, def);
+        let info = await this.dataBase.get(workerData);
         let languages = info['languages'];
         let definitions = info['definition'];
         response.write(JSON.stringify({'result' : 'updated description',
-                           'word' : name, 'lang':languages, 'def':definitions }));
+                           'word' : workerData, 'lang':languages, 'def':definitions }));
         response.end();
     }
 
-    public async delete(name:string, response): Promise<void>{
-        await this.dataBase.del(name);
+    public async delete(workerData:string, response): Promise<void>{
+        await this.dataBase.del(workerData);
 	    response.write(JSON.stringify({'result' : 'deleted',
-				       'word'  : name }));
+				       'word'  : workerData }));
 	    response.end();
     }
 

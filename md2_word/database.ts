@@ -13,40 +13,43 @@ export class Database {
     })();
     }
     
-    public async create(name:string, img:string,languages:string,definition:string) : Promise<void>{
+    public async create(word:string, img:string,languages:string,definition:string) : Promise<void>{
         let db = this.client.db(this.dbName);
         let collection = db.collection('wordCollection');
+        let lang = [];
+        let def = [];
+        lang.push(languages);
+        def.push({languages:definition});
         let doc = {
-            'word': name,
+            'word': word,
             'img': img,
-            'languages': languages,
-            'definition':definition
+            'languages': lang,
+            'definition': def
         }
-        let result = await collection.insertOne(doc);
+        await collection.insertOne(doc);
 
-        //let result = await collection.updateOne({'word':name},{$set: {'img': img, 'languages':{}, 'definition':null}, },{'upsert' : true});
-        console.log("create: word = " + name);
+        console.log("create: word = " + word);
         
     }
    
 
-    public async def(name:string, lang:string, def:string): Promise<void> {
+    public async def(word:string, lang:string, def:string): Promise<void> {
         let db = this.client.db(this.dbName);
         let collection = db.collection('wordCollection');
-        let info = await collection.findOne({'word' : name });
+        let info = await collection.findOne({'word' : word });
         let curlanguage = info['languages'];
         let curDefinition = info['definition'];
         curlanguage.push(lang);
         curDefinition.push({key:lang, value:def})
-        let result = await collection.updateOne({'word':name},{$set:{'languages':curlanguage, 'definition': curDefinition}}, { 'upsert' : true } );
-        
+        let result = await collection.updateOne({'word':word},{$set:{'languages':curlanguage, 'definition': curDefinition}}, { 'upsert' : true } );
+        console.log(result);
     }
 
-    public async get(name:string): Promise<any>{
+    public async get(word:string): Promise<any>{
         let db = this.client.db(this.dbName);
         let collection = db.collection('wordCollection');
-        console.log("get: word = " + name);
-	    let result = await collection.findOne({'word' : name });
+        console.log("get: word = " + word);
+	    let result = await collection.findOne({'word' : word });
         console.log("get: returned " + JSON.stringify(result));
         if (result) {
             return result;
@@ -55,17 +58,17 @@ export class Database {
         }
     }
 
-    public async del(name:string) : Promise<void> {
+    public async del(word:string) : Promise<void> {
     let db = this.client.db(this.dbName);
     let collection = db.collection('wordCollection');
-	console.log("delete: word = " + name);
-	let result = await collection.deleteMany({'word' : name });
-	// console.log("result = " + result);
+	console.log("delete: word = " + word);
+	let result = await collection.deleteMany({'word' : word });
+	console.log("result = " + result);
     }
     
-    public async isFound(name:string) : Promise<boolean>  {
-	console.log("isFound: word = " + name);
-	let v = await this.get(name);
+    public async isFound(word:string) : Promise<boolean>  {
+	console.log("isFound: word = " + word);
+	let v = await this.get(word);
 	console.log("is found result = " + v);
 	if (v === null) {
 	    return false;
