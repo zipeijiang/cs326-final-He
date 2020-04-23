@@ -29,9 +29,10 @@ function wordCreate() {
 		let wordName = document.getElementById("word").value;
 		let definition = document.getElementById("definition").value;
 		let languages = document.getElementById("languages").value;
+		let img = document.getElementById("img").value;
 		
 		// NEW: we no longer add info to the URL (for GET) but instead put it in a JSON object.
-		const data = { 'word' : wordName, 'img':'./haha.png','languages':languages, 'definition':definition}; // -- (1)
+		const data = { 'word' : wordName, 'img':img ,'languages':languages, 'definition':definition}; // -- (1)
 		const newURL = url + "/new"; // used to be ?name=" + counterName; -- (2)
 		console.log("counterCreate: fetching " + newURL);
 		const resp = await postData(newURL, data); // used to be fetch -- (3)
@@ -40,6 +41,7 @@ function wordCreate() {
 		console.log(document.getElementById("output"));
 		if (j['result'] !== 'error') {
 			console.log("ok")
+			document.getElementById("word_img").innerHTML = "<img src= " + img +">";
 			document.getElementById("output").innerHTML = "101: <b>" + wordName + ", " + definition +" in "+languages+" created.</b>";
 		} else {
 			console.log("error")
@@ -61,7 +63,9 @@ function wordRead() {
 		var languagelist = j['lang'];
 		defRead(wordName,languagelist[0]);
 		// console.log(a);
-	    document.getElementById("output_get").innerHTML = "201: <b>"  + j['img'] + "," + wordName + "</b>";
+		document.getElementById("output_get").innerHTML = "201: <b>"  + wordName + "</b>";
+	    document.getElementById("output_get_img").innerHTML =  "<img src= " + j['img'] +">";
+		
 	} else {
 	    document.getElementById("output_get").innerHTML = "200: " +  wordName  + " not found.</b>";
 	}	    
