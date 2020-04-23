@@ -27,9 +27,9 @@ export class Database {
         await wordCollection.insertOne(doc);
         if (languages !== ''){
             let defdoc = {
-                'word': word,
-                lang: definition
+                'word': word
             }
+            defdoc[languages] = definition;
             await defCollection.insertOne(defdoc);
         }
 
@@ -45,7 +45,9 @@ export class Database {
         let curlanguage = info['languages'];
         curlanguage.push(lang);
         await wordCollection.updateOne({'word':word},{$set:{'languages':curlanguage}}, { 'upsert' : true } );
-        let result = await defCollection.updateOne({'word':word},{$set:{lang:def}}, { 'upsert' : true } );
+        let pair = {};
+        pair[lang] = def;
+        let result = await defCollection.updateOne({'word':word},{$set : pair}, { 'upsert' : true } );
         console.log(JSON.stringify(result));
     }
 
