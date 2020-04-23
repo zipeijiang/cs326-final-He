@@ -28,7 +28,7 @@ export class Server{
         this.router.post('/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this),this.getDefHandler.bind(this)]); //take word and language, return definition in that language
         this.router.post('/pronunciation', [this.errorHandler.bind(this),this.pronHandler.bind(this)]); //take word, pronunciation, user address
-        this.router.post('/delpronunciation', [this.errorHandler.bind(this),this.delpronHandler.bind(this)]); // delete pronunciation according to ID
+        this.router.post('/delpronunciation', [this.delpronHandler.bind(this)]); // delete pronunciation according to ID
 
 
 
@@ -70,6 +70,7 @@ export class Server{
     private async errorHandler(request, response, next) : Promise<void> {
 	let value : boolean = await this.dataBase.isFound(request.body.word);
 	if (!value) {
+        console.log('error')
 	    response.write(JSON.stringify({'result' : 'error'}));
 	    response.end();
 	} else {

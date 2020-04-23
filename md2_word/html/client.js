@@ -52,8 +52,8 @@ function wordRead() {
 	console.log("counterRead: fetching " + newURL);
 	const resp = await postData(newURL,data)
 	const j = await resp.json();
-	let languages = j['lang'].join();
-	if (j['result'] !== 'error') {
+	if (j['result'] !== 'error') {	
+		let languages = j['lang'];
 	    document.getElementById("output_get").innerHTML = "201: <b>"  + j['img'] + "," + wordName + ", avaliable languages:" + +languages+ "</b>";
 	} else {
 	    document.getElementById("output_get").innerHTML = "200: " +  wordName  + " not found.</b>";
