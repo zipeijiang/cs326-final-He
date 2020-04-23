@@ -56,7 +56,7 @@ export class Server{
         }
     
     private async getDefHandler(request, response) : Promise<void> {
-        await this.getDefinition(request.body.word, request.body.language, response);
+        await this.getDefinition(request.body.word, request.body.languages, response);
         }
     
     private async pronHandler(request, response) : Promise<void> {
@@ -98,6 +98,7 @@ export class Server{
             'lang': info['languages']
         }
         ));
+        
 	    response.end();
     }
 
@@ -116,7 +117,9 @@ export class Server{
             'word' : workerData,
             language: info[language]
             }));
+            console.log("definition sent success");
         }
+        
 	    response.end();
     }
 

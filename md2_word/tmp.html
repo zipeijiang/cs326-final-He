@@ -1,20 +1,44 @@
-<div class="tab-pane" id="forthtab">
+<div class="tab-pane active" id="firsttab">
   <div class="justify-content-center align-items-center">
     <header>
-      <h2>Browse your word</h2>
+      <h2>Upload the word</h2>
   </header>
+  <form class="md-form">
+    <div class="file-field">
+      <div class="z-depth-1-half mb-4">
+        <img src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"  style="size:50%"class="img-fluid" alt="example placeholder">
+      </div>
+    </div>
+      <div class="d-flex justify-content-center">
+        <label for='wordimg'>Upload img</label>
+        <div class="btn btn-mdb-color btn-rounded float-left">
+            <input type="file" id='image' name='wordimg'>
+        </div>
+      </div>
+  </form>
   <div class="input-group input-group-sm ">
     <div class="input-group-prepend">
       <span class="input-group-text" id="inputGroup-sizing-sm">word</span>
     </div>
-    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_read>
+    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "word">
   </div>
-  <button onclick="wordRead()" class="btn btn-primary">Submit</button>
-  <header>Output:</header>
+  <div class="input-group input-group-sm ">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-sm">languages</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "languages">
+  </div>
+  <div class="input-group input-group-sm ">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-sm">definition</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "definition">
+  </div>
+  <button onclick="wordCreate()" class="btn btn-primary">Submit</button>
+  <header>Create Output:</header>
   <div class="col">
-    <p id="output_get" style="font-size: xx-large;">
+    <p id="output" style="font-size: xx-large;">
       <small style="font-size: small;"></small>
     </p>
   </div>
-</div>
 </div>
