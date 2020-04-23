@@ -22,18 +22,20 @@ export class Database {
         let wordCollection = db.collection('wordCollection');
         let defCollection = db.collection('defCollection');
         let lang = [];
-        lang.push(languages);
+        if (languages !== ''){lang.push(languages);}
         let doc = {
             'word': word,
             'img': img,
             'languages': lang,
         }
-        let defdoc = {
-            'word': word,
-            lang: definition
-        }
         await wordCollection.insertOne(doc);
-        await defCollection.insertOne(defdoc);
+        if (languages !== ''){
+            let defdoc = {
+                'word': word,
+                lang: definition
+            }
+            await defCollection.insertOne(defdoc);
+        }
 
         console.log("create: word = " + word);
         
