@@ -7,10 +7,6 @@ export class Database {
 
     constructor() {
     this.client = new this.MongoClient(this.uri, { useNewUrlParser: true });
-    let db = this.client.db(this.dbName);
-    let IDCollection = db.collection('IDCollection');
-    IDCollection.updateOne({'type': 'user'},{$set:{'id': 0}}, { 'upsert' : true } );
-    IDCollection.updateOne({'type': 'pronunciatIon'},{$set:{'id': 0}}, { 'upsert' : true } );
 
 	(async () => {
 	    await this.client.connect().catch(err => { console.log(err); });
@@ -90,11 +86,11 @@ export class Database {
             console.log("result = " + result);
         }
 
-    public async addPron(ID:number, word:string, pronunciation: string, addr:string): Promise<void>{ //add pronunciaiton to db, take ID, word spelling, pronunciation, addr
+    public async addPron(ID:number, word:string, pronunciation: string, addr:string, lang:string, spelling:string): Promise<void>{ //add pronunciaiton to db, take ID, word spelling, pronunciation, addr
         let db = this.client.db(this.dbName);   
         let pronCollection = db.collection('pronCollection');
         console.log("add pronunciation in "+addr+" to word "+word);
-        let result = await pronCollection.updateOne({'id':ID},{$set:{'word':word, 'pronunciation':pronunciation, 'address':addr}}, { 'upsert' : true } );
+        let result = await pronCollection.updateOne({'id':ID},{$set:{'word':word, 'pronunciation':pronunciation, 'address':addr, 'language':lang, 'spelling':spelling}}, { 'upsert' : true } );
         console.log(JSON.stringify(result));
     }
 
@@ -106,7 +102,13 @@ export class Database {
         console.log("result = " +JSON.stringify(result));
     }
 
-    public async getNewPronID(){
+    public async initializeID(): Promise<void>{
+        let db = this.client.db(this.dbName);
+        let IDCollection = db.collection('IDCollection');
+        IDCollection.updateOne({'type': 'user'},{$set:{'id': 0}}, { 'upsert' : true } );
+        IDCollection.updateOne({'type': 'pronunciatIon'},{$set:{'id': 0}}, { 'upsert' : true } );
+    }
+    public async getNewPronID(): Promise<number>{
         let db = this.client.db(this.dbName);   
         let IDCollection = db.collection('IDCollection');
         let result = await IDCollection.findOne({'type': 'pronunciatIon'});
@@ -115,7 +117,7 @@ export class Database {
         return newID
     }
 
-    public async getNewUserID(){
+    public async getNewUserID(): Promise<number>{
         let db = this.client.db(this.dbName);   
         let IDCollection = db.collection('IDCollection');
         let result = await IDCollection.findOne({'type': 'pronunciatIon'});
