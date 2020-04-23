@@ -45,10 +45,9 @@ export class Database {
         let curlanguage = info['languages'];
         curlanguage.push(lang);
         await wordCollection.updateOne({'word':word},{$set:{'languages':curlanguage}}, { 'upsert' : true } );
-        let pair = {};
-        pair[lang] = def;
-        let result = await defCollection.updateOne({'word':word},{$set : pair}, { 'upsert' : true } );
-        console.log(JSON.stringify(result));
+        let pair = JSON.parse('{' + '"' +lang +'"' + ':' + '"' + def +'"' + '}');
+        console.log('pair:' + JSON.stringify(pair));
+        await defCollection.updateOne({'word':word},{$set : pair}, { 'upsert' : true } );
     }
 
     public async get(word:string): Promise<any>{ //get word, img, languages
@@ -69,7 +68,7 @@ export class Database {
         let defCollection = db.collection('defCollection'); 
         console.log("get: word = " + word + " language: " + lang);
         let result = await defCollection.findOne({'word' : word });
-        console.log("get: returned " + JSON.stringify(result));
+        console.log("getDef: returned " + JSON.stringify(result));
         if (result) {
             return result;
         } else {

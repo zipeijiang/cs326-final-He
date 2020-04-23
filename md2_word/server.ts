@@ -48,7 +48,7 @@ export class Server{
     }
 
     private async defHandler(request, response): Promise<void> {
-		await this.updateDefinition(request.body.word, request.body.languages, request.body.def, response);
+		await this.updateDefinition(request.body.word, request.body.languages, request.body.definition, response);
     }
 
     private async deleteHandler(request, response) : Promise<void> {
