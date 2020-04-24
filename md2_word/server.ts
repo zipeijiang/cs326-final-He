@@ -112,12 +112,12 @@ export class Server{
             }
             ));
         } else{
-            response.write(JSON.stringify(
-            {'result' : 'created',
-            'word' : workerData,
-            language: info[language]
-            }));
-            console.log("definition sent success");
+            let result = {'result' : 'created',
+            'word' : workerData
+            };
+            result[language] = info[language];
+            response.write(JSON.stringify(result));
+            console.log("definition sent successfully");
         }
         
 	    response.end();

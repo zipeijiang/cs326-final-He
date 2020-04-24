@@ -71,8 +71,11 @@ function wordRead() {
 	}	    
     })();
 }
-function defRead(wordName,lang){
+function defRead(){
 	(async () => {
+	let wordName = document.getElementById("word_getdef").value;
+	let lang = document.getElementById("languages_getdef").value;
+
 	console.log("defRead"+wordName,lang);
 	const data = { 'word' : wordName, 'languages':lang}; // -- (1)
 	const newURL = url +"/getDefinitionByLanguage";
@@ -81,11 +84,11 @@ function defRead(wordName,lang){
 	const j = await resp.json();
 	console.log(j);
 	if (j['result'] !== 'error') {	
+		document.getElementById("output_getdef").innerHTML = "211: <b>"  + wordName + ", Definition in "+ lang + ": " +j[lang]+ ".</b>";
 		
-	    return '<li>'+lang+":"+j['lang']+'<li>';
 	} else {
-		console.log(j['language']);
-	    return "<li>"+lang+":"+j['language']+"<li>";
+	    document.getElementById("output_getdef").innerHTML = "210: definition in" +  lang  + " not found.</b>";
+
 	}	    
     })();
 }
