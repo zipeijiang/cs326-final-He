@@ -143,11 +143,11 @@ Addis Gunst github: AddieGunst
 ![wordUpload](./screen_shots/wordDefUpdate.PNG)
 
 ### Word Basic Info/Definition Read
-![wordRead](/screen_shots/wordRead.PNG)
-![wordDefRead](/screen_shots/wordDefRead.PNG)
+![wordRead](./screen_shots/wordRead.PNG)
+![wordDefRead](./screen_shots/wordDefRead.PNG)
 
 ### Word Deletion
-![wordDelete](/screen_shots/wordDelete.PNG)
+![wordDelete](./screen_shots/wordDelete.PNG)
 
 ## Division of labor
 Addis Gunst: Front-end and back-end coding (ts, HTML) on pronunciation CRUD
