@@ -37,12 +37,17 @@ export class Database {
         
     }
 
+    //only work on update session
     public async def(word:string, lang:string, def:string): Promise<void> {
         let db = this.client.db(this.dbName);
         let wordCollection = db.collection('wordCollection');
         let defCollection = db.collection('defCollection'); 
         let info = await wordCollection.findOne({'word' : word });
         let curlanguage = info['languages'];
+        if(curlanguage.includes(lang)){
+            console.log("already exists language!");
+            return null;   
+        }
         curlanguage.push(lang);
         await wordCollection.updateOne({'word':word},{$set:{'languages':curlanguage}}, { 'upsert' : true } );
         let pair = JSON.parse('{' + '"' +lang +'"' + ':' + '"' + def +'"' + '}');
