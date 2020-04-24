@@ -6,9 +6,6 @@ Zipei Jiang github: zipeijiang
 
 Haoqin Liang github: Leonalhq & Leonalhqkun
 
-Haoqin Liang github: Leonalhq
-
-
 Addis Gunst github: AddieGunst
 ## API ##
 ### Object Model
