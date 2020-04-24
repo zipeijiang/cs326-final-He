@@ -138,9 +138,9 @@ Addis Gunst github: AddieGunst
 ## Front-end CRUD Implementation ##
 
 ### Word Creation
-![wordCreate](/screen_shots/wordCreate.PNG)
+![wordCreate](./screen_shots/wordCreate.PNG)
 ### Word Definition Upload
-![wordUpload](/screen_shots/wordDefUpdate.PNG)
+![wordUpload](./screen_shots/wordDefUpdate.PNG)
 
 ### Word Basic Info/Definition Read
 ![wordRead](/screen_shots/wordRead.PNG)
