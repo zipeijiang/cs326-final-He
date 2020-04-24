@@ -1,17 +1,24 @@
 {
-  "name": "md2_word",
+  "name": "cs326-final-He",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "dependencies": {
-    "level": "^6.0.1"
+  "directories": {
+    "doc": "doc"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zipeijiang/cs326-final-He.git"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zipeijiang/cs326-final-He/issues"
+  },
+  "homepage": "https://github.com/zipeijiang/cs326-final-He#readme"
 }
