@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const url = "http://localhost:8080/word"; // NOTE NEW URL
+const url = "https://frozen-castle-51130.herokuapp.com/word"; // NOTE NEW URL
 const postdata_1 = require("./postdata");
 function wordCreate() {
     (() => __awaiter(this, void 0, void 0, function* () {
