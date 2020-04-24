@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src = "client.js"></script>
+    <script src="client-main.js"></script>
     <title>Hello, world!</title>
   </head>
   <body>
@@ -137,7 +137,7 @@
             </div>
             
 
-            <button onclick="wordCreate()" class="btn btn-primary">Submit</button>
+            <button id = "createBtm" onclick="client.wordCreate()" class="btn btn-primary">Submit</button>
             <header>Create Output:</header>
             <div class="col">
               <p id="output" style="font-size: xx-large;">
@@ -170,7 +170,7 @@
             </div>
             <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = definition_update>
           </div>
-          <button onclick="wordUpdate()" class="btn btn-primary">Submit</button>
+          <button id = "updateBtm" onclick="client.wordUpdate()" class="btn btn-primary">Submit</button>
           <header>Update Output:</header>
           <div class="col">
             <p id="output_update" style="font-size: xx-large;">
@@ -191,7 +191,7 @@
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_delete>
             </div>
-            <button onclick="wordDelete()" class="btn btn-primary">Submit</button>
+            <button id = "deleteBtm" onclick="client.wordDelete()" class="btn btn-primary">Submit</button>
             <header>Delete Output:</header>
             <div class="col">
               <p id="output_delete" style="font-size: xx-large;">
@@ -212,7 +212,7 @@
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_read>
             </div>
-            <button onclick="wordRead()" class="btn btn-primary">Submit</button>
+            <button id = "readBtm" onclick="client.wordRead()" class="btn btn-primary">Submit</button>
             <header>Read Output:</header>
             <div class="col">
               <p id="output_get" style="font-size: xx-large;">
@@ -242,7 +242,7 @@
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = languages_getdef>
             </div>
-            <button onclick="defRead()" class="btn btn-primary">Submit</button>
+            <button id = "defReadBtm" onclick="client.defRead()" class="btn btn-primary">Submit</button>
             <header>Definition Output:</header>
             <div class="col">
               <p id="output_getdef" style="font-size: xx-large;">
