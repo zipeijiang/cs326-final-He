@@ -106,6 +106,7 @@ export class Server{
         console.log('get word: '+workerData + "', language: "+language);
         let info = await this.dataBase.getDef(workerData, language);
         if(info[language]==null){
+            // no word with specific word being found.
             response.write(JSON.stringify(
                 {'result' : 'error',
                 'word' : workerData

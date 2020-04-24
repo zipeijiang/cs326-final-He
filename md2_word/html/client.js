@@ -60,11 +60,16 @@ function wordRead() {
 	const resp = await postData(newURL,data)
 	const j = await resp.json();
 	if (j['result'] !== 'error') {	
-		var languagelist = j['lang'];
-		defRead(wordName,languagelist[0]);
-		// console.log(a);
-		document.getElementById("output_get").innerHTML = "201: <b>"  + wordName + "</b>";
-	    document.getElementById("output_get_img").innerHTML =  "<img src= " + j['img'] +">";
+		var languagelist = j['lang']
+		let langl = "<ul>";
+		languagelist.forEach((num1, index)=>{
+			langl+= '<li>'+ num1 + "</li>";
+		});
+		langl +="<ul>";
+		document.getElementById("output_get_img").innerHTML =  "<img id=wordimg src= " + j['img'] +">";
+		document.getElementById("output_get").innerHTML = "201: <b>"  + wordName + ": </b>"+langl;
+
+	    
 		
 	} else {
 	    document.getElementById("output_get").innerHTML = "200: " +  wordName  + " not found.</b>";
@@ -75,7 +80,6 @@ function defRead(){
 	(async () => {
 	let wordName = document.getElementById("word_getdef").value;
 	let lang = document.getElementById("languages_getdef").value;
-
 	console.log("defRead"+wordName,lang);
 	const data = { 'word' : wordName, 'languages':lang}; // -- (1)
 	const newURL = url +"/getDefinitionByLanguage";
