@@ -139,15 +139,28 @@ Addis Gunst github: AddieGunst
 
 ### Word Creation
 ![wordCreate](./screen_shots/wordCreate.PNG)
+
+Allows users pass word spelling and image url to the database, and definition with corresponding language as optional parameter. If success, the program adds a word object to the database, and if there are definitions passed in, it also creates a definition object. The program prints the word and image to the website if the action is succeed, or print erro if the insertion fails.
 ### Word Definition Upload
 ![wordUpload](./screen_shots/wordDefUpdate.PNG)
 
+Allows users pass word spelling as key, with definition and corresponding language to the database. If the word exists in the database, the program adds the definition to the definition object of the word with language as key. And add language into the list of support languages in the word object. It prints the result, either success or error (word not found) to the website.
+
 ### Word Basic Info/Definition Read
 ![wordRead](./screen_shots/wordRead.PNG)
+
+Allows uses pass a word to the database, if the word is in the database, the program print the word with its image and list of supported languages to the website, otherwise print error(word not found).
 ![wordDefRead](./screen_shots/wordDefRead.PNG)
+
+Allows users pass a word and a language to the database, if the word is in the database with definition in that language, the program print the defition of the image to the website, otherwise print error.
 
 ### Word Deletion
 ![wordDelete](./screen_shots/wordDelete.PNG)
+
+Allows users pass a word to the database, if the word is in the database, then the program removes the word from the database and print succeed to the website. If not, it prints error.
+
+## Application Link
+https://frozen-castle-51130.herokuapp.com
 
 ## Division of labor
 Addis Gunst: Front-end and back-end coding (ts, HTML) on pronunciation CRUD

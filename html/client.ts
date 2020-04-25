@@ -1,4 +1,4 @@
-const url = "https://gentle-bayou-51373.herokuapp.com/word"; // NOTE NEW URL
+const url = "https://frozen-castle-51130.herokuapp.com/word"; // NOTE NEW URL
 
 import { postData } from './postdata';
 
