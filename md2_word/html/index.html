@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src = "client.js"></script>
+    <script src="client-main.js"></script>
     <title>Hello, world!</title>
   </head>
   <body>
@@ -73,13 +73,17 @@
             <a class="nav-link active"  href="#firsttab" data-toggle="tab">Upload Word</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link "  href="#secondtab" data-toggle="tab">Modified Word</a>
+            <a class="nav-link "  href="#secondtab" data-toggle="tab">Update Definition</a>
           </li>
           <li class="nav-item">
             <a class="nav-link "  href="#thirdtab" data-toggle="tab">Delete Word</a>
           </li>
           <li class="nav-item">
             <a class="nav-link "  href="#forthtab" data-toggle="tab">Browse your Word</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link "  href="#fifthtab" data-toggle="tab">Get Definition By Language</a>
           </li>
           
         </ul>
@@ -92,58 +96,62 @@
             <form class="md-form">
               <div class="file-field">
                 <div class="z-depth-1-half mb-4">
+                  <p id='word_img'>
                   <img src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"  style="size:50%"class="img-fluid" alt="example placeholder">
+                  </p>
                 </div>
-              </div>
+              <!--</div>
                 <div class="d-flex justify-content-center">
                   <label for='wordimg'>Upload img</label>
                   <div class="btn btn-mdb-color btn-rounded float-left">
                       <input type="file" id='image' name='wordimg'>
                   </div>
-                </div>
+                </div>-->
             </form>
             <div class="input-group input-group-sm ">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">word</span>
               </div>
-              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "word">
             </div>
+
+            <div class="input-group input-group-sm ">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">image</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "img">
+            </div>
+
             <div class="input-group input-group-sm ">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">languages</span>
               </div>
-              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = languages>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "languages">
             </div>
+
             <div class="input-group input-group-sm ">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">definition</span>
               </div>
-              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = definition>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = "definition">
             </div>
-            <button onclick="wordCreate()" class="btn btn-primary">Submit</button>
-            <header>Output:</header>
+            
+
+            <button id = "createBtm" onclick="client.wordCreate()" class="btn btn-primary">Submit</button>
+            <header>Create Output:</header>
             <div class="col">
               <p id="output" style="font-size: xx-large;">
                 <small style="font-size: small;"></small>
               </p>
             </div>
           </div>
-          </div>
+        </div><br>
+          
         <div class="tab-pane" id="secondtab">
           <div class="justify-content-center align-items-center">
             <header>
-              <h2>Updated/Modified the word</h2>
+              <h2>Add definition to the word</h2>
           </header>
-          <form class="md-form">
-            <div class="file-field">
-              <div class="z-depth-1-half mb-4">
-                <img src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"  style="size:50%"class="img-fluid" alt="example placeholder">
-              </div>
-            </div>
-              <div class="d-flex justify-content-center">
-                <label for='wordimg'>Upload img</label>
-              </div>
-          </form>
           <div class="input-group input-group-sm ">
             <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroup-sizing-sm">word</span>
@@ -162,8 +170,8 @@
             </div>
             <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = definition_update>
           </div>
-          <button onclick="wordUpdate()" class="btn btn-primary">Submit</button>
-          <header>Output:</header>
+          <button id = "updateBtm" onclick="client.wordUpdate()" class="btn btn-primary">Submit</button>
+          <header>Update Output:</header>
           <div class="col">
             <p id="output_update" style="font-size: xx-large;">
               <small style="font-size: small;"></small>
@@ -183,8 +191,8 @@
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_delete>
             </div>
-            <button onclick="wordDelete()" class="btn btn-primary">Submit</button>
-            <header>Output:</header>
+            <button id = "deleteBtm" onclick="client.wordDelete()" class="btn btn-primary">Submit</button>
+            <header>Delete Output:</header>
             <div class="col">
               <p id="output_delete" style="font-size: xx-large;">
                 <small style="font-size: small;"></small>
@@ -204,18 +212,47 @@
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_read>
             </div>
-            <button onclick="wordRead()" class="btn btn-primary">Submit</button>
-            <header>Output:</header>
+            <button id = "readBtm" onclick="client.wordRead()" class="btn btn-primary">Submit</button>
+            <header>Read Output:</header>
             <div class="col">
               <p id="output_get" style="font-size: xx-large;">
+                <small style="font-size: small;"></small>
+              </p>
+              <p id="output_get_img" style="font-size: xx-large;">
                 <small style="font-size: small;"></small>
               </p>
             </div>
           </div>
           </div>
 
-
+          <div class="tab-pane" id="fifthtab">
+            <div class="justify-content-center align-items-center">
+              <header>
+                <h2>Get definition of the word</h2>
+            </header>
+            <div class="input-group input-group-sm ">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">word</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_getdef>
+            </div>
+            <div class="input-group input-group-sm ">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">languages</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = languages_getdef>
+            </div>
+            <button id = "defReadBtm" onclick="client.defRead()" class="btn btn-primary">Submit</button>
+            <header>Definition Output:</header>
+            <div class="col">
+              <p id="output_getdef" style="font-size: xx-large;">
+                <small style="font-size: small;"></small>
+              </p>
+            </div>
+          </div>
        </div>
+
+       
         
 
   </body>
