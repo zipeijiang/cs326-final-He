@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const url = "http://localhost:8080/word"; // NOTE NEW URL
+const url = "https://fierce-chamber-78001.herokuapp.com/word"; // NOTE NEW URL
 const postdata_1 = require("./postdata");
 function wordCreate() {
     (() => __awaiter(this, void 0, void 0, function* () {
@@ -36,7 +36,7 @@ function wordCreate() {
             if (j['result'] !== 'error') {
                 console.log("ok");
                 outputImgElement.innerHTML = "<img src= " + img + ">";
-                outputElement.innerHTML = "111: <b>" + wordName + ", " + definition + " in " + languages + " created.</b>";
+                outputElement.innerHTML = "101: <b>" + wordName + ", " + definition + " in " + languages + " created.</b>";
             }
             else {
                 console.log("error");
@@ -69,11 +69,11 @@ function wordRead() {
                 var languagelist = j['lang'];
                 let langl = "<ul>";
                 languagelist.forEach((num1) => {
-                    langl += '<li>' + num1 + "</li>";
+                    langl += '<ui>' + num1 + "</ui>";
                 });
                 langl += "<ul>";
                 outputImgElement.innerHTML = "<img id=wordimg src= " + j['img'] + ">";
-                outputElement.innerHTML = "typescript 201: <b>" + wordName + ": </b>" + langl;
+                outputElement.innerHTML = "201: <b>" + wordName + ": </b>" + langl;
             }
             else {
                 outputElement.innerHTML = "200: " + wordName + " not found.</b>";

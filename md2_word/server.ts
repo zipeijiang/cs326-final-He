@@ -7,7 +7,7 @@ let express = require('express');
 export class Server{
     private dataBase;
     private server = express();
-    private port = 8080;
+    private port = process.env.PORT || 8080;
     private router = express.Router();
 
     constructor(db){
@@ -19,7 +19,7 @@ export class Server{
             next();
         });
         
-        this.server.use('/', express.static('./html'));
+        this.server.use('/', express.static('./html/'));
         this.server.use(express.json());
 
         this.router.post('/new', this.createHandler.bind(this));
@@ -36,6 +36,36 @@ export class Server{
             response.send(JSON.stringify({ "result" : "command-not-found" }));
         });
         this.server.use('/word', this.router);
+
+        // //heroku modules
+        // if (request.url.endsWith("/index.html")) {
+        //     fs.readFile('static/pcrud-interactive.html', null, function (error, data) {
+        //         if (error) {
+        //             response.writeHead(404);
+        //             response.write('Whoops! File not found!');
+        //         } else {
+        //             response.writeHead(200, {
+        //                 "Content-Type": "text/html"});
+        //             response.write(data);
+        //         }
+        //         response.end();
+        //     });
+        //     return;
+        // } else if (request.url.endsWith("/pcrud-xhr.js")) {
+        //     fs.readFile('static/pcrud-xhr.js', null, function (error, data) {
+        //         if (error) {
+        //             response.writeHead(404);
+        //             response.write('Whoops! File not found!');
+        //         } else {
+        //             response.writeHead(200, {
+        //                 "Content-Type": "text/javascript"});
+        //             response.write(data);
+        //         }
+        //         response.end();
+        //     });
+        //     return;
+        // }
+     
     }
     
     private async createHandler(request, response) : Promise<void> {
@@ -168,5 +198,3 @@ export class Server{
         response.end();
     }
 }
-
-    

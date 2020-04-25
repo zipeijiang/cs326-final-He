@@ -6,4 +6,4 @@ import { Server } from './server';
 const theDatabase = new Database(); // CHANGE THIS
 const theServer = new Server(theDatabase);
 
-theServer.listen(8080);
+theServer.listen(process.env.PORT || 8080);
