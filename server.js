@@ -44,7 +44,7 @@ var Server = /** @class */ (function () {
     function Server(db) {
         var _this = this;
         this.server = express();
-        this.port = 8080;
+        this.port = process.env.PORT || 8080;
         this.router = express.Router();
         this.dataBase = db;
         this.router.use(function (request, response, next) {
@@ -53,7 +53,7 @@ var Server = /** @class */ (function () {
             response.header('Access-Control-Allow-Headers', '*');
             next();
         });
-        this.server.use('/', express.static('./html'));
+        this.server.use('/', express.static('./html/'));
         this.server.use(express.json());
         this.router.post('/new', this.createHandler.bind(this));
         this.router.post('/definition', [this.errorHandler.bind(this), this.defHandler.bind(this)]);
@@ -69,6 +69,34 @@ var Server = /** @class */ (function () {
             });
         }); });
         this.server.use('/word', this.router);
+        // //heroku modules
+        // if (request.url.endsWith("/index.html")) {
+        //     fs.readFile('static/pcrud-interactive.html', null, function (error, data) {
+        //         if (error) {
+        //             response.writeHead(404);
+        //             response.write('Whoops! File not found!');
+        //         } else {
+        //             response.writeHead(200, {
+        //                 "Content-Type": "text/html"});
+        //             response.write(data);
+        //         }
+        //         response.end();
+        //     });
+        //     return;
+        // } else if (request.url.endsWith("/pcrud-xhr.js")) {
+        //     fs.readFile('static/pcrud-xhr.js', null, function (error, data) {
+        //         if (error) {
+        //             response.writeHead(404);
+        //             response.write('Whoops! File not found!');
+        //         } else {
+        //             response.writeHead(200, {
+        //                 "Content-Type": "text/javascript"});
+        //             response.write(data);
+        //         }
+        //         response.end();
+        //     });
+        //     return;
+        // }
     }
     Server.prototype.createHandler = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
