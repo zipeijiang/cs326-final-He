@@ -13,41 +13,27 @@ const url = "http://localhost:8080/word"; // NOTE NEW URL
 const postdata_1 = require("./postdata");
 function pronuCreate() {
     (() => __awaiter(this, void 0, void 0, function* () {
-        // let userName = "John";
         let doc = document;
         let pronunElement = doc.getElementById("pronunciation");
-        //let wordELement = doc.getElementById("word");
-        //let defELement = doc.getElementById("definition");
-        //let langElement = doc.getElementById("languages");
-        //let imgElement = doc.getElementById("img");
         let outputElement = doc.getElementById("output");
-        //let outputImgElement = doc.getElementById("word_img");
         if (pronunElement !== null) {
-            //let wordName = wordELement.value;
-            //let definition = defELement.value;
-            //let languages = langElement.value;
-            //let img = imgElement.value;
             let pronunciation = pronunElement.value;
             const data = { 'pronunciation': pronunciation}; // -- (1)
             const newURL = url + "/new"; // used to be ?name=" + counterName; -- (2)
             console.log("counterCreate: fetching " + newURL);
             const resp = yield postdata_1.postData(newURL, data); // used to be fetch -- (3)
             const j = yield resp.json();
-            //console.log(document.getElementById("output"));
             if (j['result'] !== 'error') {
                 console.log("ok");
-                //outputImgElement.innerHTML = "<img src= " + img + ">";
                 outputElement.innerHTML = "101: <b>" + pronunciation + " created.</b>";
             }
             else {
                 console.log("error");
-               // outputImgElement.innerHTML = "";
                 outputElement.innerHTML = "100: <b>" + pronunciation + " not found.</b>";
             }
         }
         // NEW: we no longer add info to the URL (for GET) but instead put it in a JSON object.
         else {
-           // outputImgElement.innerHTML = "";
             outputElement.innerHTML = "100: <b> input missing.</b>";
         }
     }))();
