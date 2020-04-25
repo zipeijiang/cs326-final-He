@@ -1,4 +1,4 @@
-# Project Milestone 1 Assignment #
+# Project Milestone 2 Assignment #
 ## Team He ##
 ## Application: Dialect Dictionary ##
 ## Team Overview ##
