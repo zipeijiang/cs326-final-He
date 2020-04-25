@@ -85,6 +85,14 @@
           <li class="nav-item">
             <a class="nav-link "  href="#fifthtab" data-toggle="tab">Get Definition By Language</a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link "  href="#sixthtab" data-toggle="tab">Add Pronunciation</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link "  href="#seventhtab" data-toggle="tab">Delete Pronunciation</a>
+          </li>
           
         </ul>
         <div class="tab-content">
@@ -252,7 +260,53 @@
           </div>
        </div>
 
-       
+       <div class="tab-pane" id="sixthtab">
+        <div class="justify-content-center align-items-center">
+          <header>
+            <h2>Add Pronunciation</h2>
+        </header>
+        <div class="input-group input-group-sm ">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">word</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word>
+        </div>
+        <div class="input-group input-group-sm ">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">pronunciation</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = definition_update>
+        </div>
+        <button id = "updateBtm" onclick="client.pronuCreate()" class="btn btn-primary">Submit</button>
+        <header>Update Output:</header>
+        <div class="col">
+          <p id="output_update" style="font-size: xx-large;">
+            <small style="font-size: small;"></small>
+          </p>
+        </div>
+      </div>
+    </div>
+
+       <div class="tab-pane" id="seventhtab">
+        <div class="justify-content-center align-items-center">
+          <header>
+            <h2>Delete Pronunciation</h2>
+        </header>
+        <div class="input-group input-group-sm ">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Pronunciation</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_delete>
+        </div>
+        <button id = "deleteBtm" onclick="client.pronuDelete()" class="btn btn-primary">Submit</button>
+        <header>Delete Output:</header>
+        <div class="col">
+          <p id="output_delete" style="font-size: xx-large;">
+            <small style="font-size: small;"></small>
+          </p>
+        </div>
+      </div>
+      </div>
         
 
   </body>

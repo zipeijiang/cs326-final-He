@@ -14,22 +14,24 @@ const postdata_1 = require("./postdata");
 function pronuCreate() {
     (() => __awaiter(this, void 0, void 0, function* () {
         let doc = document;
+        let wordElement = doc.getElementById("word");
         let pronunElement = doc.getElementById("pronunciation");
         let outputElement = doc.getElementById("output");
-        if (pronunElement !== null) {
+        if (pronunElement !== null && wordElement !== null) {
             let pronunciation = pronunElement.value;
-            const data = { 'pronunciation': pronunciation}; // -- (1)
+            let wordName = wordElement.value;
+            const data = { 'word' : wordName, 'pronunciation': pronunciation}; // -- (1)
             const newURL = url + "/new"; // used to be ?name=" + counterName; -- (2)
             console.log("counterCreate: fetching " + newURL);
             const resp = yield postdata_1.postData(newURL, data); // used to be fetch -- (3)
             const j = yield resp.json();
             if (j['result'] !== 'error') {
                 console.log("ok");
-                outputElement.innerHTML = "101: <b>" + pronunciation + " created.</b>";
+                outputElement.innerHTML = "101: <b>" + wordName + ", " + pronunciation + " created.</b>";
             }
             else {
                 console.log("error");
-                outputElement.innerHTML = "100: <b>" + pronunciation + " not found.</b>";
+                outputElement.innerHTML = "100: <b>" + wordName + ", " + pronunciation + " not found.</b>";
             }
         }
         // NEW: we no longer add info to the URL (for GET) but instead put it in a JSON object.
