@@ -95,7 +95,7 @@ export class Server{
             {'result' : 'created',
             'word' : workerData,
             'img' : info['img'],
-            'lang': info['languages']
+            'lang': info['languages'].split(' ')
         }
         ));
         
@@ -105,18 +105,17 @@ export class Server{
     public async getDefinition(workerData:string, language:string, response): Promise<void>{
         console.log('get word: '+workerData + "', language: "+language);
         let info = await this.dataBase.getDef(workerData, language);
-        if(info[language]==null){
+        if(info==null){
             // no word with specific word being found.
             response.write(JSON.stringify(
                 {'result' : 'error',
                 'word' : workerData
-            }
-            ));
+            }));
         } else{
             let result = {'result' : 'created',
             'word' : workerData
             };
-            result[language] = info[language];
+            result[language] = info['def'];
             response.write(JSON.stringify(result));
             console.log("definition sent successfully");
         }

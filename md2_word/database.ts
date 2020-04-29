@@ -17,7 +17,7 @@ export class Database {
         let db = this.client.db(this.dbName);
         let wordCollection = db.collection('wordCollection');
         let defCollection = db.collection('defCollection');
-        let lang = [];
+        let lang :string[] = [];
         if (languages !== ''){lang.push(languages);}
         let doc = {
             'word': word,
@@ -46,7 +46,7 @@ export class Database {
         let curlanguage = info['languages'];
         if(curlanguage.includes(lang)){
             console.log("already exists language!");
-            return null;   
+            return;   
         }
         curlanguage.push(lang);
         await wordCollection.updateOne({'word':word},{$set:{'languages':curlanguage}}, { 'upsert' : true } );
