@@ -10,11 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD:html/client-main.js
 const url = "https://fierce-chamber-78001.herokuapp.com/word"; // NOTE NEW URL
-=======
-const url = "https://quiet-cove-10572.herokuapp.com/word"; // NOTE NEW URL
->>>>>>> d0d3129b994ce184574bfe38fc905319fe8d725e:md2_word/html/client-main.js
 const postdata_1 = require("./postdata");
 function wordCreate() {
     (() => __awaiter(this, void 0, void 0, function* () {
