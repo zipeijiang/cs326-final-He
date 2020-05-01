@@ -7,7 +7,7 @@ let express = require('express');
 export class Server{
     private dataBase;
     private server = express();
-    private port = 8080;
+    private port = process.env.PORT || 8080;
     private router = express.Router();
 
     constructor(db){

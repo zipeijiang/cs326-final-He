@@ -22,7 +22,8 @@
     "browserify": "^16.5.1",
     "express": "^4.17.1",
     "level": "^6.0.1",
-    "mongodb": "^3.5.6"
+    "mongodb": "^3.5.6",
+    "pg-promise": "^10.5.2"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
