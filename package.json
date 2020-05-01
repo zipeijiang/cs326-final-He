@@ -1,0 +1,37 @@
+{
+  "name": "cs326-project-tmp",
+  "version": "1.0.0",
+  "description": "Tmp repository for heroku use",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leonalhq/cs326-project-tmp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Leonalhq/cs326-project-tmp/issues"
+  },
+  "homepage": "https://github.com/Leonalhq/cs326-project-tmp#readme",
+  "dependencies": {
+    "browserify": "^16.5.1",
+    "express": "^4.17.1",
+    "level": "^6.0.1",
+    "mongodb": "^3.5.6"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.2",
+    "jest": "^25.4.0",
+    "nodemon": "^2.0.3",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.4.0",
+    "ts-node": "^8.9.0",
+    "typescript": "^3.8.3"
+  }
+}
