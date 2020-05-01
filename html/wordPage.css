@@ -49,3 +49,7 @@ p.names{
     width:16px; 
     height:16px;
 }
+
+div#defBar{
+    visibility: hidden;
+}

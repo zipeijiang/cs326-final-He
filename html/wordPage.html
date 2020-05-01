@@ -8,6 +8,7 @@
         <link rel="stylesheet"  type="text/css" href="wordPage.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="word.js"></script>
         <style>  
         </style>
       </head>
@@ -94,8 +95,9 @@
 
         <div class="left">
             <div class="container-fluid">
-            <img class="head" src="https://i5.walmartimages.ca/images/Large/094/514/6000200094514.jpg" alt="word-image" /><br/>
-            <label for="language">Choose your standard language</label>
+
+            <p id = 'wordImg'></p><br/>
+            <label for="language">Choose your language</label>
             <select id= "language" class="selectpicker">
                 <option value="arabic">Arabic</option>
                 <option value="english">English</option>
@@ -104,12 +106,30 @@
                 <option value="mandarin">Mandarin</option>
                 <option value="russian">Russian</option>
             </select>
-            <p class='definition'>Please select your language first</p>
-            <button type="button" id="editExplaination" onclick="TBA()" class="btn btn-primary">Click to Add More Definition</button>
-            </div>
-        </div>
+            <button type="button" id="selectDef" onclick="defRead()" class="btn btn-primary">Go</button>
 
-        <div id = "data" class="right">
+            <p id="test" style="font-size: xx-large;">
+              Loading...
+              <small style="font-size: small;"></small>
+            </p>
+            <p class='definition' id = 'definition'>Please select your language first</p>
+            <button type="button" id="editExplaination" onclick="showDefBar()" class="btn btn-primary">Click to Add More Definition</button><br/>
+            <div id="defBar" > 
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Language</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = add_lang>
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Definition</span>
+              </div>
+              <textarea type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = add_def></textarea><br/>
+              <button type="button" id="addDefinition" onclick="addDef()" class="btn btn-primary">Submit</button>
+              <p id = "updateStatus"></p>
+            </div>
+            </div>
+      </div>
+
+      <div id = "data" class="right">
             <div class="container-fluid"> 
                 <div class="container-fluid"> 
                     <button type="button" onclick="TBA()" class="btn-link">Upload your dialect!</button>
