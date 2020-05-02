@@ -1,8 +1,8 @@
 export class Database {
     private pgp = require('pg-promise')();
-    private uri = "postgres://wojhwndc:Yi2Jd5HN3nAcMRvi79-77AFxiSQ1TSaL@drona.db.elephantsql.com:5432/wojhwndc";
+    private uri = "postgres://hogarpcktasrfu:a57eabff42db64de71ddb6e94c97fe6661013b2d40f234466c597ee41c67cd90@ec2-54-86-170-8.compute-1.amazonaws.com:5432/demok7kkasc06o";
     private db: any;
-    private dbName : string = "wojhwndc";
+    private dbName : string = "demok7kkasc06o";
 
     constructor(dbName : string) {
     	this.dbName = dbName;
