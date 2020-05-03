@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src = "./client-main.js"></script>
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <div>
+        <div class="text-center">
+            <h2>Online Dialect Dictionary</h2>      
+            <p>For Share And Love</p>
+          </div>
+          
+      </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Info
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/word">Upload new dialect</a>
+                <a class="dropdown-item" href="/ui">My collection</a>
+              </div>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-2">
+            <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+          
+          <!-- user login page -->
+          <ul class="navbar-nav ">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Login
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button>
+              </a>
+              <a class="dropdown-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signupModal">Sign up</button>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" visibility: hidden;">
+              
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#changeinfoModal">changeinfo</button>
+              </a>
+              <a class="dropdown-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal">Logout</button>
+              </a>
+            </div>
+          </li>
+          </ul>
+
+        </div>
+      </nav>
+    
+      <div class="container"> 
+        <header>
+            <h2>Most popular word today</h2>
+        </header>
+        <div class="row">
+        <div class="card-deck">
+            <!-- <div class="card">
+              <img class="card-img-top" src="..." alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+              </div>
+            </div>
+            <div class="card">
+              <img class="card-img-top" src="..." alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+              </div>
+            </div>
+            <div class="card">
+              <img class="card-img-top" src="..." alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+              </div> -->
+              <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+              </div>
+            </div>
+          </div>
+    </div>
+    <!-- sign up pop window -->
+    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="signupModalLabel">New user</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="id" class="col-form-label">User login id:(unique please)</label>
+                  <input type="text" class="form-control" id="id">
+                </div>
+                <div class="form-group">
+                  <label for="username" class="col-form-label">Your prefer NickName:</label>
+                  <input type="text" class="form-control" id="username">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-form-label">Password</label>
+                    <input type="password" class="form-control" id="password">
+                </div>
+                <div class="form-group">
+                    <label for="location" class="col-form-label">Location</label>
+                    <input type="text" class="form-control" id="location">
+                </div>
+                <div class="form-group">
+                    <label for="portrait" class="col-form-label">Portrait src</label>
+                    <input type="text" class="form-control" id="portrait">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="client.userCreate()">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- login pop window -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="login_id" class="col-form-label">User login id</label>
+                <input type="text" class="form-control" id="login_id">
+              </div>
+              <div class="form-group">
+                  <label for="login_password" class="col-form-label">Password</label>
+                  <input type="password" class="form-control" id="login_password">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="client.userLogin()">Submit</button>
+            <div class="col">
+              <p id="output-login" style="font-size: xx-large;">
+                <small style="font-size: small;"></small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="location.href = ''">Submit</button>
+
+      <!-- changeinfo pop window -->
+      <div class="modal fade" id="changeinfoModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="changeinfoModal">Login</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="username-changed" class="col-form-label">Your prefer NickName:</label>
+                  <input type="text" class="form-control" id="username-changed">
+                </div>
+                <div class="form-group">
+                    <label for="password-changed" class="col-form-label">Password</label>
+                    <input type="password" class="form-control" id="password-changed">
+                </div>
+                <div class="form-group">
+                    <label for="location-changed" class="col-form-label">Location</label>
+                    <input type="text" class="form-control" id="location-changed">
+                </div>
+                <div class="form-group">
+                    <label for="portrait-changed" class="col-form-label">Portrait src</label>
+                    <input type="text" class="form-control" id="portrait-changed">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="client.userChange()">Submit</button>
+              <div class="col">
+                <p id="output-changed" style="font-size: xx-large;">
+                  <small style="font-size: small;"></small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="location.href = ''">Submit</button>
+  
+  </body>
+</html>
