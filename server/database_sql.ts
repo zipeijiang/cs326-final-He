@@ -52,8 +52,11 @@ export class Database {
     public async def(word:string, lang:string, def:string): Promise<void> {
         console.log("put: def in" + lang + " for " + word);
         let info = await this.db.one('SELECT * FROM wordTable WHERE word = $1', [word]);
-        let languages = info.languages + ' ' + lang;
-        await this.db.none('UPDATE wordTable SET languages = $2 WHERE word = $1', [word, languages]);
+        let list = info.languages.split(' ');
+        if (!list.includes(lang)){
+            let languages = info.languages + ' ' + lang;
+            await this.db.none('UPDATE wordTable SET languages = $2 WHERE word = $1', [word, languages]);
+        }
         try {
             await this.db.none('CREATE TABLE '+ lang +'Table (word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, def VARCHAR(400), PRIMARY KEY (word))');
             } catch (e) {
