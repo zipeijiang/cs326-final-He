@@ -1,4 +1,4 @@
-const url = "https://gentle-fortress-42768.herokuapp.com/word";
+const url = "https://frozen-castle-51130.herokuapp.com/word";
 
 async function postData(url, data) {
     const resp = await fetch(url,
