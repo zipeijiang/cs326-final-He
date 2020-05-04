@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // let url2 = "https://fierce-chamber-78001.herokuapp.com/";
 let url2 = "http://localhost:8080/public";
 const postdata_1 = require("./postdata");
+// import {User} from "./write_user_info";
 let USER_LOGIN;
 function userCreate() {
     (() => __awaiter(this, void 0, void 0, function* () {
@@ -62,6 +63,8 @@ function userLogin() {
                 a.remove();
                 b.style.visibility = 'visible';
                 b.innerHTML = "Hi " + USER_LOGIN;
+                // const userinfo = new User(id);
+                // userinfo.createFile();
             }
             else if (j['result'] == 'error') {
                 output.innerHTML = "Sorry: <b>" + id + "wrong password" + "</b>";
@@ -104,3 +107,32 @@ function userChange() {
     }))();
 }
 exports.userChange = userChange;
+function wordLoad() {
+    (() => __awaiter(this, void 0, void 0, function* () {
+        // let userName = "John";
+        const newURL = url2 + "/mainview"; // used to be ?name=" + counterName; -- (2)
+        const data = {};
+        console.log("user: changeinfo " + newURL);
+        const resp = yield postdata_1.postData(newURL, data); // used to be fetch -- (3)           
+        const j = yield resp.json();
+        console.log(j);
+        let output = document.getElementById("card-deck");
+        console.log(output);
+        let s = "";
+        for (var item of j) {
+            s += "<div class='card'><img class='card-img-top' src='" + item['img'] + "' alt='Card image cap'>" +
+                "<div class='card-body'>" +
+                "<h5 class='card-title'>" + item['word'] + "</h5>" +
+                "<p class='card-text'>" + item['lang'] + "</p>" +
+                "</div>" +
+                "<div class='card-footer'>" +
+                "<small class='text-muted'>Last updated 3 mins ago</small>" +
+                "</div></div>\n";
+        }
+        output.innerHTML = s;
+    })
+    // NEW: we no longer add info to the URL (for GET) but instead put it in a JSON object.
+    )();
+}
+exports.wordLoad = wordLoad;
+window.onload = wordLoad;

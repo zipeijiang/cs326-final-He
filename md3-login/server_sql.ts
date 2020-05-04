@@ -13,20 +13,21 @@ export class Server{
     private server = express();
     private port = 8080;
     private router = express.Router();
+    private anotherRouter = express.Router();
 
     constructor(db){
         this.dataBase = db;
         
         
         this.router.use((request, response, next) => {
-            response.header('Content-Type','application/json');
+            // response.header('Content-Type','application/json');
             response.header('Access-Control-Allow-Origin', '*');
             response.header('Access-Control-Allow-Headers', '*');
             next();
         });
         
         this.server.use('/', express.static('./html'));
-        this.server.use('/ui', express.static('./html/private'));
+        this.server.use('/word', express.static('./html/private/word'));
         // this.server.use('/user/:id/word', express.static('./html/private'));
         this.server.use(express.json());
         
@@ -40,6 +41,8 @@ export class Server{
         this.router.post('/definition', [this.errorHandler.bind(this),this.defHandler.bind(this)]);
         this.router.post('/delete', [this.errorHandler.bind(this),this.deleteHandler.bind(this)]);
         this.router.post('/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
+        //|-For main page browse
+        this.router.post('/mainview', this.mainpageviewHandler.bind(this)); 
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this),this.getDefHandler.bind(this)]); //take word and language, return definition in that language
 
         //PRONUNCIATION FUNCTION
@@ -52,6 +55,7 @@ export class Server{
             response.send(JSON.stringify({ "result" : "command-not-found" }));
         });
         this.server.use('/public', this.router);
+        this.server.use('/work', this.router);
     }
     
     private async createHandler(request, response) : Promise<void> {
@@ -61,6 +65,9 @@ export class Server{
 
     private async viewHandler(request, response) : Promise<void> {
 		await this.view(request.body.word, response);
+    }
+    private async mainpageviewHandler(request, response) : Promise<void> {
+        await this.mainpageview(response);
     }
 
     private async defHandler(request, response): Promise<void> {
@@ -174,6 +181,13 @@ export class Server{
             'lang': info['languages'].split(' ')
         }
         ));
+        
+	    response.end();
+    }
+    public async mainpageview(response): Promise<void>{  //view word and image and languages supported for definition
+        let info = await this.dataBase.mainview();
+
+        response.write(JSON.stringify(info));
         
 	    response.end();
     }

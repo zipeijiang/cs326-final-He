@@ -10,8 +10,8 @@ export class Database {
         (async () => {
             try {
             //word table
-            // let result = await this.db.none('CREATE TABLE wordTable (word VARCHAR(50) PRIMARY KEY, img VARCHAR(200), languages VARCHAR(200))');
-            // console.log(JSON.stringify(result));
+            let result = await this.db.none('CREATE TABLE wordTable (word VARCHAR(50) PRIMARY KEY, img VARCHAR(200), languages VARCHAR(200))');
+            console.log(JSON.stringify(result));
             // userinfo table
             let result2 = await this.db.none('CREATE TABLE userinfo(id varchar(100) PRIMARY KEY,username varchar(100),password varchar(100),portrait varchar(10),registered_at DATE,location varchar(100))');
             console.log(JSON.stringify(result2));
@@ -35,18 +35,18 @@ export class Database {
             console.log(err);
             }
         }
-        if (lang !== ''){
-            try {
-                await this.db.none('CREATE TABLE '+ lang +'Table (word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, def VARCHAR(400), PRIMARY KEY (word))');
-                } catch (e) {
-                console.log('Already created.');
-                }
-            try{
-                await this.db.none('INSERT INTO '+ lang +'Table(word, def) values ($1, $2)', [word, definition]);
-            } catch (e){
-                await this.db.none('UPDATE '+ lang +'Table SET def = $2 WHERE word = $1', [word, definition]);
-            }
-        } 
+        // if (lang !== ''){
+        //     try {
+        //         await this.db.none('CREATE TABLE '+ lang +'Table (word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, def VARCHAR(400), PRIMARY KEY (word))');
+        //         } catch (e) {
+        //         console.log('Already created.');
+        //         }
+        //     try{
+        //         await this.db.none('INSERT INTO '+ lang +'Table(word, def) values ($1, $2)', [word, definition]);
+        //     } catch (e){
+        //         await this.db.none('UPDATE '+ lang +'Table SET def = $2 WHERE word = $1', [word, definition]);
+        //     }
+        // } 
     }
 
     //only work on update session
@@ -73,6 +73,22 @@ export class Database {
         console.log("get: word = " + word);
 	try {
 		let result = await this.db.one('SELECT * FROM wordTable WHERE word = $1', [word]);
+	    console.log("get: returned " + JSON.stringify(result));
+	    if (result) {
+		return result;
+	    } else {
+		return null;
+	    }
+	} catch (err) {
+	    // Failed search.
+	    return null;
+	}
+    }
+
+    public async mainview(word:string): Promise<any>{ //get word, img, languages
+        console.log("get: all word = " + word);
+	try {
+		let result = await this.db.any('SELECT * FROM wordTable limit 5;');
 	    console.log("get: returned " + JSON.stringify(result));
 	    if (result) {
 		return result;
@@ -244,6 +260,7 @@ export class Database {
         }
 
 }
+
 
 
 
