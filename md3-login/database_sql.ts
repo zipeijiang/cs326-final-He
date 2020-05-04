@@ -276,9 +276,52 @@ export class Database {
             return null;
         }
     }
+
+
+//Pronunciation
+public async addPronun(word: string, audio:string, address:string): Promise<any>{
+    try{
+        await this.db.one('INSERT INTO pronunTable(word, userID, pronunciation, address, likes) VALUES ($1, $2, $3, $4, $5)', [word, 'John', audio, address, 0]);
+        let result = {'result' : 'success'};
+        return result;
+    } catch(err){
+        console.log('error pronunciation cannot be added');
+        return null;
+    }
 }
 
+public async getPronun(word: string): Promise<any>{
+    try{
+        let result = await this.db.any('SELECT * FROM pronTable WHERE word = $1', [word]);
+        console.log('get pronunciation for word: ' +word + ' success');
+        return result;
+    }catch (err){ //not found
+        console.log('error comment deletion failed');   
+        return null;
+    }
+}
 
+public async addLikes(pronunID: number): Promise<any>{
+    try{
+        await this.db.none('UPDATE pronTable SET likes = likes +1 WHERE id = $1', [pronunID]);
+        let result = await this.db.any('SELECT * FROM pronTable WHERE id = $1', [pronunID]);
+        return result;
+    }catch(err){ //not found
+        console.log('error add likes failed');
+        return null;
+    }
+}
+public async delPronun(id : number) : Promise<any>{
+    try{
+        await this.db.any('DELETE FROM pronTable WHERE id= = $1', [id]);
+        let result = {'result' : 'success'};
+        return result;
+    } catch(err){
+        console.log(err);
+        console.log('error pronunciation cannot be deleted');
+        return null;
+    }
+}
 
-
+}
 
