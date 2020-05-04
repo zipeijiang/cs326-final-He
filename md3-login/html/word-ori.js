@@ -281,7 +281,7 @@ function likeIt(pronunID){ //user likes pronunciation
 
 //user deletes pronunication
 function deletePronun(pronunID){
-    async() =>{
+    (async() =>{
         const data = {'ID' : pronunID};
         const newURL= url+"/deletePronun";
 
@@ -292,7 +292,7 @@ function deletePronun(pronunID){
         }else{
             outputElement.innerHTML = "710: Deletion Failed</br>";
         }
-    }
+    })();
 }
 window.onload = function(){
     loadWord(); 
