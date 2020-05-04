@@ -27,20 +27,19 @@ export class Server{
         });
         
         this.server.use('/', express.static('./html'));
-        this.server.use('/word', express.static('./html/private/word'));
         // this.server.use('/user/:id/word', express.static('./html/private'));
         this.server.use(express.json());
-        
+     
         //USER FUNCTION
         this.router.post('/signup', this.createnewUserHandler.bind(this));
         this.router.post('/login', [this.errorUserHandler.bind(this),this.loginHandler.bind(this)]);
         this.router.post('/changeinfo', [this.errorUserHandler.bind(this),this.changeinfoHandler.bind(this)]);
 
         //WORD FUNCTION
-        this.router.post('/new', this.createHandler.bind(this));
-        this.router.post('/definition', [this.errorHandler.bind(this),this.defHandler.bind(this)]);
-        this.router.post('/delete', [this.errorHandler.bind(this),this.deleteHandler.bind(this)]);
-        this.router.post('/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
+        this.router.post('/word/new', this.createHandler.bind(this));
+        this.router.post('/word/definition', [this.errorHandler.bind(this),this.defHandler.bind(this)]);
+        this.router.post('/word/delete', [this.errorHandler.bind(this),this.deleteHandler.bind(this)]);
+        this.router.post('/word/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
         //|-For main page browse
         this.router.post('/mainview', this.mainpageviewHandler.bind(this)); 
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this),this.getDefHandler.bind(this)]); //take word and language, return definition in that language
@@ -55,7 +54,6 @@ export class Server{
             response.send(JSON.stringify({ "result" : "command-not-found" }));
         });
         this.server.use('/public', this.router);
-        this.server.use('/work', this.router);
     }
     
     private async createHandler(request, response) : Promise<void> {
