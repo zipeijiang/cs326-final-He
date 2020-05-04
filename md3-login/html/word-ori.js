@@ -245,7 +245,55 @@ function addComment(pronunID){
         }
     })();
 }
+function runPron(pronunID){ 
+    let doc = document;
+    let outputElement = doc.getElementById("audio"+pronunID);
+    if(outputElement !== null){
+        if(outputElement.style.display=="none"){
+            outputElement.style.display="";
+        }else{
+            outputElement.style.display="none";
+        }
 
+    }
+}
+
+function likeIt(pronunID){ //user likes pronunciation
+    (async()=>{
+        let doc = document;
+        let outputElement = doc.getElementById("like" + pronunID);
+        if(outputElement !==null){
+            const data = {'pronunID' : pronunID};
+            const newURL = url + "/addPronunLikes";
+
+            const resp = await postData(newURL, data);
+            const j = await resp.json();
+            if(j['result'] !== 'error'){
+                outputElement.innerHTML = "Like it! (" + j['likes'] + "likes)";
+            }else{
+                outputElement.innerHTML = "610: Error: Like Failed<br>";
+            }
+        }else{
+            outputElement.innerHTML = "210: input missing.</br>";
+        }
+    })();
+}
+
+//user deletes pronunication
+function deletePronun(pronunID){
+    async() =>{
+        const data = {'ID' : pronunID};
+        const newURL= url+"/deletePronun";
+
+        const resp = await postData(newURL, data);
+        const j = await resp.json();
+        if(j['result'] !== 'error'){
+            location = location;
+        }else{
+            outputElement.innerHTML = "710: Deletion Failed</br>";
+        }
+    }
+}
 window.onload = function(){
     loadWord(); 
     loadPronun();}
