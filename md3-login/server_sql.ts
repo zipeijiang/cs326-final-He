@@ -358,7 +358,7 @@ export class Server{
                 }));
             }else{
                 let result = {'result' : 'success',
-                'likes' : info
+                'likes' : info['likes']
             };
             response.write(JSON.stringify(result));
             console.log(JSON.stringify(result));
