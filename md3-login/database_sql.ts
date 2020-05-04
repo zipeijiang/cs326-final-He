@@ -281,7 +281,7 @@ export class Database {
 //Pronunciation
 public async addPronun(word: string, audio:string, address:string): Promise<any>{
     try{
-        await this.db.one('INSERT INTO pronunTable(word, userID, pronunciation, address, likes) VALUES ($1, $2, $3, $4, $5)', [word, 'John', audio, address, 0]);
+        await this.db.any('INSERT INTO pronunTable(word, userID, pronunciation, address, likes) VALUES ($1, $2, $3, $4, $5)', [word, 'John', audio, address, 0]);
         let result = {'result' : 'success'};
         return result;
     } catch(err){
@@ -304,7 +304,7 @@ public async getPronun(word: string): Promise<any>{
 public async addLikes(pronunID: number): Promise<any>{
     try{
         await this.db.none('UPDATE pronTable SET likes = likes +1 WHERE id = $1', [pronunID]);
-        let result = await this.db.any('SELECT * FROM pronTable WHERE id = $1', [pronunID]);
+        let result = await this.db.one('SELECT * FROM pronTable WHERE id = $1', [pronunID]);
         return result;
     }catch(err){ //not found
         console.log('error add likes failed');
@@ -322,6 +322,5 @@ public async delPronun(id : number) : Promise<any>{
         return null;
     }
 }
-
 }
 
