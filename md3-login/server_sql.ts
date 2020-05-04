@@ -13,33 +13,35 @@ export class Server{
     private server = express();
     private port = 8080;
     private router = express.Router();
+    private anotherRouter = express.Router();
 
     constructor(db){
         this.dataBase = db;
         
         
         this.router.use((request, response, next) => {
-            response.header('Content-Type','application/json');
+            // response.header('Content-Type','application/json');
             response.header('Access-Control-Allow-Origin', '*');
             response.header('Access-Control-Allow-Headers', '*');
             next();
         });
         
         this.server.use('/', express.static('./html'));
-        this.server.use('/ui', express.static('./html/private'));
         // this.server.use('/user/:id/word', express.static('./html/private'));
         this.server.use(express.json());
-        
+     
         //USER FUNCTION
         this.router.post('/signup', this.createnewUserHandler.bind(this));
         this.router.post('/login', [this.errorUserHandler.bind(this),this.loginHandler.bind(this)]);
         this.router.post('/changeinfo', [this.errorUserHandler.bind(this),this.changeinfoHandler.bind(this)]);
 
         //WORD FUNCTION
-        this.router.post('/new', this.createHandler.bind(this));
-        this.router.post('/definition', [this.errorHandler.bind(this),this.defHandler.bind(this)]);
-        this.router.post('/delete', [this.errorHandler.bind(this),this.deleteHandler.bind(this)]);
-        this.router.post('/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
+        this.router.post('/word/new', this.createHandler.bind(this));
+        this.router.post('/word/definition', [this.errorHandler.bind(this),this.defHandler.bind(this)]);
+        this.router.post('/word/delete', [this.errorHandler.bind(this),this.deleteHandler.bind(this)]);
+        this.router.post('/word/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
+        //|-For main page browse
+        this.router.post('/mainview', this.mainpageviewHandler.bind(this)); 
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this),this.getDefHandler.bind(this)]); //take word and language, return definition in that language
 
         //PRONUNCIATION FUNCTION
@@ -65,6 +67,9 @@ export class Server{
     private async viewHandler(request, response) : Promise<void> {
 		await this.view(request.body.word, response);
     }
+    private async mainpageviewHandler(request, response) : Promise<void> {
+        await this.mainpageview(response);
+    }
 
     private async defHandler(request, response): Promise<void> {
 		await this.updateDefinition(request.body.word, request.body.languages, request.body.definition, response);
@@ -78,13 +83,7 @@ export class Server{
         await this.getDefinition(request.body.word, request.body.languages, response);
         }
     //Pronunciation Handlers
-    private async pronHandler(request, response) : Promise<void> {
-        await this.addPronunciation(request.body.word, request.body.pron, request.body.addr, request.body.language, request.body.spelling, response);
-        }
-    
-    private async delpronHandler(request, response) : Promise<void> {
-        await this.delPronunciation(request.body.ID, response);
-        }
+
     // User Handlers
     private async createnewUserHandler(request, response) : Promise<void> {
         console.log("createUserHandler request "+request.body.username+" "+request.body.password+" "+request.body.portrait+" "+request.body.location);
@@ -192,6 +191,13 @@ export class Server{
             'lang': info['languages'].split(' ')
         }
         ));
+        
+	    response.end();
+    }
+    public async mainpageview(response): Promise<void>{  //view word and image and languages supported for definition
+        let info = await this.dataBase.mainview();
+
+        response.write(JSON.stringify(info));
         
 	    response.end();
     }

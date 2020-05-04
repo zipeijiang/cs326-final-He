@@ -44,18 +44,18 @@ export class Database {
             console.log(err);
             }
         }
-        if (lang !== ''){
-            try {
-                await this.db.none('CREATE TABLE '+ lang +'Table (word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, def VARCHAR(400), PRIMARY KEY (word))');
-                } catch (e) {
-                console.log('Already created.');
-                }
-            try{
-                await this.db.none('INSERT INTO '+ lang +'Table(word, def) values ($1, $2)', [word, definition]);
-            } catch (e){
-                await this.db.none('UPDATE '+ lang +'Table SET def = $2 WHERE word = $1', [word, definition]);
-            }
-        } 
+        // if (lang !== ''){
+        //     try {
+        //         await this.db.none('CREATE TABLE '+ lang +'Table (word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, def VARCHAR(400), PRIMARY KEY (word))');
+        //         } catch (e) {
+        //         console.log('Already created.');
+        //         }
+        //     try{
+        //         await this.db.none('INSERT INTO '+ lang +'Table(word, def) values ($1, $2)', [word, definition]);
+        //     } catch (e){
+        //         await this.db.none('UPDATE '+ lang +'Table SET def = $2 WHERE word = $1', [word, definition]);
+        //     }
+        // } 
     }
 
     //only work on update session
@@ -101,6 +101,22 @@ export class Database {
             // Failed search.
             return null;
         }
+    }
+
+    public async mainview(word:string): Promise<any>{ //get word, img, languages
+        console.log("get: all word = " + word);
+	try {
+		let result = await this.db.any('SELECT * FROM wordTable limit 5;');
+	    console.log("get: returned " + JSON.stringify(result));
+	    if (result) {
+		return result;
+	    } else {
+		return null;
+	    }
+	} catch (err) {
+	    // Failed search.
+	    return null;
+	}
     }
 
     public async getDef(word:string, lang:string): Promise<any>{
@@ -256,6 +272,7 @@ export class Database {
         }
     }
 }
+
 
 
 
