@@ -97,16 +97,16 @@
               <div class="file-field">
                 <div class="z-depth-1-half mb-4">
                   <p id='word_img'>
-                  <img src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"  style="size:50%"class="img-fluid" alt="example placeholder">
+                  <img src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"   style= "width:200px; height:200px"lass="img-fluid" alt="example placeholder">
                   </p>
                 </div>
-              <!--</div>
+              </div>
                 <div class="d-flex justify-content-center">
-                  <label for='wordimg'>Upload img</label>
-                  <div class="btn btn-mdb-color btn-rounded float-left">
-                      <input type="file" id='image' name='wordimg'>
+                  <label for='wordimg'>Img Browse</label>
+                  <!-- <div class="btn btn-mdb-color btn-rounded float-left"> -->
+                      <!-- <input type="file" id='image' name='wordimg'> -->
                   </div>
-                </div>-->
+                </div>
             </form>
             <div class="input-group input-group-sm ">
               <div class="input-group-prepend">
@@ -137,7 +137,7 @@
             </div>
             
 
-            <button id = "createBtm" onclick="client.wordCreate()" class="btn btn-primary">Submit</button>
+            <button onclick="client.wordCreate()" class="btn btn-primary">Submit</button>
             <header>Create Output:</header>
             <div class="col">
               <p id="output" style="font-size: xx-large;">
@@ -170,7 +170,7 @@
             </div>
             <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = definition_update>
           </div>
-          <button id = "updateBtm" onclick="client.wordUpdate()" class="btn btn-primary">Submit</button>
+          <button onclick="client.wordUpdate()" class="btn btn-primary">Submit</button>
           <header>Update Output:</header>
           <div class="col">
             <p id="output_update" style="font-size: xx-large;">
@@ -191,7 +191,7 @@
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_delete>
             </div>
-            <button id = "deleteBtm" onclick="client.wordDelete()" class="btn btn-primary">Submit</button>
+            <button onclick="client.wordDelete()" class="btn btn-primary">Submit</button>
             <header>Delete Output:</header>
             <div class="col">
               <p id="output_delete" style="font-size: xx-large;">
@@ -212,7 +212,7 @@
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_read>
             </div>
-            <button id = "readBtm" onclick="client.wordRead()" class="btn btn-primary">Submit</button>
+            <button onclick="client.wordRead()" class="btn btn-primary">Submit</button>
             <header>Read Output:</header>
             <div class="col">
               <p id="output_get" style="font-size: xx-large;">
@@ -242,7 +242,7 @@
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = languages_getdef>
             </div>
-            <button id = "defReadBtm" onclick="client.defRead()" class="btn btn-primary">Submit</button>
+            <button onclick="client.defRead()" class="btn btn-primary">Submit</button>
             <header>Definition Output:</header>
             <div class="col">
               <p id="output_getdef" style="font-size: xx-large;">

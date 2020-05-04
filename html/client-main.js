@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const url = "https://frozen-castle-51130.herokuapp.com//word"; // NOTE NEW URL
+const url = "https://fierce-chamber-78001.herokuapp.com/word"; // NOTE NEW URL
 const postdata_1 = require("./postdata");
 function wordCreate() {
     (() => __awaiter(this, void 0, void 0, function* () {
@@ -36,7 +36,7 @@ function wordCreate() {
             if (j['result'] !== 'error') {
                 console.log("ok");
                 outputImgElement.innerHTML = "<img src= " + img + ">";
-                outputElement.innerHTML = "111: <b>" + wordName + ", " + definition + " in " + languages + " created.</b>";
+                outputElement.innerHTML = "101: <b>" + wordName + ", " + definition + " in " + languages + " created.</b>";
             }
             else {
                 console.log("error");
@@ -56,29 +56,9 @@ function wordRead() {
     (() => __awaiter(this, void 0, void 0, function* () {
         let doc = document;
         let wordELement = doc.getElementById("word_read");
-        let outputElement = doc.getElementById("output_get");
-        let outputImgElement = doc.getElementById("output_get_img");
-        if (wordELement !== null && outputElement !== null && outputImgElement !== null) {
+        if (wordELement !== null) {
             let wordName = wordELement.value;
-            const data = { 'word': wordName }; // -- (1)
-            const newURL = url + "/view";
-            console.log("wordRead : fetching " + newURL);
-            const resp = yield postdata_1.postData(newURL, data);
-            const j = yield resp.json();
-            if (j['result'] !== 'error') {
-                var languagelist = j['lang'];
-                let langl = "<ul>";
-                languagelist.forEach((num1) => {
-                    langl += '<li>' + num1 + "</li>";
-                });
-                langl += "<ul>";
-                outputImgElement.innerHTML = "<img id=wordimg src= " + j['img'] + ">";
-                outputElement.innerHTML = "typescript 201: <b>" + wordName + ": </b>" + langl;
-            }
-            else {
-                outputElement.innerHTML = "200: " + wordName + " not found.</b>";
-                outputImgElement.innerHTML = "";
-            }
+            window.location.href="wordPage.html?name=" + wordName;
         }
         else {
             outputElement.innerHTML = "200: input word missing.</b>";
@@ -102,9 +82,9 @@ function defRead() {
             console.log("language definition: fetching " + newURL);
             const resp = yield postdata_1.postData(newURL, data);
             const j = yield resp.json();
-            console.log(j[lang]);
+            console.log(j['def']);
             if (j['result'] !== 'error') {
-                outputElement.innerHTML = "211: <b>" + wordName + ", Definition in " + lang + ": " + j[lang] + ".</b>";
+                outputElement.innerHTML = "211: <b>" + wordName + ", Definition in " + lang + ": " + j['def'] + ".</b>";
             }
             else {
                 outputElement.innerHTML = "210: definition in" + lang + " not found.</b>";

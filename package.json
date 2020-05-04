@@ -1,28 +1,29 @@
 {
-  "name": "cs326-project-tmp",
+  "name": "cs326-final-He",
   "version": "1.0.0",
-  "description": "Tmp repository for heroku use",
-  "main": "index.js",
+  "description": "",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node main.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Leonalhq/cs326-project-tmp.git"
+    "url":"git+https://github.com/zipeijiang/cs326-final-He.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Leonalhq/cs326-project-tmp/issues"
+    "url":  "https://github.com/zipeijiang/cs326-final-He/issues"
   },
-  "homepage": "https://github.com/Leonalhq/cs326-project-tmp#readme",
+  "homepage": "https://github.com/zipeijiang/cs326-final-He#readme",
   "dependencies": {
     "browserify": "^16.5.1",
     "express": "^4.17.1",
     "level": "^6.0.1",
-    "mongodb": "^3.5.6"
+    "mongodb": "^3.5.6",
+    "pg-promise": "^10.5.2"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
