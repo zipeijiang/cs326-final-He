@@ -12,14 +12,14 @@ export class Server{
     private server = express();
     private port = 8080;
     private router = express.Router();
-    private anotherRouter = express.Router();
+    //private anotherRouter = express.Router();
 
     constructor(db){
         this.dataBase = db;
         
         
         this.router.use((request, response, next) => {
-            response.header('Content-Type','application/json');
+            //response.header('Content-Type','application/json');
             response.header('Access-Control-Allow-Origin', '*');
             response.header('Access-Control-Allow-Headers', '*');
             next();
@@ -35,25 +35,25 @@ export class Server{
         this.router.post('/changeinfo', [this.errorUserHandler.bind(this),this.changeinfoHandler.bind(this)]);
 
         //WORD FUNCTION
-        this.router.post('/new', this.createHandler.bind(this));
-        this.router.post('/definition', [this.errorHandler.bind(this),this.defHandler.bind(this)]);
-        this.router.post('/delete', [this.errorHandler.bind(this),this.deleteHandler.bind(this)]);
-        this.router.post('/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
+        this.router.post('/word/new', this.createHandler.bind(this));
+        this.router.post('/word/definition', [this.errorHandler.bind(this),this.defHandler.bind(this)]);
+        this.router.post('/word/delete', [this.errorHandler.bind(this),this.deleteHandler.bind(this)]);
+        this.router.post('/word/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
         //|-For main page browse
         this.router.post('/mainview', this.mainpageviewHandler.bind(this)); 
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this),this.getDefHandler.bind(this)]); //take word and language, return definition in that language
 
         //PRONUNCIATION FUNCTION
-        this.router.post('/addpronunciation', this.pronHandler.bind(this)); //get all comments by word, takes word
-        this.router.post('/getpronunciation', this.getPronunHandler.bind(this)); //get all comments by word, takes word
-        this.router.post('/addPronunLikes', this.addPronunLikesHandler.bind(this)); //get all comments by word, takes word
-        this.router.post('/deletePronun', this.delpronHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/word/addpronunciation', this.pronHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/word/getpronunciation', this.getPronunHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/word/addPronunLikes', this.addPronunLikesHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/word/deletePronun', this.delpronHandler.bind(this)); //get all comments by word, takes word
 
 
         //COMMENTS FUNCTION
-        this.router.post('/addcomment', this.addCommentHandler.bind(this)); //add comment, takes pronunID, user, text
-        this.router.post('/delcomment', this.delCommentHandler.bind(this)); // delete comment by commentID, takes commentID
-        this.router.post('/getcomment', this.getCommentHandler.bind(this)); // get all comments by pronunID, takes pronunID
+        this.router.post('/word/addcomment', this.addCommentHandler.bind(this)); //add comment, takes pronunID, user, text
+        this.router.post('/word/delcomment', this.delCommentHandler.bind(this)); // delete comment by commentID, takes commentID
+        this.router.post('/word/getcomment', this.getCommentHandler.bind(this)); // get all comments by pronunID, takes pronunID
 
 
         this.router.post('*', async (request, response) => {
@@ -95,11 +95,11 @@ export class Server{
     }
 
     private async getPronunHandler(request, response) : Promise<void>{
-        await this.getPronunHandler(request.body.word, response);
+        await this.getPronun(request.body.word, response);
     }
 
     private async addPronunLikesHandler(request, response) : Promise<void>{
-        await this.addPronunLikesHandler(request.body.pronunID, response);
+        await this.addLikes(request.body.pronunID, response);
     }
     // User Handlers
     private async createnewUserHandler(request, response) : Promise<void> {

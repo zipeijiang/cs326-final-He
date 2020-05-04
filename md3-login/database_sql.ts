@@ -22,7 +22,7 @@ export class Database {
             console.log('Already created.');
             }
             try {
-                await this.db.none('CREATE TABLE IF NOT EXISTS comment (id serial NOT NULL PRIMARY KEY, pronunID INTEGER, userID VARCHAR(50), text VARCHAR(250), date TIMESTAMP)');
+                await this.db.none('CREATE TABLE IF NOT EXISTS comment (id serial NOT NULL PRIMARY KEY, pronunID INTEGER REFERENCES pronTable(id) ON DELETE CASCADE, userID VARCHAR(50), text VARCHAR(250), date TIMESTAMP)');
                  } catch (e) {
                 console.log('comment Already created.');
                 }

@@ -22,7 +22,7 @@ function uploadPronun(){
         let audioElement=doc.getElementById("audio");
         let addrElement=doc.getElementById("city");
         let outputElement=doc.getElementById("output");
-        if(wordElement !==null && aduioElement !==null && outputElement!=null && addrElement!=null){
+        if(wordElement !==null && audioElement !==null && outputElement!=null && addrElement!=null){
             let word = wordElement.value;
             let audio = audioElement.value;
             let addr = addrElement.value;
