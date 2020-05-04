@@ -9,9 +9,11 @@ export class Database {
         this.db = this.pgp(this.uri);
         (async () => {
             try {
-            //word table
-            // let result = await this.db.none('CREATE TABLE wordTable (word VARCHAR(50) PRIMARY KEY, img VARCHAR(200), languages VARCHAR(200))');
-            // console.log(JSON.stringify(result));
+                await this.db.none('CREATE TABLE IF NOT EXISTS wordTable (word VARCHAR(50) PRIMARY KEY, img VARCHAR(200), views INTEGER DEFAULT 0, languages VARCHAR(200))');
+                 } catch (e) {
+                console.log('wordTable Already created.');
+                }
+            try {
             // userinfo table
             let result2 = await this.db.none('CREATE TABLE userinfo(id varchar(100) PRIMARY KEY,username varchar(100),password varchar(100),portrait varchar(10),registered_at DATE,location varchar(100))');
             console.log(JSON.stringify(result2));
@@ -19,6 +21,13 @@ export class Database {
             } catch (e) {
             console.log('Already created.');
             }
+            try {
+                await this.db.none('CREATE TABLE IF NOT EXISTS comment (id serial NOT NULL PRIMARY KEY, pronunID INTEGER, userID VARCHAR(50), text VARCHAR(250), date TIMESTAMP)');
+                 } catch (e) {
+                console.log('comment Already created.');
+                }
+
+
         })();
     }
     //create a new word or update img of an existing word (doesn't update definition!)
@@ -54,7 +63,11 @@ export class Database {
     public async def(word:string, lang:string, def:string): Promise<void> {
         console.log("put: def in" + lang + " for " + word);
         let info = await this.db.one('SELECT * FROM wordTable WHERE word = $1', [word]);
-        let languages = info.languages + ' ' + lang;
+        let list = info.languages.split(' ');
+        if (!list.includes(lang)){
+            let languages = info.languages + ' ' + lang;
+            await this.db.none('UPDATE wordTable SET languages = $2 WHERE word = $1', [word, languages]);
+        }
         await this.db.none('UPDATE wordTable SET languages = $2 WHERE word = $1', [word, languages]);
         try {
             await this.db.none('CREATE TABLE '+ lang +'Table (word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, def VARCHAR(400), PRIMARY KEY (word))');
@@ -71,18 +84,23 @@ export class Database {
 
     public async get(word:string): Promise<any>{ //get word, img, languages
         console.log("get: word = " + word);
-	try {
-		let result = await this.db.one('SELECT * FROM wordTable WHERE word = $1', [word]);
-	    console.log("get: returned " + JSON.stringify(result));
-	    if (result) {
-		return result;
-	    } else {
-		return null;
-	    }
-	} catch (err) {
-	    // Failed search.
-	    return null;
-	}
+        try{
+            await this.db.none('UPDATE wordTable SET views = views +1 WHERE word = $1',[word]);
+        } catch(err){
+            console.log(err);
+        }
+        try {
+            let result = await this.db.one('SELECT * FROM wordTable WHERE word = $1', [word]);
+            console.log("get: returned " + JSON.stringify(result));
+            if (result) {
+            return result;
+            } else {
+            return null;
+            }
+        } catch (err) {
+            // Failed search.
+            return null;
+        }
     }
 
     public async getDef(word:string, lang:string): Promise<any>{
@@ -103,55 +121,13 @@ export class Database {
 
     public async del(word:string) : Promise<void> { //delete word
         try {
-            let result = await this.db.none('DELETE FROM wordTable WHERE word = $1', [word]);
-            console.log("result = " + result);
+            await this.db.none('DELETE FROM wordTable WHERE word = $1', [word]);
         } catch (err) {
             // Not found.
             console.log('error word not found')
         }
         }
 
-/*
-    public async addPron(ID:number, word:string, pronunciation: string, addr:string, lang:string, spelling:string): Promise<void>{ //add pronunciaiton to db, take ID, word spelling, pronunciation, addr
-        let db = this.client.db(this.dbName);   
-        let pronCollection = db.collection('pronCollection');
-        console.log("add pronunciation in "+addr+" to word "+word);
-        let result = await pronCollection.updateOne({'id':ID},{$set:{'word':word, 'pronunciation':pronunciation, 'address':addr, 'language':lang, 'spelling':spelling}}, { 'upsert' : true } );
-        console.log(JSON.stringify(result));
-    }
-
-    public async delPron(ID:number): Promise<void>{ //add pronunciaiton to db, take ID, word spelling, pronunciation, addr
-        let db = this.client.db(this.dbName);   
-        let pronCollection = db.collection('pronCollection');
-        console.log("delete pronunciation with ID "+ID);
-        let result = await pronCollection.deleteMany({'id':ID});
-        console.log("result = " +JSON.stringify(result));
-    }
-
-    public async initializeID(): Promise<void>{
-        let db = this.client.db(this.dbName);
-        let IDCollection = db.collection('IDCollection');
-        IDCollection.updateOne({'type': 'user'},{$set:{'id': 0}}, { 'upsert' : true } );
-        IDCollection.updateOne({'type': 'pronunciatIon'},{$set:{'id': 0}}, { 'upsert' : true } );
-    }
-    public async getNewPronID(): Promise<number>{
-        let db = this.client.db(this.dbName);   
-        let IDCollection = db.collection('IDCollection');
-        let result = await IDCollection.findOne({'type': 'pronunciatIon'});
-        let newID = result['id'];
-        await IDCollection.updateOne({'type': 'pronunciatIon'},{$set:{'id': newID+1}}, { 'upsert' : true } );
-        return newID
-    }
-
-    public async getNewUserID(): Promise<number>{
-        let db = this.client.db(this.dbName);   
-        let IDCollection = db.collection('IDCollection');
-        let result = await IDCollection.findOne({'type': 'pronunciatIon'});
-        let newID = result['id'];
-        await IDCollection.updateOne({'type': 'user'},{$set:{'id': newID+1}}, { 'upsert' : true } );
-        return newID
-    }
-*/
     public async isFound(word:string) : Promise<boolean>  {
 	console.log("isFound: word = " + word);
 	let v = await this.get(word);
@@ -243,6 +219,42 @@ export class Database {
 
         }
 
+    // comment
+    public async addcomment(pronunID:number, user:string, text:string): Promise<any>{
+        try{
+            await this.db.none('INSERT INTO comment(pronunID, userID, text) VALUES ($1, $2, $3)', [pronunID, user, text]);
+            let result = {'result':'success'};
+            return result;
+        }catch (err) {
+            // Not found.
+            console.log(err);
+            console.log('error comment insertion failed');
+            return null;
+        }
+    }
+
+    public async deletecomment(id: number): Promise<any>{
+        try{
+            await this.db.none('DELETE FROM comment WHERE id = $1', [id]);
+            let result = {'result':'success'};
+            return result;
+        }catch (err) {
+            // Not found.
+            console.log('error comment deletion failed');
+            return null;
+        }
+    }
+
+    public async getcomment(id: number): Promise<any>{
+        try{
+            let result = await this.db.any('SELECT * FROM comment WHERE pronunID = $1', [id]);
+            return result;
+        }catch (err) {
+            // Not found.
+            console.log('error comment retrival failed');
+            return null;
+        }
+    }
 }
 
 

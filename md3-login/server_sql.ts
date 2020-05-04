@@ -43,9 +43,12 @@ export class Server{
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this),this.getDefHandler.bind(this)]); //take word and language, return definition in that language
 
         //PRONUNCIATION FUNCTION
-        this.router.post('/pronunciation', [this.errorHandler.bind(this),this.pronHandler.bind(this)]); //take word, pronunciation, user address
-        this.router.post('/delpronunciation', [this.delpronHandler.bind(this)]); // delete pronunciation according to ID
+        //TBA
 
+        //COMMENTS FUNCTION
+        this.router.post('/addcomment', this.addCommentHandler.bind(this)); //add comment, takes pronunID, user, text
+        this.router.post('/delcomment', this.delCommentHandler.bind(this)); // delete comment by commentID, takes commentID
+        this.router.post('/getcomment', this.getCommentHandler.bind(this)); // get all comments by pronunID, takes pronunID
 
 
         this.router.post('*', async (request, response) => {
@@ -53,7 +56,7 @@ export class Server{
         });
         this.server.use('/public', this.router);
     }
-    
+    //Word Handlers
     private async createHandler(request, response) : Promise<void> {
         console.log("createHandler request "+request.body.word+" "+request.body.img+" "+request.body.languages+" "+request.body.definition);
 		await this.create(request.body.word, request.body.img,request.body.languages,request.body.definition,response);
@@ -74,7 +77,7 @@ export class Server{
     private async getDefHandler(request, response) : Promise<void> {
         await this.getDefinition(request.body.word, request.body.languages, response);
         }
-    
+    //Pronunciation Handlers
     private async pronHandler(request, response) : Promise<void> {
         await this.addPronunciation(request.body.word, request.body.pron, request.body.addr, request.body.language, request.body.spelling, response);
         }
@@ -82,7 +85,7 @@ export class Server{
     private async delpronHandler(request, response) : Promise<void> {
         await this.delPronunciation(request.body.ID, response);
         }
-
+    // User Handlers
     private async createnewUserHandler(request, response) : Promise<void> {
         console.log("createUserHandler request "+request.body.username+" "+request.body.password+" "+request.body.portrait+" "+request.body.location);
         await this.createnewUser(request.body.id,request.body.username, request.body.password,request.body.portrait,request.body.location,response);
@@ -118,6 +121,20 @@ export class Server{
             next();
         }
         }
+    // Comments Handlers
+    private async addCommentHandler(request, response) : Promise<void> {
+        await this.addcomment(request.body.pronunID, request.body.user, request.body.text, response);
+        }
+    private async delCommentHandler(request, response) : Promise<void> {
+        await this.delcomment(request.body.commentID, response);
+        }    
+    private async getCommentHandler(request, response) : Promise<void> {
+        await this.getComment(request.body.pronunID, response);
+        }
+    //Handlers Ends Here
+
+
+    //User Functions
     public listen(port) : void  {
         this.server.listen(port);
     }
@@ -157,6 +174,7 @@ export class Server{
 	    response.end();
     }
 
+    //Word Functions
     public async create(word:string, img:string, languages:string,definition:string,response) : Promise<void> { //create the word
         console.log("creating word in create '" + word + "'");
         await this.dataBase.create(word, img,languages,definition);
@@ -217,7 +235,7 @@ export class Server{
 				       'word'  : workerData }));
 	    response.end();
     }
-
+    //Pronunciation Functions
     public async addPronunciation(word:string, pron:string, addr:string, language:string, spelling:string, response): Promise<void>{
         console.log("add pronunciation to word '" + word)
         let id = this.dataBase.getNewPronID();
@@ -242,6 +260,57 @@ export class Server{
         }
         ));
         response.end();
+    }
+
+    //Comment Functions
+    public async addcomment(pronunID:number, user:string, text:string, response): Promise<void>{
+        console.log("add comment by user '" + user)
+        let info = await this.dataBase.addcomment(pronunID, user, text);
+        if (info !== null){
+            response.write(JSON.stringify(
+                {'result' : 'comment added'
+            }));
+        } else{
+            response.write(JSON.stringify(
+                {'result' : 'error'
+            }));
+        }
+        response.end();
+    }
+
+    public async delcomment(commentID:number, response): Promise<void>{
+        console.log("delete comment ID:" + commentID);
+        let info = await this.dataBase.deletecomment(commentID);
+        if (info !== null){
+            response.write(JSON.stringify(
+                {'result' : 'comment deleted',
+                'id' : commentID
+            }));
+        } else{
+            response.write(JSON.stringify(
+                {'result' : 'error'
+            }));
+        }
+        response.end();
+    }
+
+    public async getComment(pronunID:number, response): Promise<void>{
+        console.log('get comment of pronun ' + pronunID);
+        let info = await this.dataBase.getcomment(pronunID);
+        if(info==null){
+            // no word with specific word being found.
+            response.write(JSON.stringify(
+                {'result' : 'error',
+                'pronunID' : pronunID
+            }));
+        } else{
+            let result = {'result' : 'success',
+            'comments' : info
+            };
+            response.write(JSON.stringify(result));
+            console.log(JSON.stringify(result));
+        }
+	    response.end();
     }
 }
 
