@@ -9,7 +9,6 @@ let express = require('express');
 
 export class Server{
     private dataBase: any;
-    
     private server = express();
     private port = 8080;
     private router = express.Router();
@@ -20,7 +19,7 @@ export class Server{
         
         
         this.router.use((request, response, next) => {
-            // response.header('Content-Type','application/json');
+            response.header('Content-Type','application/json');
             response.header('Access-Control-Allow-Origin', '*');
             response.header('Access-Control-Allow-Headers', '*');
             next();
@@ -36,10 +35,10 @@ export class Server{
         this.router.post('/changeinfo', [this.errorUserHandler.bind(this),this.changeinfoHandler.bind(this)]);
 
         //WORD FUNCTION
-        this.router.post('/word/new', this.createHandler.bind(this));
-        this.router.post('/word/definition', [this.errorHandler.bind(this),this.defHandler.bind(this)]);
-        this.router.post('/word/delete', [this.errorHandler.bind(this),this.deleteHandler.bind(this)]);
-        this.router.post('/word/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
+        this.router.post('/new', this.createHandler.bind(this));
+        this.router.post('/definition', [this.errorHandler.bind(this),this.defHandler.bind(this)]);
+        this.router.post('/delete', [this.errorHandler.bind(this),this.deleteHandler.bind(this)]);
+        this.router.post('/view', [this.errorHandler.bind(this),this.viewHandler.bind(this)]);
         //|-For main page browse
         this.router.post('/mainview', this.mainpageviewHandler.bind(this)); 
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this),this.getDefHandler.bind(this)]); //take word and language, return definition in that language
@@ -56,7 +55,7 @@ export class Server{
         this.router.post('*', async (request, response) => {
             response.send(JSON.stringify({ "result" : "command-not-found" }));
         });
-        this.server.use('/public', this.router);
+        this.server.use('/word', this.router);
     }
     //Word Handlers
     private async createHandler(request, response) : Promise<void> {
@@ -241,32 +240,6 @@ export class Server{
 				       'word'  : workerData }));
 	    response.end();
     }
-    //Pronunciation Functions
-    public async addPronunciation(word:string, pron:string, addr:string, language:string, spelling:string, response): Promise<void>{
-        console.log("add pronunciation to word '" + word)
-        let id = this.dataBase.getNewPronID();
-        await this.dataBase.addPron(id, word, pron, addr, language, spelling);
-        response.write(JSON.stringify(
-            {'result' : 'pronunciation added',
-            'word' : word,
-            'id' : id
-        }
-        ));
-        response.end();
-    }
-
-    public async delPronunciation(ID:number, response): Promise<void>{
-        console.log("delete pronunciation from word '" + workerData)
-        await this.dataBase.delPron(ID);
-        let info = await this.dataBase.get(workerData);
-        response.write(JSON.stringify(
-            {'result' : 'pronunciation deleted',
-            'word' : workerData,
-            'id' : info['id']
-        }
-        ));
-        response.end();
-    }
 
     //Comment Functions
     public async addcomment(pronunID:number, user:string, text:string, response): Promise<void>{
@@ -318,6 +291,8 @@ export class Server{
         }
 	    response.end();
     }
+    //Pronunciation Functions
+
 }
 
     

@@ -68,7 +68,6 @@ export class Database {
             let languages = info.languages + ' ' + lang;
             await this.db.none('UPDATE wordTable SET languages = $2 WHERE word = $1', [word, languages]);
         }
-        await this.db.none('UPDATE wordTable SET languages = $2 WHERE word = $1', [word, languages]);
         try {
             await this.db.none('CREATE TABLE '+ lang +'Table (word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, def VARCHAR(400), PRIMARY KEY (word))');
             } catch (e) {
