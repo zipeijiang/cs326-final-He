@@ -16,7 +16,7 @@ export class Database {
             try {
             // userinfo table
             let result2 = await this.db.none('CREATE TABLE userinfo(id varchar(100) PRIMARY KEY,username varchar(100),password varchar(100),portrait varchar(10),registered_at DATE,location varchar(100))');
-            console.log(JSON.stringify(result2));
+            console.log(JSON.stringify(result2)); 
 
             } catch (e) {
             console.log('Already created.');
@@ -26,6 +26,12 @@ export class Database {
                  } catch (e) {
                 console.log('comment Already created.');
                 }
+            //pronunTable
+            try{
+                await this.db.none('CREATE TABLE IF NOT EXISTS pronTable (id serial NOT NULL PRIMARY KEY, word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, userID VARCHAR(50), pronunciation VARCHAR(200), address VARCHAR(200), likes integer');   
+            } catch (e){
+                console.log('Already created.');
+            }
 
 
         })();
