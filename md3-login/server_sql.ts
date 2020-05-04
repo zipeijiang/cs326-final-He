@@ -44,7 +44,11 @@ export class Server{
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this),this.getDefHandler.bind(this)]); //take word and language, return definition in that language
 
         //PRONUNCIATION FUNCTION
-        //TBA
+        this.router.post('/addpronunciation', this.pronHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/getpronunciation', this.getPronunHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/addPronunLikes', this.addPronunLikesHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/deletePronun', this.delpronHandler.bind(this)); //get all comments by word, takes word
+
 
         //COMMENTS FUNCTION
         this.router.post('/addcomment', this.addCommentHandler.bind(this)); //add comment, takes pronunID, user, text
@@ -82,7 +86,21 @@ export class Server{
         await this.getDefinition(request.body.word, request.body.languages, response);
         }
     //Pronunciation Handlers
+    private async pronHandler(request, response) : Promise<void>{
+        await this.addPronun(request.body.word, request.body.pron, request.body.addr, response);
+    }
 
+    private async delpronHandler(request, response) : Promise<void>{
+        await this.delPronunciation(request.body.ID, response);
+    }
+
+    private async getPronunHandler(request, response) : Promise<void>{
+        await this.getPronunHandler(request.body.word, response);
+    }
+
+    private async addPronunLikesHandler(request, response) : Promise<void>{
+        await this.addPronunLikesHandler(request.body.pronunID, response);
+    }
     // User Handlers
     private async createnewUserHandler(request, response) : Promise<void> {
         console.log("createUserHandler request "+request.body.username+" "+request.body.password+" "+request.body.portrait+" "+request.body.location);
@@ -292,7 +310,80 @@ export class Server{
 	    response.end();
     }
     //Pronunciation Functions
+        public async addPronun(word:string, audio:string, address:string, response): Promise<void>{
+            let info = await this.dataBase.addPronun(word, audio, address);
+            if(info==null){
+                //no word with specific word being found
+                response.write(JSON.stringify(
+                    {'result' : 'error',
+                    'word' : word
+                } ));
+            } else{
+                let result = {'result' : 'success',
+                'word' : word
+                };
+                response.write(JSON.stringify(result));
+                console.log(JSON.stringify(result));
+            }
+            response.end();
+        }
+        public async getPronun(word:string, response): Promise<void>{
+            console.log('get pronun of word ' + word);
+            let info = await this.dataBase.getPronun(word);
+            if(info==null){
+                //no word with specific word being found
+                console.log('error get pronun failed');
+                response.write(JSON.stringify(
+                    {'result' : 'error',
+                    'word' : word 
+                }));
+            } else{
+                let result = {'result' : 'success',
+                'pronuns' : info
+              };
+              response.write(JSON.stringify(result));
+              console.log(JSON.stringify(result));
+            }
+            response.end();
+        }
 
+        public async addLikes(pronunID : number, response): Promise<void>{
+            console.log('get likes of pronun ' + pronunID);
+            let info = await this.dataBase.addLikes(pronunID);
+            if(info==null){
+                //no word with specific word being found
+                response.write(JSON.stringify(
+                    {'result' : 'error',
+                    'likes' : 'error'
+                }));
+            }else{
+                let result = {'result' : 'success',
+                'likes' : info
+            };
+            response.write(JSON.stringify(result));
+            console.log(JSON.stringify(result));
+            }
+            response.end();
+        }
+
+        public async delPronunciation(ID:number, response): Promise<void>{
+            let info = await this.dataBase.delPronun(ID);
+            if(info==null){
+                //no word with specific word being found
+                console.log('error get pronun failed');
+                response.write(JSON.stringify(
+                    {'result' : 'error',
+                    'id' : ID
+                }));
+            } else{
+                let result = {'result' : 'success',
+                'id' : ID
+              };
+              console.log('deletion succeeded');
+              response.write(JSON.stringify(result));
+            }
+            response.end();
+        }
 }
 
     
