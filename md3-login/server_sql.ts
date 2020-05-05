@@ -59,7 +59,7 @@ export class Server{
         this.router.post('*', async (request, response) => {
             response.send(JSON.stringify({ "result" : "command-not-found" }));
         });
-        this.server.use('/word', this.router);
+        this.server.use('/public', this.router);
     }
     //Word Handlers
     private async createHandler(request, response) : Promise<void> {
