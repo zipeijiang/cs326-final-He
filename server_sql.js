@@ -35,302 +35,416 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-var worker_threads_1 = require("worker_threads");
-var http = require('http');
-var url = require('url');
-var express = require('express');
-var Server = /** @class */ (function () {
-    function Server(db) {
-        var _this = this;
+Object.defineProperty(exports, "__esModule", { value: true });
+let http = require('http');
+let url = require('url');
+let express = require('express');
+class Server {
+    //private anotherRouter = express.Router();
+    constructor(db) {
         this.server = express();
-        this.port = process.env.PORT || 8080;
+        this.port = 8080;
         this.router = express.Router();
         this.dataBase = db;
-        this.router.use(function (request, response, next) {
-            response.header('Content-Type', 'application/json');
+        this.router.use((request, response, next) => {
+            //response.header('Content-Type','application/json');
             response.header('Access-Control-Allow-Origin', '*');
             response.header('Access-Control-Allow-Headers', '*');
             next();
         });
         this.server.use('/', express.static('./html'));
+        // this.server.use('/user/:id/word', express.static('./html/private'));
         this.server.use(express.json());
+        //USER FUNCTION
+        this.router.post('/signup', this.createnewUserHandler.bind(this));
+        this.router.post('/login', [this.errorUserHandler.bind(this), this.loginHandler.bind(this)]);
+        this.router.post('/changeinfo', [this.errorUserHandler.bind(this), this.changeinfoHandler.bind(this)]);
+        //WORD FUNCTION
+        this.router.post('/word/new', this.createHandler.bind(this));
         this.router.post('/new', this.createHandler.bind(this));
+        this.router.post('/word/definition', [this.errorHandler.bind(this), this.defHandler.bind(this)]);
         this.router.post('/definition', [this.errorHandler.bind(this), this.defHandler.bind(this)]);
+        this.router.post('/word/delete', [this.errorHandler.bind(this), this.deleteHandler.bind(this)]);
         this.router.post('/delete', [this.errorHandler.bind(this), this.deleteHandler.bind(this)]);
+        this.router.post('/word/view', [this.errorHandler.bind(this), this.viewHandler.bind(this)]);
         this.router.post('/view', [this.errorHandler.bind(this), this.viewHandler.bind(this)]);
+        //|-For main page browse
+        this.router.post('/mainview', this.mainpageviewHandler.bind(this));
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this), this.getDefHandler.bind(this)]); //take word and language, return definition in that language
-        this.router.post('/pronunciation', [this.errorHandler.bind(this), this.pronHandler.bind(this)]); //take word, pronunciation, user address
-        this.router.post('/delpronunciation', [this.delpronHandler.bind(this)]); // delete pronunciation according to ID
-        this.router.post('*', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                response.send(JSON.stringify({ "result": "command-not-found" }));
-                return [2 /*return*/];
-            });
-        }); });
-        this.server.use('/word', this.router);
+        this.router.post('/word/getDefinitionByLanguage', [this.errorHandler.bind(this), this.getDefHandler.bind(this)]); //take word and language, return definition in that language
+        //PRONUNCIATION FUNCTION
+        this.router.post('/word/addpronunciation', this.pronHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/word/getpronunciation', this.getPronunHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/word/addPronunLikes', this.addPronunLikesHandler.bind(this)); //get all comments by word, takes word
+        this.router.post('/word/deletePronun', this.delpronHandler.bind(this)); //get all comments by word, takes word
+        //COMMENTS FUNCTION
+        this.router.post('/word/addcomment', this.addCommentHandler.bind(this)); //add comment, takes pronunID, user, text
+        this.router.post('/word/delcomment', this.delCommentHandler.bind(this)); // delete comment by commentID, takes commentID
+        this.router.post('/word/getcomment', this.getCommentHandler.bind(this)); // get all comments by pronunID, takes pronunID
+        this.router.post('*', (request, response) => __awaiter(this, void 0, void 0, function* () {
+            response.send(JSON.stringify({ "result": "command-not-found" }));
+        }));
+        this.server.use('/public', this.router);
     }
-    Server.prototype.createHandler = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.log("createHandler request " + request.body.word + " " + request.body.img + " " + request.body.languages + " " + request.body.definition);
-                        return [4 /*yield*/, this.create(request.body.word, request.body.img, request.body.languages, request.body.definition, response)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
+    //Word Handlers
+    createHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("createHandler request " + request.body.word + " " + request.body.img + " " + request.body.languages + " " + request.body.definition);
+            yield this.create(request.body.word, request.body.img, request.body.languages, request.body.definition, response);
         });
-    };
-    Server.prototype.viewHandler = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.view(request.body.word, response)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    viewHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.view(request.body.word, response);
         });
-    };
-    Server.prototype.defHandler = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.updateDefinition(request.body.word, request.body.languages, request.body.definition, response)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    mainpageviewHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.mainpageview(response);
         });
-    };
-    Server.prototype.deleteHandler = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this["delete"](request.body.word, response)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    defHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.updateDefinition(request.body.word, request.body.languages, request.body.definition, response);
         });
-    };
-    Server.prototype.getDefHandler = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getDefinition(request.body.word, request.body.languages, response)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    deleteHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.delete(request.body.word, response);
         });
-    };
-    Server.prototype.pronHandler = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.addPronunciation(request.body.word, request.body.pron, request.body.addr, request.body.language, request.body.spelling, response)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    getDefHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.getDefinition(request.body.word, request.body.languages, response);
         });
-    };
-    Server.prototype.delpronHandler = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.delPronunciation(request.body.ID, response)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    //Pronunciation Handlers
+    pronHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.addPronun(request.body.word, request.body.pron, request.body.addr, response);
         });
-    };
-    Server.prototype.errorHandler = function (request, response, next) {
-        return __awaiter(this, void 0, void 0, function () {
-            var value;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.dataBase.isFound(request.body.word)];
-                    case 1:
-                        value = _a.sent();
-                        if (!value) {
-                            console.log('error');
-                            response.write(JSON.stringify({ 'result': 'error' }));
-                            response.end();
-                        }
-                        else {
-                            next();
-                        }
-                        return [2 /*return*/];
-                }
-            });
+    }
+    delpronHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.delPronunciation(request.body.ID, response);
         });
-    };
-    Server.prototype.listen = function (port) {
+    }
+    getPronunHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.getPronun(request.body.word, response);
+        });
+    }
+    addPronunLikesHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.addLikes(request.body.pronunID, response);
+        });
+    }
+    // User Handlers
+    createnewUserHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("createUserHandler request " + request.body.username + " " + request.body.password + " " + request.body.portrait + " " + request.body.location);
+            yield this.createnewUser(request.body.id, request.body.username, request.body.password, request.body.portrait, request.body.location, response);
+        });
+    }
+    loginHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("userlogin request by " + request.body.id + "with password" + request.body.password);
+            yield this.loginUser(request.body.id, request.body.password, response);
+        });
+    }
+    changeinfoHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("user change info request by " + request.body.id + "with new password" + request.body.password);
+            yield this.changeinfoUser(request.body.id, request.body.username, request.body.password, request.body.portrait, request.body.location, response);
+        });
+    }
+    errorHandler(request, response, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let value = yield this.dataBase.isFound(request.body.word);
+            if (!value) {
+                console.log('error');
+                response.write(JSON.stringify({ 'result': 'error' }));
+                response.end();
+            }
+            else {
+                next();
+            }
+        });
+    }
+    errorUserHandler(request, response, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let value = yield this.dataBase.userisFound(request.body.id);
+            console.log("error handler on user login");
+            if (!value) {
+                console.log('error');
+                response.write(JSON.stringify({ 'result': 'notfound' }));
+                response.end();
+            }
+            else {
+                next();
+            }
+        });
+    }
+    // Comments Handlers
+    addCommentHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.addcomment(request.body.pronunID, request.body.user, request.body.text, response);
+        });
+    }
+    delCommentHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.delcomment(request.body.commentID, response);
+        });
+    }
+    getCommentHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.getComment(request.body.pronunID, response);
+        });
+    }
+    //Handlers Ends Here
+    //User Functions
+    listen(port) {
         this.server.listen(port);
-    };
-    Server.prototype.create = function (word, img, languages, definition, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.log("creating word in create '" + word + "'");
-                        return [4 /*yield*/, this.dataBase.create(word, img, languages, definition)];
-                    case 1:
-                        _a.sent();
-                        response.write(JSON.stringify({ 'result': 'created',
-                            'word': word }));
-                        response.end();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    createnewUser(id, username, password, location, portrait, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("creating user in create '" + username + "'");
+            const registered_at = new Date().toLocaleString();
+            yield this.dataBase.createUser(id, username, password, portrait, registered_at, location);
+            response.write(JSON.stringify({ 'result': 'created',
+                'id': id }));
+            response.end();
         });
-    };
-    Server.prototype.view = function (workerData, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var info;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.log('checking word: ' + workerData);
-                        return [4 /*yield*/, this.dataBase.get(workerData)];
-                    case 1:
-                        info = _a.sent();
-                        response.write(JSON.stringify({ 'result': 'created',
-                            'word': workerData,
-                            'img': info['img'],
-                            'lang': info['languages'].split(' ')
-                        }));
-                        response.end();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    changeinfoUser(id, username, password, location, portrait, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("change user info '" + username + "'");
+            yield this.dataBase.updateUser(id, username, password, portrait, location);
+            response.write(JSON.stringify({ 'result': 'changed',
+                'id': id }));
+            response.end();
         });
-    };
-    Server.prototype.getDefinition = function (workerData, language, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var info, result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.log('get word: ' + workerData + "', language: " + language);
-                        return [4 /*yield*/, this.dataBase.getDef(workerData, language)];
-                    case 1:
-                        info = _a.sent();
-                        if (info == null) {
-                            // no word with specific word being found.
-                            response.write(JSON.stringify({ 'result': 'error',
-                                'word': workerData
-                            }));
-                        }
-                        else {
-                            result = { 'result': 'created',
-                                'word': workerData,
-                                'def': info['def']
-                            };
-                            response.write(JSON.stringify(result));
-                            console.log("definition sent successfully");
-                        }
-                        response.end();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    loginUser(id, password, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let info = yield this.dataBase.isRightPassword(id, password);
+            if (!info) {
+                // no password missmatch being found.
+                response.write(JSON.stringify({ 'result': 'error',
+                    'id': id
+                }));
+            }
+            else {
+                response.write(JSON.stringify({ 'result': 'ok',
+                    'id': id,
+                    'username': info
+                }));
+            }
+            response.end();
         });
-    };
-    Server.prototype.updateDefinition = function (workerData, lang, def, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var info;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.log("updated word '" + workerData + "' with language '" + lang + "'");
-                        return [4 /*yield*/, this.dataBase.def(workerData, lang, def)];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.dataBase.get(workerData)];
-                    case 2:
-                        info = _a.sent();
-                        response.write(JSON.stringify({ 'result': 'updated description',
-                            'word': workerData,
-                            'lang': info['languages']
-                        }));
-                        response.end();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    //Word Functions
+    create(word, img, languages, definition, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("creating word in create '" + word + "'");
+            yield this.dataBase.create(word, img, languages, definition);
+            response.write(JSON.stringify({ 'result': 'created',
+                'word': word }));
+            response.end();
         });
-    };
-    Server.prototype["delete"] = function (workerData, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: //delete the word
-                    return [4 /*yield*/, this.dataBase.del(workerData)];
-                    case 1:
-                        _a.sent();
-                        response.write(JSON.stringify({ 'result': 'deleted',
-                            'word': workerData }));
-                        response.end();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    view(workerData, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('checking word: ' + workerData);
+            let info = yield this.dataBase.get(workerData);
+            response.write(JSON.stringify({ 'result': 'created',
+                'word': workerData,
+                'img': info['img'],
+                'lang': info['languages'].split(' ')
+            }));
+            response.end();
         });
-    };
-    Server.prototype.addPronunciation = function (word, pron, addr, language, spelling, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var id;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.log("add pronunciation to word '" + word);
-                        id = this.dataBase.getNewPronID();
-                        return [4 /*yield*/, this.dataBase.addPron(id, word, pron, addr, language, spelling)];
-                    case 1:
-                        _a.sent();
-                        response.write(JSON.stringify({ 'result': 'pronunciation added',
-                            'word': word,
-                            'id': id
-                        }));
-                        response.end();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    mainpageview(response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let info = yield this.dataBase.mainview();
+            response.write(JSON.stringify(info));
+            response.end();
         });
-    };
-    Server.prototype.delPronunciation = function (ID, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var info;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.log("delete pronunciation from word '" + worker_threads_1.workerData);
-                        return [4 /*yield*/, this.dataBase.delPron(ID)];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.dataBase.get(worker_threads_1.workerData)];
-                    case 2:
-                        info = _a.sent();
-                        response.write(JSON.stringify({ 'result': 'pronunciation deleted',
-                            'word': worker_threads_1.workerData,
-                            'id': info['id']
-                        }));
-                        response.end();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    getDefinition(workerData, language, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('get word: ' + workerData + "', language: " + language);
+            let info = yield this.dataBase.getDef(workerData, language);
+            if (info == null) {
+                // no word with specific word being found.
+                response.write(JSON.stringify({ 'result': 'error',
+                    'word': workerData
+                }));
+            }
+            else {
+                let result = { 'result': 'created',
+                    'word': workerData,
+                    'def': info['def']
+                };
+                response.write(JSON.stringify(result));
+                console.log("definition sent successfully");
+            }
+            response.end();
         });
-    };
-    return Server;
-}());
+    }
+    updateDefinition(workerData, lang, def, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("updated word '" + workerData + "' with language '" + lang + "'");
+            yield this.dataBase.def(workerData, lang, def);
+            let info = yield this.dataBase.get(workerData);
+            response.write(JSON.stringify({ 'result': 'updated description',
+                'word': workerData,
+                'lang': info['languages']
+            }));
+            response.end();
+        });
+    }
+    delete(workerData, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.dataBase.del(workerData);
+            response.write(JSON.stringify({ 'result': 'deleted',
+                'word': workerData }));
+            response.end();
+        });
+    }
+    //Comment Functions
+    addcomment(pronunID, user, text, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("add comment by user '" + user);
+            let info = yield this.dataBase.addcomment(pronunID, user, text);
+            if (info !== null) {
+                response.write(JSON.stringify({ 'result': 'comment added'
+                }));
+            }
+            else {
+                response.write(JSON.stringify({ 'result': 'error'
+                }));
+            }
+            response.end();
+        });
+    }
+    delcomment(commentID, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("delete comment ID:" + commentID);
+            let info = yield this.dataBase.deletecomment(commentID);
+            if (info !== null) {
+                response.write(JSON.stringify({ 'result': 'comment deleted',
+                    'id': commentID
+                }));
+            }
+            else {
+                response.write(JSON.stringify({ 'result': 'error'
+                }));
+            }
+            response.end();
+        });
+    }
+    getComment(pronunID, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('get comment of pronun ' + pronunID);
+            let info = yield this.dataBase.getcomment(pronunID);
+            if (info == null) {
+                // no word with specific word being found.
+                response.write(JSON.stringify({ 'result': 'error',
+                    'pronunID': pronunID
+                }));
+            }
+            else {
+                let result = { 'result': 'success',
+                    'comments': info
+                };
+                response.write(JSON.stringify(result));
+                console.log(JSON.stringify(result));
+            }
+            response.end();
+        });
+    }
+    //Pronunciation Functions
+    addPronun(word, audio, address, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let info = yield this.dataBase.addPronun(word, audio, address);
+            if (info == null) {
+                //no word with specific word being found
+                response.write(JSON.stringify({ 'result': 'error',
+                    'word': word
+                }));
+            }
+            else {
+                let result = { 'result': 'success',
+                    'word': word
+                };
+                response.write(JSON.stringify(result));
+                console.log(JSON.stringify(result));
+            }
+            response.end();
+        });
+    }
+    getPronun(word, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('get pronun of word ' + word);
+            let info = yield this.dataBase.getPronun(word);
+            if (info == null) {
+                //no word with specific word being found
+                console.log('error get pronun failed');
+                response.write(JSON.stringify({ 'result': 'error',
+                    'word': word
+                }));
+            }
+            else {
+                let result = { 'result': 'success',
+                    'pronuns': info
+                };
+                response.write(JSON.stringify(result));
+                console.log(JSON.stringify(result));
+            }
+            response.end();
+        });
+    }
+    addLikes(pronunID, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('get likes of pronun ' + pronunID);
+            let info = yield this.dataBase.addLikes(pronunID);
+            if (info == null) {
+                //no word with specific word being found
+                response.write(JSON.stringify({ 'result': 'error',
+                    'likes': 'error'
+                }));
+            }
+            else {
+                let result = { 'result': 'success',
+                    'likes': info['likes']
+                };
+                response.write(JSON.stringify(result));
+                console.log(JSON.stringify(result));
+            }
+            response.end();
+        });
+    }
+    delPronunciation(ID, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let info = yield this.dataBase.delPronun(ID);
+            if (info == null) {
+                //no word with specific word being found
+                console.log('error get pronun failed');
+                response.write(JSON.stringify({ 'result': 'error',
+                    'id': ID
+                }));
+            }
+            else {
+                let result = { 'result': 'success',
+                    'id': ID
+                };
+                console.log('deletion succeeded');
+                response.write(JSON.stringify(result));
+            }
+            response.end();
+        });
+    }
+}
 exports.Server = Server;
