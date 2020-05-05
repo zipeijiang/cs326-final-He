@@ -281,7 +281,7 @@ export class Database {
 //Pronunciation
 public async addPronun(word: string, audio:string, address:string): Promise<any>{
     try{
-        await this.db.any('INSERT INTO pronunTable(word, userID, pronunciation, address, likes) VALUES ($1, $2, $3, $4, $5)', [word, 'John', audio, address, 0]);
+        await this.db.any('INSERT INTO pronTable(word, userID, pronunciation, address, likes) VALUES ($1, $2, $3, $4, $5)', [word, 'John', audio, address, 0]);
         let result = {'result' : 'success'};
         return result;
     } catch(err){
