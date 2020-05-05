@@ -1,6 +1,6 @@
 // let url2 = "https://fierce-chamber-78001.herokuapp.com/";
-let url2 = "http://localhost:8080/public";
-let url = "http://localhost:8080/public/word";
+let url2 = "https://frozen-castle-51130.herokuapp.com/public";
+let url = "https://frozen-castle-51130.herokuapp.com/public/word";
 import {postData} from "./postdata";
 // import {User} from "./write_user_info";
 let USER_LOGIN :string;
@@ -141,10 +141,13 @@ export function wordLoad() {
             console.log(j);
             let output = document!.getElementById("card-deck") as HTMLOutputElement;
             console.log(output);
+            let name:string = "";
             
             let s:string = "";
             for (var item of j) {
-                s += "<div class='card'><img class='card-img-top' src='"+item['img']+"' alt='Card image cap'>"+
+                
+                name = `onclick = "javascript: window.location.href='wordPage.html?name=${item['word']}'"`;
+                s += "<div class='card'><img class='card-img-top' src='"+item['img']+"' alt='Card image cap'"+name+">"+
                     "<div class='card-body'>"+
                     "<h5 class='card-title'>"+item['word']+"</h5>"+
                     "<p class='card-text'>"+item['lang']+"</p>"+

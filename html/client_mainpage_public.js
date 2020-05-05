@@ -134,9 +134,11 @@ function wordLoad() {
         console.log(j);
         let output = document.getElementById("card-deck");
         console.log(output);
+        let name = "";
         let s = "";
         for (var item of j) {
-            s += "<div class='card'><img class='card-img-top' src='" + item['img'] + "' alt='Card image cap'>" +
+            name = `onclick = "javascript: window.location.href='wordPage.html?name=${item['word']}'"`;
+            s += "<div class='card'><img class='card-img-top' src='" + item['img'] + "' alt='Card image cap'" + name + ">" +
                 "<div class='card-body'>" +
                 "<h5 class='card-title'>" + item['word'] + "</h5>" +
                 "<p class='card-text'>" + item['lang'] + "</p>" +
