@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // let url2 = "https://fierce-chamber-78001.herokuapp.com/";
-let url2 = "http://localhost:8080/public";
-let url = "http://localhost:8080/public/word";
+let url2 = "https://frozen-castle-51130.herokuapp.com/public";
+let url = "https://frozen-castle-51130.herokuapp.com/public/word";
 const postdata_1 = require("./postdata");
 // import {User} from "./write_user_info";
 let USER_LOGIN = "";

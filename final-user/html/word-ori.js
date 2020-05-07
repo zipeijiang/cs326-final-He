@@ -1,5 +1,5 @@
 // const url = "https://frozen-castle-51130.herokuapp.com/word";
-const url = "http://localhost:8080/public/word";
+const url = "https://frozen-castle-51130.herokuapp.com/public/word";
 
 async function postData(url, data) {
     const resp = await fetch(url,
