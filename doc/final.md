@@ -14,53 +14,6 @@ Addis Gunst github: AddieGunst
 ## User Interface ##
 
 ## API ##
-### Object Model
-#### UserInfo object
-    key             value type              description
-    ID              string                  the unique ID of user
-    username        string                  the name of the user
-    portrait        string                  the source url of the user’s portrait image
-    registered_at   time                    the date the user registered
-    location        string                  the address string of the user
-    password        string                  the password of the user
-
-#### UserWord object
-    key             value type              description
-    ID              string                  the unique ID of user
-    word            string                  the word the user creates
-
-#### Word object
-    key              value type             description
-    word             string                 the spelling of the word in English
-    img              string                 the source url of the image describes the word
-    languages        array[string]          the list of languages with descriptions to the word
-    view             number                 counts how many times the word is viewed
-
-#### Definition objects - there exists multiple definition table corresponds to different languages
-    key             value type              description
-    word		    string			        word the definiition decribes
-    definition      string                  the of defintion of the word in certain language
-
-#### Pronunciation object
-    key                 value type                  description
-    ID                  int                         the unique randomly generated ID
-    word                string                      the spelling of the word the pronunciation descripes
-    pronunciation       audio                       the audio file of the pronunciation
-    address             string                      the address string of the location the dialect comes from
-    userID              int                         the user ID of the creator
-    likes               int                         the number of likes the pronunciation receives
-
-#### Comment object
-    key     	   	value type         	description
-    ID              int                 the unique id of each comment
-    proID           int                 the ID of the pronunciation of the comment
-    creatorID    	int                 the user ID of the creator user
-    text           	string              the comment added by the user
-    date           	time                the time the comment is added
-
-    ### End Points
-
-## URL Routes/Mappings ##
 ### Main
 #### /mainview
     Retrieve words from database
@@ -137,6 +90,52 @@ Addis Gunst github: AddieGunst
 #### /word/addPronunLikes
     Increase the number of likes by 1 to the word
     Parameters: pronID(Id of the pronunciation)
+
+## Database ##
+#### UserInfo Table
+    key             value type              description
+    ID              string                  the unique ID of user, primary key
+    username        string                  the name of the user
+    portrait        string                  the source url of the user’s portrait image
+    registered_at   time                    the date the user registered
+    location        string                  the address string of the user
+    password        string                  the password of the user
+
+#### UserWord Table
+    key             value type              description
+    ID              string                  the unique ID of user, primary key
+    word            string                  the word the user creates
+
+#### Word Table
+    key              value type             description
+    word             string                 the spelling of the word in English, primary key
+    img              string                 the source url of the image describes the word
+    languages        array[string]          the list of languages with descriptions to the word
+    view             number                 counts how many times the word is viewed
+
+#### Definition Table - there exists multiple definition table corresponds to different languages
+    key             value type              description
+    word		    string			        word the definiition decribes, foreign key references wordTable(word)
+    definition      string                  the of defintion of the word in certain language
+
+#### Pronunciation Table
+    key                 value type                  description
+    ID                  int                         the unique randomly generated ID, primary key
+    word                string                      the spelling of the word the pronunciation descripes, foreign key references wordTable(word)
+    pronunciation       audio                       the audio file of the pronunciation
+    address             string                      the address string of the location the dialect comes from
+    userID              int                         the user ID of the creator
+    likes               int                         the number of likes the pronunciation receives
+
+#### Comment Table
+    key     	   	value type         	description
+    ID              int                 the unique id of each comment, primary key
+    proID           int                 the ID of the pronunciation of the comment, foreign key references pronunciationTable(ID)
+    creatorID    	int                 the user ID of the creator user
+    text           	string              the comment added by the user
+    date           	time                the time the comment is added
+
+    ### End Points
 
 ## URL Routes ##
 ### https://frozen-castle-51130.herokuapp.com/
