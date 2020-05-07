@@ -3,8 +3,8 @@ let url2 = "https://frozen-castle-51130.herokuapp.com/public";
 let url = "https://frozen-castle-51130.herokuapp.com/public/word";
 import {postData} from "./postdata";
 // import {User} from "./write_user_info";
-let USER_LOGIN :string;
-let temp:any;
+let USER_LOGIN :string = "";
+
 export function userCreate() {
 
     (async () => {
@@ -35,7 +35,10 @@ export function userCreate() {
 
 export function userLogin() {
     
+    
     (async () => {
+
+       
         let doc = document;
         let idElement = doc.getElementById("login_id") as HTMLInputElement;
         let passElement =  doc.getElementById("login_password") as HTMLOutputElement;
@@ -55,31 +58,41 @@ export function userLogin() {
             if (j['result'] == 'ok') {	
                 output!.innerHTML = "Welcome: <b>"  + id + ", " + j['username']  + "</b>";
                 USER_LOGIN = id;
-                let a = doc.getElementById("navbarDropdown2") as HTMLOutputElement;
-                temp = a;
-                let b = doc.getElementById("navbarDropdown3") as HTMLOutputElement;
-                a.remove();
-                b.style.visibility = 'visible';
-                b!.innerHTML="Hi "+USER_LOGIN;
+                funckyhide(id);
                 // const userinfo = new User(id);
                 // userinfo.createFile();
             } else if (j['result'] == 'error'){
                 output!.innerHTML = "Sorry: <b>"  + id + "wrong password"  + "</b>";
             }else{
                 output!.innerHTML = "Sorry: <b>"  + id + "not found"  + "</b>";
-               
 
             }   
         }
     })();    
     
 }
+export function funckyhide(id:string){
+                let doc = document;
+                USER_LOGIN = id;
+                let a = doc.getElementById("navbarDropdown2") as HTMLOutputElement;
+                let b = doc.getElementById("navbarDropdown3") as HTMLOutputElement;
+                let c = doc.getElementById("dlyword") as HTMLOutputElement;
+                let d = doc.getElementById("brmyword") as HTMLOutputElement;
+                a.remove();
+                b.style.visibility = 'visible';
+                b!.innerHTML="Hi "+USER_LOGIN;
+                if(c || d){
+                    console.log("dect word")
+                    c.style.visibility = 'visible';
+                    d.style.visibility = 'visible';
+                }
+}
             
 export function userChange() {
 
     (async () => {
         // let userName = "John";
-        
+
         let doc = document;
         let userElement = doc.getElementById("username-changed") as HTMLInputElement;
         let passElement = doc.getElementById("password-changed") as HTMLInputElement;
@@ -87,7 +100,6 @@ export function userChange() {
         let imgElement = doc.getElementById("portrait-changed") as HTMLInputElement;
         console.log(imgElement);
         if (userElement !== null && passElement !== null && locationElement !== null &&imgElement !== null  )  {
-            console.log('fuck');
             let id = USER_LOGIN;
             let userName = userElement.value;
             let location = locationElement.value;
@@ -108,9 +120,30 @@ export function userChange() {
 		// NEW: we no longer add info to the URL (for GET) but instead put it in a JSON object.
 
         })();
-        
-        
+             
 }
+export function autoFill() {
+    (async () => {
+    console.log("autofill");
+    let doc = document;
+    let userElement = doc.getElementById("username-changed") as HTMLInputElement;
+    let passElement = doc.getElementById("password-changed") as HTMLInputElement;
+    let locationElement = doc.getElementById("location-changed") as HTMLInputElement;
+    let imgElement = doc.getElementById("portrait-changed") as HTMLInputElement;
+    let id = USER_LOGIN;
+    console.log(USER_LOGIN);
+    const data = { 'id':id};
+    const newURL = url2 + '/getuserinfo';
+    const resp = await postData(newURL, data); // used to be fetch -- (3)   
+    const j = await resp.json();     
+    console.log(j);
+    userElement.value = (j['username']);
+    imgElement.value = (j['portrait']);
+    locationElement.value = (j['location']);
+
+    })();
+ }
+
 export function userSignout() {
 
     (async () => {
@@ -132,7 +165,7 @@ export function wordLoad() {
 
     (async () => {
         // let userName = "John";
-        
+
             const newURL = url2 + "/mainview"; // used to be ?name=" + counterName; -- (2)
             const data = {};
             console.log("user: changeinfo " + newURL);
@@ -141,12 +174,11 @@ export function wordLoad() {
             console.log(j);
             let output = document!.getElementById("card-deck") as HTMLOutputElement;
             console.log(output);
-            let name:string = "";
+            
             
             let s:string = "";
             for (var item of j) {
-                
-                name = `onclick = "javascript: window.location.href='wordPage.html?name=${item['word']}'"`;
+              let name = `onclick = "javascript: window.location.href='wordPage.html?name=${item['word']}'"`;
                 s += "<div class='card'><img class='card-img-top' src='"+item['img']+"' alt='Card image cap'"+name+">"+
                     "<div class='card-body'>"+
                     "<h5 class='card-title'>"+item['word']+"</h5>"+
@@ -165,6 +197,17 @@ export function wordLoad() {
         
 }
 
+export function jumpToWord(){
+    window.location.href = "word.html?"+USER_LOGIN;
+    // window.location.href ='word.html'
+}
+export function checklogin(){
+    console.log("check whether logging in");
+    if(window.location.search.substring(1).length>0){
+        funckyhide(window.location.search.substring(1));
+    }
+}
+
 
 window.onload = wordLoad;
 
@@ -172,7 +215,7 @@ window.onload = wordLoad;
 export function wordCreate() {
 
     (async () => {
-        // let userName = "John";
+        let id = window.location.search.substring(1);
         let doc = document;
         let wordELement = doc.getElementById("word") as HTMLInputElement;
         let defELement = doc.getElementById("definition") as HTMLInputElement;
@@ -185,11 +228,10 @@ export function wordCreate() {
             let definition = defELement.value;
             let languages = langElement.value;
             let img = imgElement.value;
-            const data = { 'word' : wordName, 'img':img ,'languages':languages, 'definition':definition}; // -- (1)
-            const newURL = url + "/new"; // used to be ?name=" + counterName; -- (2)
-            console.log("counterCreate: fetching " + newURL);
+            const data = { 'word' : wordName, 'img':img ,'languages':languages, 'definition':definition,'id':id}; // -- (1)
+            const newURL = url +"/new";
+            console.log("world Create: fetching " + newURL+data);
             const resp = await postData(newURL, data); // used to be fetch -- (3)
-            
             const j = await resp.json();
             //console.log(document.getElementById("output"));
             if (j['result'] !== 'error') {
@@ -214,34 +256,56 @@ export function wordCreate() {
 export function wordRead() {
     (async () => {
         let doc = document;
-        let wordELement = doc.getElementById("word_read") as HTMLInputElement;
+        let id = window.location.search.substring(1);
+        // let wordELement = doc.getElementById("word_read") as HTMLInputElement;
         let outputElement =  doc.getElementById("output_get") as HTMLOutputElement;
-        let outputImgElement =  doc.getElementById("output_get_img") as HTMLOutputElement;
-        if(wordELement !== null && outputElement !== null && outputImgElement !== null){
-            let wordName = wordELement.value;
-            const data = { 'word' : wordName}; // -- (1)
-            const newURL = url +"/view";
-            console.log("wordRead : fetching " + newURL);
+        // let outputImgElement =  doc.getElementById("output_get_img") as HTMLOutputElement;
+        if(id.length>0){
+            const data = { 'id' : id}; // -- (1)
+            const newURL = url +"/viewuser";
+            console.log("Read : fetching " + newURL + id);
             const resp = await postData(newURL,data)
-            const j = await resp.json();
-            if (j['result'] !== 'error') {	
-                var languagelist = j['lang']
+            const jj = await resp.json();
+            console.log(jj);
+            if(jj){
                 let langl = "<ul>";
-                languagelist.forEach((num1:string)=>{
-                    langl+= '<li>'+ num1 + "</li>";
+                jj.forEach((num1:any)=>{
+                    langl+= "<ul><a href='http://localhost:8080/wordPage.html?name=" +num1['word']+"'>"+num1['word']+"</a>" + "</ul>";
                 });
                 langl +="<ul>";
-                outputImgElement.innerHTML =  "<img id=wordimg src= " + j['img'] +">";
-                outputElement.innerHTML = "typescript 201: <b>"  + wordName + ": </b>"+langl;
+                // outputImgElement.innerHTML =  "<img id=wordimg src= " + j['img'] +">";
+                outputElement.innerHTML = "Here is the word "+id+ " create:"+langl;
             } else {
-                outputElement.innerHTML = "200: " +  wordName  + " not found.</b>";
-                outputImgElement.innerHTML =  "";
-            }	    
-        } else{
-            outputElement.innerHTML = "200: input word missing.</b>";
-            outputImgElement.innerHTML =  "";
+                outputElement.innerHTML = "200: " +  id  + " not found.</b>";
+                // outputImgElement.innerHTML =  "";
         }
-    })();
+    }
+    //     if(wordELement !== null && outputElement !== null && outputImgElement !== null){
+    //         let wordName = wordELement.value;
+    //         const data = { 'word' : wordName}; // -- (1)
+    //         const newURL = url +"/view";
+    //         console.log("wordRead : fetching " + newURL);
+    //         const resp = await postData(newURL,data)
+    //         const j = await resp.json();
+    //         if (j['result'] !== 'error') {	
+    //             var languagelist = j['lang']
+    //             let langl = "<ul>";
+    //             languagelist.forEach((num1:string)=>{
+    //                 langl+= '<li>'+ num1 + "</li>";
+    //             });
+    //             langl +="<ul>";
+    //             outputImgElement.innerHTML =  "<img id=wordimg src= " + j['img'] +">";
+    //             outputElement.innerHTML = "typescript 201: <b>"  + wordName + ": </b>"+langl;
+    //         } else {
+    //             outputElement.innerHTML = "200: " +  wordName  + " not found.</b>";
+    //             outputImgElement.innerHTML =  "";
+    //         }	    
+    //     } else{
+    //         outputElement.innerHTML = "200: input word missing.</b>";
+    //         outputImgElement.innerHTML =  "";
+    //     }
+    // }
+})();
 }
 export function defRead(){
 	(async () => {

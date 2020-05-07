@@ -53,21 +53,19 @@ class Server {
             next();
         });
         this.server.use('/', express.static('./html'));
-        // this.server.use('/user/:id/word', express.static('./html/private'));
+        // this.server.use('/word/:userId', express.static('./html/word.html'));
         this.server.use(express.json());
         //USER FUNCTION
         this.router.post('/signup', this.createnewUserHandler.bind(this));
         this.router.post('/login', [this.errorUserHandler.bind(this), this.loginHandler.bind(this)]);
         this.router.post('/changeinfo', [this.errorUserHandler.bind(this), this.changeinfoHandler.bind(this)]);
+        this.router.post('/getuserinfo', [this.errorUserHandler.bind(this), this.getUserHandler.bind(this)]);
         //WORD FUNCTION
         this.router.post('/word/new', this.createHandler.bind(this));
-        this.router.post('/new', this.createHandler.bind(this));
         this.router.post('/word/definition', [this.errorHandler.bind(this), this.defHandler.bind(this)]);
-        this.router.post('/definition', [this.errorHandler.bind(this), this.defHandler.bind(this)]);
         this.router.post('/word/delete', [this.errorHandler.bind(this), this.deleteHandler.bind(this)]);
-        this.router.post('/delete', [this.errorHandler.bind(this), this.deleteHandler.bind(this)]);
         this.router.post('/word/view', [this.errorHandler.bind(this), this.viewHandler.bind(this)]);
-        this.router.post('/view', [this.errorHandler.bind(this), this.viewHandler.bind(this)]);
+        this.router.post('/word/viewuser', [this.errorUserHandler.bind(this), this.uviewHandler.bind(this)]);
         //|-For main page browse
         this.router.post('/mainview', this.mainpageviewHandler.bind(this));
         this.router.post('/getDefinitionByLanguage', [this.errorHandler.bind(this), this.getDefHandler.bind(this)]); //take word and language, return definition in that language
@@ -90,12 +88,17 @@ class Server {
     createHandler(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("createHandler request " + request.body.word + " " + request.body.img + " " + request.body.languages + " " + request.body.definition);
-            yield this.create(request.body.word, request.body.img, request.body.languages, request.body.definition, response);
+            yield this.create(request.body.id, request.body.word, request.body.img, request.body.languages, request.body.definition, response);
         });
     }
     viewHandler(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.view(request.body.word, response);
+        });
+    }
+    uviewHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.viewuser(request.body.id, response);
         });
     }
     mainpageviewHandler(request, response) {
@@ -132,6 +135,11 @@ class Server {
     getPronunHandler(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.getPronun(request.body.word, response);
+        });
+    }
+    getUserHandler(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.getUserInfo(request.body.id, response);
         });
     }
     addPronunLikesHandler(request, response) {
@@ -244,10 +252,11 @@ class Server {
         });
     }
     //Word Functions
-    create(word, img, languages, definition, response) {
+    create(id, word, img, languages, definition, response) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("creating word in create '" + word + "'");
             yield this.dataBase.create(word, img, languages, definition);
+            yield this.dataBase.worduserinfo(id, word);
             response.write(JSON.stringify({ 'result': 'created',
                 'word': word }));
             response.end();
@@ -262,6 +271,30 @@ class Server {
                 'img': info['img'],
                 'lang': info['languages'].split(' ')
             }));
+            response.end();
+        });
+    }
+    viewuser(id, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('view user word : ' + id);
+            let info = yield this.dataBase.getuserword(id);
+            response.write(JSON.stringify(info));
+            response.end();
+        });
+    }
+    getUserInfo(id, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('view user word for : ' + id);
+            let info = yield this.dataBase.getUser(id);
+            // response.write(JSON.stringify(
+            //     {'result' : 'created',
+            //     'username' : 'haha',
+            //     'portrait' : '1',
+            //     'location': 'sx'
+            // }
+            // ));
+            response.write(JSON.stringify(info));
+            response.end();
             response.end();
         });
     }
