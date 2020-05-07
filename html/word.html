@@ -11,6 +11,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript" src = "./client-main.js"></script>
+    <script>
+            function wordPagesearch(){
+          (async () => {
+              let doc = document;
+              let wordElement = doc.getElementById("searchBar");
+              let word = wordElement.value;
+              
+              if(word !== ''){
+                  window.location.href = "wordPage.html?name=" + word;
+              } else{
+                  return 
+              }
+          })();
+      }
+          </script>
     <title>Online Dialect Dictionary</title>
   </head>
   <body onload=client.checklogin()>
@@ -41,7 +56,7 @@
           </ul>
           <form class="form-inline my-2 my-lg-2">
             <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="wordPagesearch()">Search</button>
           </form>
           
           <!-- user login page -->

@@ -11,17 +11,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript" src = "./client-main.js"></script>
-    <title>Hello, world!</title>
     <script>
-      
-
-
-        $("#changeinfobtn").click(function()
-        {
-          console.log('fill');
-          client.autoFill();
-        });
+      function wordPagesearch(){
+    (async () => {
+      console.log("search page");
+        let doc = document;
+        let wordElement = doc.getElementById("searchBar");
+        let word = wordElement.value;
+        
+        if(word !== ''){
+            window.location.href = "wordPage.html?name=" + word;
+        } else{
+            return 
+        }
+    })();
+}
     </script>
+    <title>Hello, world!</title>
   </head>
   <body>
     <div>
@@ -50,10 +56,10 @@
             </li>
           </ul>
           <div class="form-inline my-2 my-lg-2">
-            <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search" id="searchbar">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=client.search()>Search</button>
+            <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search" id="searchBar">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="wordPagesearch()">Search</button>
           </div>
-          
+        
           <!-- user login page -->
           <ul class="navbar-nav ">
           <li class="nav-item dropdown">
@@ -94,32 +100,6 @@
         <div class="row">
         <div class="card-deck" id = "card-deck">
           Loading...
-            <!-- <div class="card">
-              <img class="card-img-top" src="..." alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
-              </div>
-            </div>
-            <div class="card">
-              <img class="card-img-top" src="..." alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
-              </div>
-            </div>
-            <div class="card">
-              <img class="card-img-top" src="..." alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-              </div> -->
             <header>Loading...</header>
               
             </div>
