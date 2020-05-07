@@ -1,3 +1,4 @@
+// const url = "https://frozen-castle-51130.herokuapp.com/word";
 const url = "https://frozen-castle-51130.herokuapp.com/public/word";
 
 async function postData(url, data) {
@@ -51,6 +52,7 @@ function loadWord() {
 
 function loadPronun(){
     (async () => {
+
         let word = window.location.search.substring(6);
         let doc = document;
         let outputBlock =  doc.getElementById("pronunciationBlocks");

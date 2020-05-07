@@ -12,36 +12,36 @@ export class Database {
         (async () => {
             try {
             //word table
-                let str1 = this.getSecret('createWordTable');
-                await this.db.none(str1);
+
+                await this.db.none('CREATE TABLE IF NOT EXISTS wordTable (word VARCHAR(50) PRIMARY KEY, img VARCHAR(200), views INTEGER DEFAULT 0, languages VARCHAR(200))');
+                
                  } catch (e) {
-                    console.log('wordTable Already created.');
+                console.log('wordTable Already created.');
                 }
              try {
             // userinfo table
-                let str2 = this.getSecret('createUserInfo');
-                await this.db.none(str2);
+            
+                await this.db.none('CREATE TABLE IF NOT EXISTS  userinfo(id varchar(100) PRIMARY KEY,username varchar(100),password varchar(100),portrait varchar(10),registered_at DATE,location varchar(100))');
 
                 } catch (e) {
                  console.log('Already created userinfo table.');
                 }
             try {
             // userword table
-                let str3 = this.getSecret('createUserWord');
-                await this.db.none(str3);    
+
+                await this.db.none('CREATE TABLE IF NOT EXISTS userword(id varchar(100) primary key,word varchar(50));');    
 
             } catch (e) {
             console.log('Already created userword table.');
             }
             try{
-                let str4 = this.getSecret('createPronTable');
-                await this.db.none(str4);
+                await this.db.none('CREATE TABLE IF NOT EXISTS pronTable (id serial NOT NULL PRIMARY KEY, word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, userID VARCHAR(50), pronunciation VARCHAR(200), address VARCHAR(200), likes integer); ');
             } catch (e){
                 console.log('Already created pronTable.');
             }
             try {
-                let str5 = this.getSecret('createComment');
-                await this.db.none(str5);
+
+                await this.db.none('CREATE TABLE IF NOT EXISTS comment (id serial NOT NULL PRIMARY KEY, pronunID INTEGER REFERENCES pronTable(id) ON DELETE CASCADE, userID VARCHAR(50), text VARCHAR(250), date TIMESTAMP)');
                  
                 } catch (e) {
 
@@ -54,29 +54,15 @@ export class Database {
         })();
     }
     //create a new word or update img of an existing word (doesn't update definition!)
-
-    public getSecret(key:string): string{
-        let secrets;
-        let password;
-        if (!process.env.key) {
-        secrets = require('./secrets.json');
-        password = secrets[key];
-        } else {
-            password = process.env.key;
-        }
-        return password
-    }
-
     public async create(word:string, img:string,lang:string,definition:string) : Promise<void>{
         console.log("put: word = " + word + ", img = " + img);
+
         try {
-            let str1 = this.getSecret('create1');
-            await this.db.none(str1, [word, img, lang]);
+            await this.db.none('INSERT INTO wordTable(word, img, languages) values ($1, $2, $3)', [word, img, lang]);
             console.log('added word successfully')
         } catch (err) {
             try {
-            let str2 = this.getSecret('create2');
-            await this.db.none(str2, [word, img]);
+            await this.db.none('UPDATE wordTable SET img = $2 WHERE word = $1', [word, img]);
             } catch (err) {
             console.log(err);
             }
@@ -99,44 +85,34 @@ export class Database {
     // assume word exists
     public async def(word:string, lang:string, def:string): Promise<void> {
         console.log("put: def in" + lang + " for " + word);
-        let str1 = this.getSecret('def1');
-        let info = await this.db.one(str1, [word]);
+        let info = await this.db.one('SELECT * FROM wordTable WHERE word = $1', [word]);
         let list = info.languages.split(' ');
         if (!list.includes(lang)){
             let languages = info.languages + ' ' + lang;
-            let str2 = this.getSecret('def2');
-            await this.db.none(str2, [word, languages]);
+            await this.db.none('UPDATE wordTable SET languages = $2 WHERE word = $1', [word, languages]);
         }
         try {
-            let str3 = this.getSecret('def3');
-            let str4 = this.getSecret('def4');
-            await this.db.none(str3+ lang +str4);
+            await this.db.none('CREATE TABLE '+ lang +'Table (word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, def VARCHAR(400), PRIMARY KEY (word))');
             } catch (e) {
             console.log('Already created.');
             }
         try{
-            let str5 = this.getSecret('def5');
-            let str6 = this.getSecret('def6');
-            await this.db.none(str5+ lang +str6, [word, def]);
+            await this.db.none('INSERT INTO '+ lang +'Table(word, def) values ($1, $2)', [word, def]);
         } catch (e){
-            let str7 = this.getSecret('def7');
-            let str8 = this.getSecret('def8');
             console.log('word already has definition in this language.');
-    		await this.db.none(str7+ lang +str8, [word, def]);
+    		await this.db.none('UPDATE '+ lang +'Table SET def = $2 WHERE word = $1', [word, def]);
         }
     }
 
     public async get(word:string): Promise<any>{ //get word, img, languages
         console.log("get: word = " + word);
         try{
-            let str1 = this.getSecret('get1');
-            await this.db.none(str1,[word]);
+            await this.db.none('UPDATE wordTable SET views = views +1 WHERE word = $1',[word]);
         } catch(err){
             console.log(err);
         }
         try {
-            let str2 = this.getSecret('get2');
-            let result = await this.db.one(str2, [word]);
+            let result = await this.db.one('SELECT * FROM wordTable WHERE word = $1', [word]);
             console.log("get: returned " + JSON.stringify(result));
             if (result) {
             return result;
@@ -151,8 +127,7 @@ export class Database {
     public async getuserword(id:string): Promise<any>{ //get word, img, languages
         console.log("getuserword: id = " + id);
         try {
-            let str1 = this.getSecret('getuserword');
-            let result = await this.db.any(str1, [id]);
+            let result = await this.db.any('SELECT word FROM userword WHERE id = $1', [id]);
             console.log("get: returned " + JSON.stringify(result));
             if (result) {
             return result;
@@ -168,9 +143,7 @@ export class Database {
     public async mainview(word:string): Promise<any>{ //get word, img, languages
         console.log("get: all word = " + word);
 	try {
-        let str1 = this.getSecret('mainview');
-        console.log(str1)
-		let result = await this.db.any(str1);
+		let result = await this.db.any('SELECT * FROM wordTable limit 5;');
 	    console.log("get: returned " + JSON.stringify(result));
 	    if (result) {
 		return result;
@@ -178,7 +151,6 @@ export class Database {
 		return null;
 	    }
 	} catch (err) {
-        console.log(err);
 	    // Failed search.
 	    return null;
 	}
@@ -187,9 +159,7 @@ export class Database {
     public async getDef(word:string, lang:string): Promise<any>{
         console.log("get: word = " + word + "in language " + lang);
         try {
-            let str1 = this.getSecret('getDef1');
-            let str2 = this.getSecret('getDef2');
-            let result = await this.db.one(str1+ lang+str2, [word]);
+            let result = await this.db.one('SELECT * FROM '+ lang+'Table WHERE word = $1', [word]);
             console.log("get: returned " + JSON.stringify(result));
             if (result) {
             return result;
@@ -204,8 +174,8 @@ export class Database {
 
     public async del(word:string) : Promise<void> { //delete word
         try {
-            let str1 = this.getSecret('del');
-            await this.db.none(str1, [word]);
+           
+            await this.db.none('DELETE FROM wordTable WHERE word = $1', [word]);
         } catch (err) {
             // Not found.
             console.log('error word not found')
@@ -227,8 +197,7 @@ export class Database {
     public async createUser(id:string, username:string,password:string,portrait:string='./a.png',registered_at:string,location:string) : Promise<void>{
         console.log("put: user id = " + id + ", password = " + password+", portrait"+ portrait);
         try {
-            let str1 = this.getSecret('createUser');
-            await this.db.none(str1, [id,username, password, portrait, registered_at, location]);
+            await this.db.none('INSERT INTO userinfo(id,username, password, portrait, registered_at, location) values ($1, $2, $3,$4,$5,$6)', [id,username, password, portrait, registered_at, location]);
             console.log('added user successfully')
         } catch (err) {
             console.log("username existsed!")
@@ -239,8 +208,7 @@ export class Database {
         console.log("put: user id = " + id + ", password = " + password+", portrait"+ portrait);
 
         try {
-            let str1 = this.getSecret('updateUser');
-            await this.db.none(str1, [id, password,username,portrait,location]);
+                await this.db.none('UPDATE userinfo SET password = $2, username = $3, portrait= $4, location = $5 WHERE id = $1', [id, password,username,portrait,location]);
                 } catch (err) {
                 console.log(err);
                 }
@@ -250,8 +218,7 @@ export class Database {
     public async getUser(id:string) : Promise<string | null> {
         console.log("get: id = " + id);
         try {
-            let str1 = this.getSecret('getUser');
-            let result = await this.db.one(str1, id);
+            let result = await this.db.one('SELECT * FROM userinfo WHERE id = $1', id);
             console.log("get: returned " + JSON.stringify(result));
             console.log("get: value "+result.value);
             if (result) {
@@ -272,8 +239,7 @@ export class Database {
             // DELETE
             // YOUR CODE GOES HERE
             // let result = await this.db...;
-            let str1 = this.getSecret('delUser');
-            let result = await this.db.one(str1, id);
+            let result = await this.db.one('DELETE FROM userinfo WHERE id = $1', id);
             console.log("result = " + result);
         } catch (err) {
             // Not found.
@@ -282,8 +248,7 @@ export class Database {
 
     public async isRightPassword(id: string,password:string) : Promise<any>  {
         console.log("password: key = " + id, password);
-        let str1 = this.getSecret('isRightPassword');
-        let result = await this.db.one(str1, id);
+        let result = await this.db.one('SELECT password,username FROM userinfo WHERE id = $1', id);
         console.log(JSON.stringify(result));
 
         if (result.password === password) {
@@ -296,9 +261,7 @@ export class Database {
     public async userisFound(id: string) : Promise<boolean>  {
         console.log("Found user" + id);
         try{
-            
-            let str1 = this.getSecret('userisFound');
-            let result = await this.db.one(str1, id);
+            let result = await this.db.one('SELECT username FROM userinfo WHERE id = $1', id);
             return true;
         }catch(e){
             console.log("no such user");
@@ -309,8 +272,7 @@ export class Database {
     public async worduserinfo(id:string, word:string) : Promise<void>{
         console.log("put: user id = " + id + ", word id = " + word);
         try {
-            let str1 = this.getSecret('worduserinfo');
-            await this.db.none(str1, [id,word]);
+            await this.db.none('INSERT INTO userword(id,word) values ($1, $2)', [id,word]);
             console.log('added user-word relation successfully');
         } catch (err) {
             console.log(err);
@@ -322,8 +284,7 @@ export class Database {
     // comment
     public async addcomment(pronunID:number, user:string, text:string): Promise<any>{
         try{
-            let str1 = this.getSecret('addcomment');
-            await this.db.none(str1, [pronunID, user, text]);
+            await this.db.none('INSERT INTO comment(pronunID, userID, text) VALUES ($1, $2, $3)', [pronunID, user, text]);
             let result = {'result':'success'};
             return result;
         }catch (err) {
@@ -336,8 +297,7 @@ export class Database {
 
     public async deletecomment(id: number): Promise<any>{
         try{
-            let str1 = this.getSecret('deletecomment');
-            await this.db.none(str1, [id]);
+            await this.db.none('DELETE FROM comment WHERE id = $1', [id]);
             let result = {'result':'success'};
             return result;
         }catch (err) {
@@ -349,8 +309,7 @@ export class Database {
 
     public async getcomment(id: number): Promise<any>{
         try{
-            let str1 = this.getSecret('getcomment');
-            let result = await this.db.any(str1, [id]);
+            let result = await this.db.any('SELECT * FROM comment WHERE pronunID = $1', [id]);
             return result;
         }catch (err) {
             // Not found.
@@ -363,8 +322,7 @@ export class Database {
 //Pronunciation
 public async addPronun(word: string, audio:string, address:string): Promise<any>{
     try{
-            let str1 = this.getSecret('addPronun');
-            await this.db.any(str1, [word, 'John', audio, address, 0]);
+        await this.db.any('INSERT INTO pronTable(word, userID, pronunciation, address, likes) VALUES ($1, $2, $3, $4, $5)', [word, 'John', audio, address, 0]);
         let result = {'result' : 'success'};
         return result;
     } catch(err){
@@ -375,8 +333,7 @@ public async addPronun(word: string, audio:string, address:string): Promise<any>
 
 public async getPronun(word: string): Promise<any>{
     try{
-        let str1 = this.getSecret('getPronun');
-        let result = await this.db.any(str1, [word]);
+        let result = await this.db.any('SELECT * FROM pronTable WHERE word = $1', [word]);
         console.log('get pronunciation for word: ' +word + ' success');
         return result;
     }catch (err){ //not found
@@ -387,10 +344,8 @@ public async getPronun(word: string): Promise<any>{
 
 public async addLikes(pronunID: number): Promise<any>{
     try{
-        let str1 = this.getSecret('addLikes1');
-        await this.db.none(str1, [pronunID]);
-        let str2 = this.getSecret('addLikes2');
-        let result = await this.db.one(str2, [pronunID]);
+        await this.db.none('UPDATE pronTable SET likes = likes +1 WHERE id = $1', [pronunID]);
+        let result = await this.db.one('SELECT * FROM pronTable WHERE id = $1', [pronunID]);
         return result;
     }catch(err){ //not found
         console.log('error add likes failed');
@@ -399,8 +354,7 @@ public async addLikes(pronunID: number): Promise<any>{
 }
 public async delPronun(id : number) : Promise<any>{
     try{
-        let str1 = this.getSecret('delPronun');
-        await this.db.any(str1, [id]);
+        await this.db.any('DELETE FROM pronTable WHERE id= = $1', [id]);
         let result = {'result' : 'success'};
         return result;
     } catch(err){

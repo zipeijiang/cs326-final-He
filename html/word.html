@@ -10,10 +10,10 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="client-main.js"></script>
-    <title>Hello, world!</title>
+    <script type="text/javascript" src = "./client-main.js"></script>
+    <title>Online Dialect Dictionary</title>
   </head>
-  <body>
+  <body onload=client.checklogin()>
     <div>
         <div class="text-center">
             <h2>Online Dialect Dictionary</h2>      
@@ -22,51 +22,60 @@
           
       </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="https://frozen-castle-51130.herokuapp.com/">Home</a>
+        <a class="navbar-brand" href="https://frozen-castle-51130.herokuapp.com/">Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <!-- <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li> -->
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+          <ul class="navbar-nav">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Info
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Upload new dialect</a>
-                <a class="dropdown-item" href="#">My collection</a>
-                <!-- <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a> -->
+                <a class="dropdown-item" onclick="javascript: window.location.href ='word.html'">Upload new dialect</a>
+                <a class="dropdown-item" href="ul">My collection</a>
               </div>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link disabled" href="#">Disabled</a>
-            </li> -->
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <form class="form-inline my-2 my-lg-2">
+            <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
           
-          <ul class="dropdown my-2">
-            <a class="nav-link dropdown-toggle" href="#" id="userdroplist" role="button" data-toggle="dropdown">John</a>
+          <!-- user login page -->
+          <ul class="navbar-nav ">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Login
+            </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">new Upload</a>
-              <a class="dropdown-item" href="#">My collection</a>
-             <div class="dropdown-divider"></div>
-             <a class="dropdown-item" href="#">log out</a>
+              <a class="dropdown-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button>
+              </a>
+              <a class="dropdown-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signupModal">Sign up</button>
+              </a>
             </div>
-             </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" visibility: hidden;">
+              
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#changeinfoModal">changeinfo</button>
+              </a>
+              <a class="dropdown-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" onclick="javascript:location.reload();">Logout</button>
+              </a>
             </div>
+          </li>
+          </ul>
+
+        </div>
       </nav>
-    
       <div class="container h-50">
         <ul class="nav nav-tabs">
           <li class="nav-item">
@@ -76,15 +85,15 @@
             <a class="nav-link "  href="#secondtab" data-toggle="tab">Update Definition</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link "  href="#thirdtab" data-toggle="tab">Delete Word</a>
+            <a class="nav-link " id = "dlyword" href="#thirdtab" data-toggle="tab" style=" visibility: hidden;">Delete Word</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link "  href="#forthtab" data-toggle="tab">Browse your Word</a>
+            <a class="nav-link "  id = "brmyword"href="#forthtab" data-toggle="tab" style=" visibility: hidden;">Browse your Word</a>
           </li>
 
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link "  href="#fifthtab" data-toggle="tab">Get Definition By Language</a>
-          </li>
+          </li> -->
           
         </ul>
         <div class="tab-content" style="background-color: #EAFAF1;border-radius: 200px;">
@@ -223,10 +232,10 @@
             </header>
             <div class = "col-12">
             <div class="input-group input-group-sm  w-25 mx-auto">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">word</span>
-              </div>
-              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_read>
+              <!-- <div class="input-group-prepend"> -->
+                <!-- <span class="input-group-text" id="inputGroup-sizing-sm">word</span> -->
+              <!-- </div> -->
+              <!-- <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id = word_read> -->
             </div>
             <br/><br>
             <div class ="text-center">
@@ -274,7 +283,126 @@
           </div>
        </div>
 
-       
+           <!-- sign up pop window -->
+    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="signupModalLabel">New user</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="id" class="col-form-label">User login id:(unique please)</label>
+                <input type="text" class="form-control" id="id">
+              </div>
+              <div class="form-group">
+                <label for="username" class="col-form-label">Your prefer NickName:</label>
+                <input type="text" class="form-control" id="username">
+              </div>
+              <div class="form-group">
+                  <label for="password" class="col-form-label">Password</label>
+                  <input type="password" class="form-control" id="password">
+              </div>
+              <div class="form-group">
+                  <label for="location" class="col-form-label">Location</label>
+                  <input type="text" class="form-control" id="location">
+              </div>
+              <div class="form-group">
+                  <label for="portrait" class="col-form-label">Portrait src</label>
+                  <input type="text" class="form-control" id="portrait">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="client.userCreate()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- login pop window -->
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Login</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="login_id" class="col-form-label">User login id</label>
+              <input type="text" class="form-control" id="login_id">
+            </div>
+            <div class="form-group">
+                <label for="login_password" class="col-form-label">Password</label>
+                <input type="password" class="form-control" id="login_password">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="client.userLogin()">Submit</button>
+          <div class="col">
+            <p id="output-login" style="font-size: xx-large;">
+              <small style="font-size: small;"></small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- changeinfo pop window -->
+    <div class="modal fade" id="changeinfoModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="changeinfoModal">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="username-changed" class="col-form-label">Your prefer NickName:</label>
+                <input type="text" class="form-control" id="username-changed">
+              </div>
+              <div class="form-group">
+                  <label for="password-changed" class="col-form-label">Password</label>
+                  <input type="password" class="form-control" id="password-changed">
+              </div>
+              <div class="form-group">
+                  <label for="location-changed" class="col-form-label">Location</label>
+                  <input type="text" class="form-control" id="location-changed">
+              </div>
+              <div class="form-group">
+                  <label for="portrait-changed" class="col-form-label">Portrait src</label>
+                  <input type="text" class="form-control" id="portrait-changed">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="client.userChange()">Submit</button>
+            <div class="col">
+              <p id="output-changed" style="font-size: xx-large;">
+                <small style="font-size: small;"></small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End -->
         
 
   </body>

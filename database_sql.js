@@ -35,54 +35,120 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+
 Object.defineProperty(exports, "__esModule", { value: true });
 class Database {
     constructor(dbName) {
         this.pgp = require('pg-promise')();
-        this.uri = "postgres://ilixcuof:jQzvSECVMmriwhIGpD8DNrgTli8pUYzU@drona.db.elephantsql.com:5432/ilixcuof";
-        this.dbName = dbName;
+        // private uri = "postgres://ilixcuof:jQzvSECVMmriwhIGpD8DNrgTli8pUYzU@drona.db.elephantsql.com:5432/ilixcuof";
+        this.uri = "	postgres://ojpwxumh:9CuukrU1JM6Hm4UMFdc1wActdKccHkU-@drona.db.elephantsql.com:5432/ojpwxumh";
+        // this.dbName = dbName;
+        this.dbName = 'ojpwxumh';
         this.db = this.pgp(this.uri);
         (() => __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.db.none('CREATE TABLE IF NOT EXISTS wordTable (word VARCHAR(50) PRIMARY KEY, img VARCHAR(200), views INTEGER DEFAULT 0, languages VARCHAR(200))');
+                //word table
+                let str1;
+                if (process.env.creteWordTable) {
+                    str1 = process.env.creteWordTable;
+                }
+                else {
+                    str1 = this.getSecret('createWordTable');
+                }
+                yield this.db.none(str1);
             }
             catch (e) {
                 console.log('wordTable Already created.');
             }
             try {
                 // userinfo table
-                let result2 = yield this.db.none('CREATE TABLE userinfo(id varchar(100) PRIMARY KEY,username varchar(100),password varchar(100),portrait varchar(10),registered_at DATE,location varchar(100))');
-                console.log(JSON.stringify(result2));
+                let str2;
+                if (process.env.createUserInfo) {
+                    str2 = process.env.createUserInfo;
+                }
+                else {
+                    str2 = this.getSecret('createUserInfo');
+                }
+                yield this.db.none(str2);
             }
             catch (e) {
-                console.log('Already created.');
+                console.log('Already created userinfo table.');
             }
             try {
-                yield this.db.none('CREATE TABLE IF NOT EXISTS comment (id serial NOT NULL PRIMARY KEY, pronunID INTEGER REFERENCES pronTable(id) ON DELETE CASCADE, userID VARCHAR(50), text VARCHAR(250), date TIMESTAMP)');
+                let str3;
+                // userword tablelet str2;
+                if (process.env.createUserWord) {
+                    str3 = process.env.createUserWord;
+                }
+                else {
+                    str3 = this.getSecret('createUserWord');
+                }
+                yield this.db.none(str3);
+            }
+            catch (e) {
+                console.log('Already created userword table.');
+            }
+            try {
+                let str4;
+                // userword tablelet str2;
+                if (process.env.createPronTable) {
+                    str4 = process.env.createPronTable;
+                }
+                else {
+                    str4 = this.getSecret('createPronTable');
+                }
+                yield this.db.none(str4);
+            }
+            catch (e) {
+                console.log('Already created pronTable.');
+            }
+            try {
+                let str5;
+                // userword tablelet str2;
+                if (process.env.createComment) {
+                    str5 = process.env.createComment;
+                }
+                else {
+                    str5 = this.getSecret('createComment');
+                }
+                yield this.db.none(str5);
             }
             catch (e) {
                 console.log('comment Already created.');
             }
             //pronunTable
-            try {
-                yield this.db.none('CREATE TABLE IF NOT EXISTS pronTable (id serial NOT NULL PRIMARY KEY, word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, userID VARCHAR(50), pronunciation VARCHAR(200), address VARCHAR(200), likes integer');
-            }
-            catch (e) {
-                console.log('Already created.');
-            }
         }))();
     }
     //create a new word or update img of an existing word (doesn't update definition!)
+    getSecret(key) {
+        let secrets = require('./secrets.json');
+        let password = secrets[key];
+        return password;
+    }
     create(word, img, lang, definition) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("put: word = " + word + ", img = " + img);
             try {
-                yield this.db.none('INSERT INTO wordTable(word, img, languages) values ($1, $2, $3)', [word, img, lang]);
+                let str1;
+                if (process.env.create1) {
+                    str1 = process.env.create1;
+                }
+                else {
+                    str1 = this.getSecret('create1');
+                }
+                yield this.db.none(str1, [word, img, lang]);
                 console.log('added word successfully');
             }
             catch (err) {
                 try {
-                    yield this.db.none('UPDATE wordTable SET img = $2 WHERE word = $1', [word, img]);
+                    let str2;
+                    if (process.env.create2) {
+                        str2 = process.env.create2;
+                    }
+                    else {
+                        str2 = this.getSecret('create2');
+                    }
+                    yield this.db.none(str2, [word, img]);
                 }
                 catch (err) {
                     console.log(err);
@@ -107,24 +173,80 @@ class Database {
     def(word, lang, def) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("put: def in" + lang + " for " + word);
-            let info = yield this.db.one('SELECT * FROM wordTable WHERE word = $1', [word]);
+            let str1;
+            if (process.env.def1) {
+                str1 = process.env.def1;
+            }
+            else {
+                str1 = this.getSecret('def1');
+            }
+            let info = yield this.db.one(str1, [word]);
             let list = info.languages.split(' ');
             if (!list.includes(lang)) {
+                let str2;
+                if (process.env.def2) {
+                    str2 = process.env.def2;
+                }
+                else {
+                    str2 = this.getSecret('def2');
+                }
                 let languages = info.languages + ' ' + lang;
-                yield this.db.none('UPDATE wordTable SET languages = $2 WHERE word = $1', [word, languages]);
+                yield this.db.none(str2, [word, languages]);
             }
             try {
-                yield this.db.none('CREATE TABLE ' + lang + 'Table (word VARCHAR(50) REFERENCES wordTable(word) ON DELETE CASCADE, def VARCHAR(400), PRIMARY KEY (word))');
+                let str3;
+                if (process.env.def3) {
+                    str3 = process.env.def3;
+                }
+                else {
+                    str3 = this.getSecret('def3');
+                }
+                let str4;
+                if (process.env.def4) {
+                    str4 = process.env.def4;
+                }
+                else {
+                    str4 = this.getSecret('def4');
+                }
+                yield this.db.none(str3 + lang + str4);
             }
             catch (e) {
                 console.log('Already created.');
             }
             try {
-                yield this.db.none('INSERT INTO ' + lang + 'Table(word, def) values ($1, $2)', [word, def]);
+                let str5;
+                if (process.env.def5) {
+                    str5 = process.env.def5;
+                }
+                else {
+                    str5 = this.getSecret('def5');
+                }
+                let str6;
+                if (process.env.def6) {
+                    str6 = process.env.def6;
+                }
+                else {
+                    str6 = this.getSecret('def6');
+                }
+                yield this.db.none(str5 + lang + str6, [word, def]);
             }
             catch (e) {
+                let str7;
+                if (process.env.def7) {
+                    str7 = process.env.def7;
+                }
+                else {
+                    str7 = this.getSecret('def7');
+                }
+                let str8;
+                if (process.env.def4) {
+                    str8 = process.env.def8;
+                }
+                else {
+                    str8 = this.getSecret('def8');
+                }
                 console.log('word already has definition in this language.');
-                yield this.db.none('UPDATE ' + lang + 'Table SET def = $2 WHERE word = $1', [word, def]);
+                yield this.db.none(str7 + lang + str8, [word, def]);
             }
         });
     }
@@ -132,13 +254,53 @@ class Database {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("get: word = " + word);
             try {
-                yield this.db.none('UPDATE wordTable SET views = views +1 WHERE word = $1', [word]);
+                let str1;
+                if (process.env.get1) {
+                    str1 = process.env.get1;
+                }
+                else {
+                    str1 = this.getSecret('get1');
+                }
+                yield this.db.none(str1, [word]);
             }
             catch (err) {
                 console.log(err);
             }
             try {
-                let result = yield this.db.one('SELECT * FROM wordTable WHERE word = $1', [word]);
+                let str2;
+                if (process.env.get2) {
+                    str2 = process.env.get2;
+                }
+                else {
+                    str2 = this.getSecret('get2');
+                }
+                let result = yield this.db.one(str2, [word]);
+                console.log("get: returned " + JSON.stringify(result));
+                if (result) {
+                    return result;
+                }
+                else {
+                    return null;
+                }
+            }
+            catch (err) {
+                // Failed search.
+                return null;
+            }
+        });
+    }
+    getuserword(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("getuserword: id = " + id);
+            try {
+                let str1;
+                if (process.env.getuserword) {
+                    str1 = process.env.getuserword;
+                }
+                else {
+                    str1 = this.getSecret('getuserword');
+                }
+                let result = yield this.db.any(str1, [id]);
                 console.log("get: returned " + JSON.stringify(result));
                 if (result) {
                     return result;
@@ -157,7 +319,15 @@ class Database {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("get: all word = " + word);
             try {
-                let result = yield this.db.any('SELECT * FROM wordTable limit 5;');
+                let str1;
+                if (process.env.mainview) {
+                    str1 = process.env.mainview;
+                }
+                else {
+                    str1 = this.getSecret('mainview');
+                }
+                console.log(str1);
+                let result = yield this.db.any(str1);
                 console.log("get: returned " + JSON.stringify(result));
                 if (result) {
                     return result;
@@ -167,6 +337,7 @@ class Database {
                 }
             }
             catch (err) {
+                console.log(err);
                 // Failed search.
                 return null;
             }
@@ -176,7 +347,21 @@ class Database {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("get: word = " + word + "in language " + lang);
             try {
-                let result = yield this.db.one('SELECT * FROM ' + lang + 'Table WHERE word = $1', [word]);
+                let str1;
+                if (process.env.getDef1) {
+                    str1 = process.env.getDef1;
+                }
+                else {
+                    str1 = this.getSecret('getDef1');
+                }
+                let str2;
+                if (process.env.getDef2) {
+                    str2 = process.env.getDef2;
+                }
+                else {
+                    str2 = this.getSecret('getDef2');
+                }
+                let result = yield this.db.one(str1 + lang + str2, [word]);
                 console.log("get: returned " + JSON.stringify(result));
                 if (result) {
                     return result;
@@ -194,7 +379,14 @@ class Database {
     del(word) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.db.none('DELETE FROM wordTable WHERE word = $1', [word]);
+                let str1;
+                if (process.env.del) {
+                    str1 = process.env.del;
+                }
+                else {
+                    str1 = this.getSecret('del');
+                }
+                yield this.db.none(str1, [word]);
             }
             catch (err) {
                 // Not found.
@@ -220,7 +412,14 @@ class Database {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("put: user id = " + id + ", password = " + password + ", portrait" + portrait);
             try {
-                yield this.db.none('INSERT INTO userinfo(id,username, password, portrait, registered_at, location) values ($1, $2, $3,$4,$5,$6)', [id, username, password, portrait, registered_at, location]);
+                let str1;
+                if (process.env.createUser) {
+                    str1 = process.env.createUser;
+                }
+                else {
+                    str1 = this.getSecret('createUser');
+                }
+                yield this.db.none(str1, [id, username, password, portrait, registered_at, location]);
                 console.log('added user successfully');
             }
             catch (err) {
@@ -232,7 +431,14 @@ class Database {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("put: user id = " + id + ", password = " + password + ", portrait" + portrait);
             try {
-                yield this.db.none('UPDATE userinfo SET password = $2, username = $3, portrait= $4, location = $5 WHERE id = $1', [id, password, username, portrait, location]);
+                let str1;
+                if (process.env.updateUser) {
+                    str1 = process.env.updateUser;
+                }
+                else {
+                    str1 = this.getSecret('updateUser');
+                }
+                yield this.db.none(str1, [id, password, username, portrait, location]);
             }
             catch (err) {
                 console.log(err);
@@ -243,11 +449,18 @@ class Database {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("get: id = " + id);
             try {
-                let result = yield this.db.one('SELECT * FROM userinfo WHERE id = $1', id);
+                let str1;
+                if (process.env.getUser) {
+                    str1 = process.env.getUser;
+                }
+                else {
+                    str1 = this.getSecret('getUser');
+                }
+                let result = yield this.db.one(str1, id);
                 console.log("get: returned " + JSON.stringify(result));
                 console.log("get: value " + result.value);
                 if (result) {
-                    return JSON.stringify(result);
+                    return result;
                 }
                 else {
                     return null;
@@ -266,7 +479,14 @@ class Database {
                 // DELETE
                 // YOUR CODE GOES HERE
                 // let result = await this.db...;
-                let result = yield this.db.one('DELETE FROM userinfo WHERE id = $1', id);
+                let str1;
+                if (process.env.delUser) {
+                    str1 = process.env.delUser;
+                }
+                else {
+                    str1 = this.getSecret('delUser');
+                }
+                let result = yield this.db.one(str1, id);
                 console.log("result = " + result);
             }
             catch (err) {
@@ -277,7 +497,14 @@ class Database {
     isRightPassword(id, password) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("password: key = " + id, password);
-            let result = yield this.db.one('SELECT password,username FROM userinfo WHERE id = $1', id);
+            let str1;
+            if (process.env.isRightPassword) {
+                str1 = process.env.isRightPassword;
+            }
+            else {
+                str1 = this.getSecret('isRightPassword');
+            }
+            let result = yield this.db.one(str1, id);
             console.log(JSON.stringify(result));
             if (result.password === password) {
                 console.log("right password!");
@@ -292,7 +519,14 @@ class Database {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("Found user" + id);
             try {
-                let result = yield this.db.one('SELECT username FROM userinfo WHERE id = $1', id);
+                let str1;
+                if (process.env.userisFound) {
+                    str1 = process.env.userisFound;
+                }
+                else {
+                    str1 = this.getSecret('userisFound');
+                }
+                let result = yield this.db.one(str1, id);
                 return true;
             }
             catch (e) {
@@ -301,11 +535,38 @@ class Database {
             }
         });
     }
+    worduserinfo(id, word) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("put: user id = " + id + ", word id = " + word);
+            try {
+                let str1;
+                if (process.env.worduserinfo) {
+                    str1 = process.env.worduserinfo;
+                }
+                else {
+                    str1 = this.getSecret('worduserinfo');
+                }
+                yield this.db.none(str1, [id, word]);
+                console.log('added user-word relation successfully');
+            }
+            catch (err) {
+                console.log(err);
+                console.log("not exist such word/user!");
+            }
+        });
+    }
     // comment
     addcomment(pronunID, user, text) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.db.none('INSERT INTO comment(pronunID, userID, text) VALUES ($1, $2, $3)', [pronunID, user, text]);
+                let str1;
+                if (process.env.addcomment) {
+                    str1 = process.env.addcomment;
+                }
+                else {
+                    str1 = this.getSecret('addcomment');
+                }
+                yield this.db.none(str1, [pronunID, user, text]);
                 let result = { 'result': 'success' };
                 return result;
             }
@@ -320,7 +581,14 @@ class Database {
     deletecomment(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.db.none('DELETE FROM comment WHERE id = $1', [id]);
+                let str1;
+                if (process.env.deletecomment) {
+                    str1 = process.env.deletecomment;
+                }
+                else {
+                    str1 = this.getSecret('deletecomment');
+                }
+                yield this.db.none(str1, [id]);
                 let result = { 'result': 'success' };
                 return result;
             }
@@ -334,7 +602,14 @@ class Database {
     getcomment(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let result = yield this.db.any('SELECT * FROM comment WHERE pronunID = $1', [id]);
+                let str1;
+                if (process.env.getcomment) {
+                    str1 = process.env.getcomment;
+                }
+                else {
+                    str1 = this.getSecret('getcomment');
+                }
+                let result = yield this.db.any(str1, [id]);
                 return result;
             }
             catch (err) {
@@ -348,7 +623,14 @@ class Database {
     addPronun(word, audio, address) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.db.any('INSERT INTO pronTable(word, userID, pronunciation, address, likes) VALUES ($1, $2, $3, $4, $5)', [word, 'John', audio, address, 0]);
+                let str1;
+                if (process.env.addPronun) {
+                    str1 = process.env.addPronun;
+                }
+                else {
+                    str1 = this.getSecret('addPronun');
+                }
+                yield this.db.any(str1, [word, 'John', audio, address, 0]);
                 let result = { 'result': 'success' };
                 return result;
             }
@@ -361,7 +643,14 @@ class Database {
     getPronun(word) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let result = yield this.db.any('SELECT * FROM pronTable WHERE word = $1', [word]);
+                let str1;
+                if (process.env.getPronun) {
+                    str1 = process.env.getPronun;
+                }
+                else {
+                    str1 = this.getSecret('getPronun');
+                }
+                let result = yield this.db.any(str1, [word]);
                 console.log('get pronunciation for word: ' + word + ' success');
                 return result;
             }
@@ -374,8 +663,22 @@ class Database {
     addLikes(pronunID) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.db.none('UPDATE pronTable SET likes = likes +1 WHERE id = $1', [pronunID]);
-                let result = yield this.db.one('SELECT * FROM pronTable WHERE id = $1', [pronunID]);
+                let str1;
+                if (process.env.addLikes1) {
+                    str1 = process.env.addLikes1;
+                }
+                else {
+                    str1 = this.getSecret('addLikes1');
+                }
+                yield this.db.none(str1, [pronunID]);
+                let str2;
+                if (process.env.addLikes2) {
+                    str2 = process.env.addLikes2;
+                }
+                else {
+                    str2 = this.getSecret('addLikes2');
+                }
+                let result = yield this.db.one(str2, [pronunID]);
                 return result;
             }
             catch (err) { //not found
@@ -387,7 +690,14 @@ class Database {
     delPronun(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.db.any('DELETE FROM pronTable WHERE id= = $1', [id]);
+                let str1;
+                if (process.env.delPronun) {
+                    str1 = process.env.delPronun;
+                }
+                else {
+                    str1 = this.getSecret('delPronun');
+                }
+                yield this.db.any(str1, [id]);
                 let result = { 'result': 'success' };
                 return result;
             }

@@ -12,6 +12,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript" src = "./client-main.js"></script>
     <title>Hello, world!</title>
+    <script>
+      
+
+
+        $("#changeinfobtn").click(function()
+        {
+          console.log('fill');
+          client.autoFill();
+        });
+    </script>
   </head>
   <body>
     <div>
@@ -34,15 +44,15 @@
                 Info
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" onclick="javascript: window.location.href ='word.html'">Upload new dialect</a>
-                <a class="dropdown-item" href="ul">My collection</a>
+                <a class="dropdown-item" onclick=client.jumpToWord()>Upload new dialect/My collection</a>
+                <!-- <a class="dropdown-item" onclick=client.jumpToWord()>My collection</a> -->
               </div>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-2">
-            <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
+          <div class="form-inline my-2 my-lg-2">
+            <input class="form-control mr-sm-4" type="search" placeholder="Search" aria-label="Search" id="searchbar">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick=client.search()>Search</button>
+          </div>
           
           <!-- user login page -->
           <ul class="navbar-nav ">
@@ -65,7 +75,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#changeinfoModal">changeinfo</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#changeinfoModal" >changeinfo</button>
               </a>
               <a class="dropdown-item">
                 <button type="button" class="btn btn-primary" data-toggle="modal" onclick="javascript:location.reload();">Logout</button>
@@ -83,6 +93,7 @@
         </header>
         <div class="row">
         <div class="card-deck" id = "card-deck">
+          Loading...
             <!-- <div class="card">
               <img class="card-img-top" src="..." alt="Card image cap">
               <div class="card-body">
@@ -109,7 +120,7 @@
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
               </div> -->
-            <header>HAHAHAH</header>
+            <header>Loading...</header>
               
             </div>
           </div>
@@ -203,6 +214,7 @@
             </div>
             <div class="modal-body">
               <form>
+                <button type="button" class="btn btn-primary" onclick="client.autoFill()" >Get all data</button>
                 <div class="form-group">
                   <label for="username-changed" class="col-form-label">Your prefer NickName:</label>
                   <input type="text" class="form-control" id="username-changed">

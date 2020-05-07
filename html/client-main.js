@@ -15,8 +15,7 @@ let url2 = "https://frozen-castle-51130.herokuapp.com/public";
 let url = "https://frozen-castle-51130.herokuapp.com/public/word";
 const postdata_1 = require("./postdata");
 // import {User} from "./write_user_info";
-let USER_LOGIN;
-let temp;
+let USER_LOGIN = "";
 function userCreate() {
     (() => __awaiter(this, void 0, void 0, function* () {
         // let userName = "John";
@@ -61,12 +60,7 @@ function userLogin() {
             if (j['result'] == 'ok') {
                 output.innerHTML = "Welcome: <b>" + id + ", " + j['username'] + "</b>";
                 USER_LOGIN = id;
-                let a = doc.getElementById("navbarDropdown2");
-                temp = a;
-                let b = doc.getElementById("navbarDropdown3");
-                a.remove();
-                b.style.visibility = 'visible';
-                b.innerHTML = "Hi " + USER_LOGIN;
+                funckyhide(id);
                 // const userinfo = new User(id);
                 // userinfo.createFile();
             }
@@ -80,6 +74,23 @@ function userLogin() {
     }))();
 }
 exports.userLogin = userLogin;
+function funckyhide(id) {
+    let doc = document;
+    USER_LOGIN = id;
+    let a = doc.getElementById("navbarDropdown2");
+    let b = doc.getElementById("navbarDropdown3");
+    let c = doc.getElementById("dlyword");
+    let d = doc.getElementById("brmyword");
+    a.remove();
+    b.style.visibility = 'visible';
+    b.innerHTML = "Hi " + USER_LOGIN;
+    if (c || d) {
+        console.log("dect word");
+        c.style.visibility = 'visible';
+        d.style.visibility = 'visible';
+    }
+}
+exports.funckyhide = funckyhide;
 function userChange() {
     (() => __awaiter(this, void 0, void 0, function* () {
         // let userName = "John";
@@ -90,7 +101,6 @@ function userChange() {
         let imgElement = doc.getElementById("portrait-changed");
         console.log(imgElement);
         if (userElement !== null && passElement !== null && locationElement !== null && imgElement !== null) {
-            console.log('fuck');
             let id = USER_LOGIN;
             let userName = userElement.value;
             let location = locationElement.value;
@@ -111,6 +121,27 @@ function userChange() {
     }))();
 }
 exports.userChange = userChange;
+function autoFill() {
+    (() => __awaiter(this, void 0, void 0, function* () {
+        console.log("autofill");
+        let doc = document;
+        let userElement = doc.getElementById("username-changed");
+        let passElement = doc.getElementById("password-changed");
+        let locationElement = doc.getElementById("location-changed");
+        let imgElement = doc.getElementById("portrait-changed");
+        let id = USER_LOGIN;
+        console.log(USER_LOGIN);
+        const data = { 'id': id };
+        const newURL = url2 + '/getuserinfo';
+        const resp = yield postdata_1.postData(newURL, data); // used to be fetch -- (3)   
+        const j = yield resp.json();
+        console.log(j);
+        userElement.value = (j['username']);
+        imgElement.value = (j['portrait']);
+        locationElement.value = (j['location']);
+    }))();
+}
+exports.autoFill = autoFill;
 function userSignout() {
     (() => __awaiter(this, void 0, void 0, function* () {
         location.reload();
@@ -135,10 +166,9 @@ function wordLoad() {
         console.log(j);
         let output = document.getElementById("card-deck");
         console.log(output);
-        let name = "";
         let s = "";
         for (var item of j) {
-            name = `onclick = "javascript: window.location.href='wordPage.html?name=${item['word']}'"`;
+            let name = `onclick = "javascript: window.location.href='wordPage.html?name=${item['word']}'"`;
             s += "<div class='card'><img class='card-img-top' src='" + item['img'] + "' alt='Card image cap'" + name + ">" +
                 "<div class='card-body'>" +
                 "<h5 class='card-title'>" + item['word'] + "</h5>" +
@@ -154,11 +184,23 @@ function wordLoad() {
     )();
 }
 exports.wordLoad = wordLoad;
+function jumpToWord() {
+    window.location.href = "word.html?" + USER_LOGIN;
+    // window.location.href ='word.html'
+}
+exports.jumpToWord = jumpToWord;
+function checklogin() {
+    console.log("check whether logging in");
+    if (window.location.search.substring(1).length > 0) {
+        funckyhide(window.location.search.substring(1));
+    }
+}
+exports.checklogin = checklogin;
 window.onload = wordLoad;
 // WORD LIST
 function wordCreate() {
     (() => __awaiter(this, void 0, void 0, function* () {
-        // let userName = "John";
+        let id = window.location.search.substring(1);
         let doc = document;
         let wordELement = doc.getElementById("word");
         let defELement = doc.getElementById("definition");
@@ -171,9 +213,9 @@ function wordCreate() {
             let definition = defELement.value;
             let languages = langElement.value;
             let img = imgElement.value;
-            const data = { 'word': wordName, 'img': img, 'languages': languages, 'definition': definition }; // -- (1)
-            const newURL = url + "/new"; // used to be ?name=" + counterName; -- (2)
-            console.log("counterCreate: fetching " + newURL);
+            const data = { 'word': wordName, 'img': img, 'languages': languages, 'definition': definition, 'id': id }; // -- (1)
+            const newURL = url + "/new";
+            console.log("world Create: fetching " + newURL + data);
             const resp = yield postdata_1.postData(newURL, data); // used to be fetch -- (3)
             const j = yield resp.json();
             //console.log(document.getElementById("output"));
@@ -199,35 +241,56 @@ exports.wordCreate = wordCreate;
 function wordRead() {
     (() => __awaiter(this, void 0, void 0, function* () {
         let doc = document;
-        let wordELement = doc.getElementById("word_read");
+        let id = window.location.search.substring(1);
+        // let wordELement = doc.getElementById("word_read") as HTMLInputElement;
         let outputElement = doc.getElementById("output_get");
-        let outputImgElement = doc.getElementById("output_get_img");
-        if (wordELement !== null && outputElement !== null && outputImgElement !== null) {
-            let wordName = wordELement.value;
-            const data = { 'word': wordName }; // -- (1)
-            const newURL = url + "/view";
-            console.log("wordRead : fetching " + newURL);
+        // let outputImgElement =  doc.getElementById("output_get_img") as HTMLOutputElement;
+        if (id.length > 0) {
+            const data = { 'id': id }; // -- (1)
+            const newURL = url + "/viewuser";
+            console.log("Read : fetching " + newURL + id);
             const resp = yield postdata_1.postData(newURL, data);
-            const j = yield resp.json();
-            if (j['result'] !== 'error') {
-                var languagelist = j['lang'];
+            const jj = yield resp.json();
+            console.log(jj);
+            if (jj) {
                 let langl = "<ul>";
-                languagelist.forEach((num1) => {
-                    langl += '<li>' + num1 + "</li>";
+                jj.forEach((num1) => {
+                    langl += "<ul><a href='http://localhost:8080/wordPage.html?name=" + num1['word'] + "'>" + num1['word'] + "</a>" + "</ul>";
                 });
                 langl += "<ul>";
-                outputImgElement.innerHTML = "<img id=wordimg src= " + j['img'] + ">";
-                outputElement.innerHTML = "typescript 201: <b>" + wordName + ": </b>" + langl;
+                // outputImgElement.innerHTML =  "<img id=wordimg src= " + j['img'] +">";
+                outputElement.innerHTML = "Here is the word " + id + " create:" + langl;
             }
             else {
-                outputElement.innerHTML = "200: " + wordName + " not found.</b>";
-                outputImgElement.innerHTML = "";
+                outputElement.innerHTML = "200: " + id + " not found.</b>";
+                // outputImgElement.innerHTML =  "";
             }
         }
-        else {
-            outputElement.innerHTML = "200: input word missing.</b>";
-            outputImgElement.innerHTML = "";
-        }
+        //     if(wordELement !== null && outputElement !== null && outputImgElement !== null){
+        //         let wordName = wordELement.value;
+        //         const data = { 'word' : wordName}; // -- (1)
+        //         const newURL = url +"/view";
+        //         console.log("wordRead : fetching " + newURL);
+        //         const resp = await postData(newURL,data)
+        //         const j = await resp.json();
+        //         if (j['result'] !== 'error') {	
+        //             var languagelist = j['lang']
+        //             let langl = "<ul>";
+        //             languagelist.forEach((num1:string)=>{
+        //                 langl+= '<li>'+ num1 + "</li>";
+        //             });
+        //             langl +="<ul>";
+        //             outputImgElement.innerHTML =  "<img id=wordimg src= " + j['img'] +">";
+        //             outputElement.innerHTML = "typescript 201: <b>"  + wordName + ": </b>"+langl;
+        //         } else {
+        //             outputElement.innerHTML = "200: " +  wordName  + " not found.</b>";
+        //             outputImgElement.innerHTML =  "";
+        //         }	    
+        //     } else{
+        //         outputElement.innerHTML = "200: input word missing.</b>";
+        //         outputImgElement.innerHTML =  "";
+        //     }
+        // }
     }))();
 }
 exports.wordRead = wordRead;
@@ -320,6 +383,20 @@ function wordDelete() {
     }))();
 }
 exports.wordDelete = wordDelete;
+
+function search(){
+    (() => __awaiter(this, void 0, void 0, function* () {
+        let doc = document;
+        let inputELement = doc.getElementById("searchbar");
+        let word = wordElement.value;
+        if(word !== ''){
+            window.location.href = "wordPage.html?name=" + word;
+        } else{
+            return 
+        }
+    }))();
+}
+exports.search = search;
 
 },{"./postdata":2}],2:[function(require,module,exports){
 "use strict";
