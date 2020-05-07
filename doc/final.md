@@ -13,16 +13,16 @@ Addis Gunst github: AddieGunst
 
 ## User Interface ##
 ### 1.Homepage
-![homepage](.finali/hp)
+![homepage](./finali/hp)
 Homepage with user mode and client mode, user can post the word. And get the pronunciation by click the img.
 
 ### 2.Word
-![word](.finali/word)
+![word](./finali/word)
 Allows users pass word spelling and image url to the database, and definition with corresponding language as optional parameter. If success, the program adds a word object to the database, and if there are definitions passed in, it also creates a definition object. The program prints the word and image to the website if the action is succeed, or print erro if the insertion fails.
 User also can browse the word they create and delete them
 
 ### 3.UploadPronunciation
-![pronun](.finali/pronun)
+![pronun](./finali/pronun)
 Above are the framework and screenshot of the word page for our project. Each image in our dataset corresponds to one unique word page. This page consists of three parts: the navigation bar is the same as other pages. The left-hand side contains the word definition for the image in various languages that users are able to select.  And users are allowed to update definitions on languages either existing or not. The right-hand side is the pronunciation of the word that describes the image in different dialects uploaded by users. By clicking the speaker button, users can listen to those pronunciations. And by clicking the line for uploaders' locations, users can find where the dialect comes from through the map. 
 
 ## API ##
