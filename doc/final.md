@@ -12,6 +12,18 @@ Haoqin Liang github: Leonalhq & Leonalhqkun
 Addis Gunst github: AddieGunst
 
 ## User Interface ##
+### 1.Homepage
+![homepage](.finali/hp)
+Homepage with user mode and client mode, user can post the word. And get the pronunciation by click the img.
+
+### 2.Word
+![word](.finali/word)
+Allows users pass word spelling and image url to the database, and definition with corresponding language as optional parameter. If success, the program adds a word object to the database, and if there are definitions passed in, it also creates a definition object. The program prints the word and image to the website if the action is succeed, or print erro if the insertion fails.
+User also can browse the word they create and delete them
+
+### 3.UploadPronunciation
+![pronun](.finali/pronun)
+Above are the framework and screenshot of the word page for our project. Each image in our dataset corresponds to one unique word page. This page consists of three parts: the navigation bar is the same as other pages. The left-hand side contains the word definition for the image in various languages that users are able to select.  And users are allowed to update definitions on languages either existing or not. The right-hand side is the pronunciation of the word that describes the image in different dialects uploaded by users. By clicking the speaker button, users can listen to those pronunciations. And by clicking the line for uploaders' locations, users can find where the dialect comes from through the map. 
 
 ## API ##
 ### Main
@@ -39,6 +51,7 @@ Addis Gunst github: AddieGunst
 #### /getuserinfo
     Retrieves the user information
     Parameters: user id
+    
 
 ### WORD
 #### /word/new
@@ -90,6 +103,9 @@ Addis Gunst github: AddieGunst
 #### /word/addPronunLikes
     Increase the number of likes by 1 to the word
     Parameters: pronID(Id of the pronunciation)
+
+
+
 
 ## Database ##
 #### UserInfo Table
@@ -149,8 +165,12 @@ Addis Gunst github: AddieGunst
 
 ### https://frozen-castle-51130.herokuapp.com/upload.html
     The page allow users to add pronunciations by passing address of the audio, the word and the location.
-
+    
 ## Authentication/Authorization ##
+    User need to login in the main page to see the delete word and browse word options.
+    After login, GET carry user login to the word page, in the login mode, when user post new word it will update the worduser table so they can retreive the word they post by themself. User can find what word they post in the login mode.
+
+
 
 ## Division of Labor ##
 
