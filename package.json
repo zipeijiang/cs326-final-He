@@ -2,10 +2,10 @@
   "name": "cs326-final-He",
   "version": "1.0.0",
   "description": "",
-  "main": "main_sql.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main_sql.js"
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
