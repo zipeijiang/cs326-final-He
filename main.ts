@@ -1,7 +1,7 @@
 'use strict';
 
-import { Database } from './database_sql';
-import { Server } from './server_sql';
+import { Database } from './database';
+import { Server } from './server';
 
 const theDatabase = new Database('ilixcuof'); // CHANGE THIS
 console.log("database OK");
