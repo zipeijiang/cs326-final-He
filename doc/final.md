@@ -15,183 +15,128 @@ Addis Gunst github: AddieGunst
 
 ## API ##
 ### Object Model
-#### User object
-    key                value type             description
-    ID                 int                        the unique ID of user
-    name              string                    the name of the user
-    portrait           string                    the source url of the user’s portrait image
-    registered_at       time            the date the user registered
-    location          string                    the address string of the user
-    password        string                    the password of the user
-    contribution    int                        the number of pronunciations the user uploaded
-    collection        array[string]          the list of prouncitaion the user liked
-#### Word object
-    key                value type             description
-    word             string                    the spelling of the word in English
-    img                string                   the source url of the image describes the word
-    languages        array[string]          the list of languages with descriptions to the word
-    changelog       array[change]         the list of changes made by users
+#### UserInfo object
+    key             value type              description
+    ID              string                  the unique ID of user
+    username        string                  the name of the user
+    portrait        string                  the source url of the user’s portrait image
+    registered_at   time                    the date the user registered
+    location        string                  the address string of the user
+    password        string                  the password of the user
 
-#### Definition object
-    key         value type      description
-    word		string			word the definiition decribes
-    languages  array[string]  the list of languages with descriptions to the word
-    definition array[string]  the list of defintion follow by the (word,languages)
+#### UserWord object
+    key             value type              description
+    ID              string                  the unique ID of user
+    word            string                  the word the user creates
+
+#### Word object
+    key              value type             description
+    word             string                 the spelling of the word in English
+    img              string                 the source url of the image describes the word
+    languages        array[string]          the list of languages with descriptions to the word
+    view             number                 counts how many times the word is viewed
+
+#### Definition objects - there exists multiple definition table corresponds to different languages
+    key             value type              description
+    word		    string			        word the definiition decribes
+    definition      string                  the of defintion of the word in certain language
 
 #### Pronunciation object
-    key                value type                 description
-    ID                 int                        the unique randomly generated ID
-    word              string                  the spelling of the word the pronunciation descripes
-    pronunciation   audio                    the audio file of the pronunciation
-    address         string                    the address string of the location the dialect comes from
-    creatorID        int                        the user ID of the creator
-    likes              int                        the number of likes the pronunciation receives
-    comments    array[comment]             the list of comment object to the pronunciation
-    liked             array[string]           the list of user who like the pronunciation
+    key                 value type                  description
+    ID                  int                         the unique randomly generated ID
+    word                string                      the spelling of the word the pronunciation descripes
+    pronunciation       audio                       the audio file of the pronunciation
+    address             string                      the address string of the location the dialect comes from
+    userID              int                         the user ID of the creator
+    likes               int                         the number of likes the pronunciation receives
 
- 
-#### Change object
-    key            	value type         	description
-    ID             	int                    	the unique randomly generated ID
-    wordID      	int                    	the spelling of the word the change object link to
-    creatorID    	int                    	the user ID of the creator
-    action         	string                	the action the user did, can be ‘create word’, ‘add pronunciation’, ‘update definition’
-    date           	time                  	the time the change occurred
-     
 #### Comment object
     key     	   	value type         	description
-    proID             int                     the ID of the pronunciation of the comment
-    creatorID    	    int                    	the user ID of the creator user
-    data           	string                	the comment added by the user
-    date           	time                  	the time the comment is added
-
-    ### End Points
-
-### Object Model
-#### User object
-    key                value type             description
-    ID                 int                        the unique ID of user
-    name              string                    the name of the user
-    portrait           string                    the source url of the user’s portrait image
-    registered_at       time            the date the user registered
-    location          string                    the address string of the user
-    password        string                    the password of the user
-    contribution    int                        the number of pronunciations the user uploaded
-    collection        array[string]          the list of prouncitaion the user liked
-#### Word object
-    key                value type             description
-    word             string                    the spelling of the word in English
-    img                string                   the source url of the image describes the word
-    languages        array[string]          the list of languages with descriptions to the word
-    changelog       array[change]         the list of changes made by users
-
-#### Definition object
-    key         value type      description
-    word		string			word the definiition decribes
-    languages  array[string]  the list of languages with descriptions to the word
-    definition array[string]  the list of defintion follow by the (word,languages)
-
-#### Pronunciation object
-    key                value type                 description
-    ID                 int                        the unique randomly generated ID
-    word              string                  the spelling of the word the pronunciation descripes
-    pronunciation   audio                    the audio file of the pronunciation
-    address         string                    the address string of the location the dialect comes from
-    creatorID        int                        the user ID of the creator
-    likes              int                        the number of likes the pronunciation receives
-    comments    array[comment]             the list of comment object to the pronunciation
-    liked             array[string]           the list of user who like the pronunciation
-
- 
-#### Change object
-    key            	value type         	description
-    ID             	int                    	the unique randomly generated ID
-    wordID      	int                    	the spelling of the word the change object link to
-    creatorID    	int                    	the user ID of the creator
-    action         	string                	the action the user did, can be ‘create word’, ‘add pronunciation’, ‘update definition’
-    date           	time                  	the time the change occurred
-     
-#### Comment object
-    key     	   	value type         	description
-    proID             int                     the ID of the pronunciation of the comment
-    creatorID    	    int                    	the user ID of the creator user
-    data           	string                	the comment added by the user
-    date           	time                  	the time the comment is added
+    ID              int                 the unique id of each comment
+    proID           int                 the ID of the pronunciation of the comment
+    creatorID    	int                 the user ID of the creator user
+    text           	string              the comment added by the user
+    date           	time                the time the comment is added
 
     ### End Points
 
 ## URL Routes/Mappings ##
+### Main
+#### /mainview
+    Retrieve words from database
+    Parameters: none
+
+#### /getDefinitionByLanguage & /word/getDefinitionByLanguage
+    Retrieve the definition of a word in certain language
+    Parameters: word(spelling of the word), language
+
 ### USER
-#### /register      	
+#### /siginup      	
 	Allows new users to sign up
-	Parameters: name(user name), password(user password)
-	Optional Parameters: portrait(url to the user portrait image), location(user address)
+	Parameters: id(user id), name(user name), password(user password), portrait, location
 
 #### /login         	
 	Allows users to login their account
-	Parameters: name(user name), password(user password)
+	Parameters: id(user id), password(user password)
+
+#### /changeinfo
+    Allows users to change their information
+	Parameters: id(user id), name(user name), password(user password), portrait, location
+
+#### /getuserinfo
+    Retrieves the user information
+    Parameters: user id
 
 ### WORD
 #### /word/new
     Allows a word to be added to the database, creates a new word object.
-    Parameters: name(spelling in English), img(url to the image)
-    Optional Parameters: languages(languages to describe the word), definition(description to the word)
-    Automatically generates change object with user ID and time, with action value = ‘create word’
-
-#### /word/pronunciation
-    Create a pronunciation object that allows users to add new pronunciations to a word
-    Parameters: word(word for pronunciation), pron(audio file of pronunciation)
-    Optional parameters: addr(user address), language(language for the pronunciation), spelling(spelling for the pronunciation)
-    Automatically generates change object with user ID and time, with action value = ‘add pronunciation’
+    Parameters: name(spelling in English), img(url to the image), languages(languages to describe the word), definition(description to the word)
 
 #### /word/definition
     Allows users to add/modify definitions of the word by update the definition of the word
     Parameters: word(word for definition), languages(language of the description), def(string of descriptions)
-    Automatically generates change object with user ID and time, with action value = ‘update definition’
-
-#### /word/comment
-    Create a comment object that allows users to comment on the pronunciation they chose
-    Parameters: userID(ID of the user), proID(ID of the pronunciation), comment(string)
-
-#### /word/view
-    Return the word, the imge of the word, the list of languages for definition
-    Parameter: word(spelling of the word in English)
-
-#### /word/getDefinitionByLanguage
-    Return the definition of the word in the languages passed
-    Parameter: word, language(language for definition)
 
 #### /word/delete
     Delete the word from the database
     Parameter: word(word to delete)
+#### /word/view
+    Return the word, the imge of the word, the list of languages for definition
+    Parameter: word(spelling of the word in English)
+
+#### /word/viewuser
+    Get the information of the user
+    Parameter: id(user id)
+
+### Comment
+#### /word/addcomment
+    Add comment to a pronunciation
+    Parameters: pronunID(Id of the pronunciation), user(uploader), text(text of the comment)
+#### /word/getcomment
+    Get all comments of a pronunciation
+    Parameters: pronunID(Id of the pronunciation)
+#### /word/delcomment
+    Delete a comment of a pronunciation
+    Parameters: ID (Id of the comment)
+#### /word/comment
+    Create a comment object that allows users to comment on the pronunciation they chose
+    Parameters: userID(ID of the user), proID(ID of the pronunciation), comment(string)
+
+### PRONUNCIATION
+#### /word/pronunciation
+    Create a pronunciation object that allows users to add new pronunciations to a word
+    Parameters: word(word for pronunciation), pron(audio file of pronunciation), location(dialect location)
 
 #### /word/delpronunciation
     Delete the pronunciation with given ID from the database
-    Parameter: ID(pronunciation ID to delete)
+    Parameters: ID(pronunciation ID to delete)
 
+#### /word/getpronunciation
+    Return the list of pronunciations of a word
+    Parameters: word(spelling of the word)
 
-### PRONUNCIATION
-#### /pronu/checkword
-    Allows user to check the word is exists, if not they need to add that word in word/new
-    Parameters: word(string)
-    
-#### /pronu/create
-    Create a pronunciation object that allows users to add new pronunciations to a word
-    Parameters: word(word for pronunciation), pron(audio file of pronunciation)
-    Optional parameters: addr(user address), language(language for the pronunciation), spelling(spelling for the pronunciation)
-    Automatically generates change object with user ID and time, with action value = ‘add pronunciation’
-    
-#### /pronu/view
-    Return the list pronucition, the imge of the word, and the word definition 
-    Parameter: word(spelling of the word in English),language(language for definition)
-
-#### /pronu/getpronubyclick
-    Return the pronunciation of the word for the sepecific id
-    Parameter: word, language(language for definition),id(by frontend click)
-    
-#### /pronu/delpronunciation
-    Delete the pronunciation with given ID from the database
-    Parameter: ID(pronunciation ID to delete)
+#### /word/addPronunLikes
+    Increase the number of likes by 1 to the word
+    Parameters: pronID(Id of the pronunciation)
     
 ## Authentication/Authorization ##
 
