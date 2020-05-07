@@ -60,8 +60,8 @@ export function loadPronun(){
                     let text = '<div class="userData">'+
                     '<img src="https://www.mariowiki.com/images/thumb/2/2b/Isabelle_SSBU.png/1200px-Isabelle_SSBU.png" class="portrait">'+ //TBC
                     '<p class="names">Anonymous</p>'+ //TBC
-                    '<input type="image" src="https://pngimage.net/wp-content/uploads/2018/06/speaker-button-png-.png" onclick="runPronun('+ pronuns[i]['id'] +')" class="listen"> Click to get pronunciation</input>'+
-                    '<div id = "audio'+ pronuns[i]['id'] +'" style ="display:none" ><iframe width="420" height="315" src="'+pronuns[i]['pronunciation']+'"> </iframe></div><br/>' +
+                    '<input type="image" src="https://pngimage.net/wp-content/uploads/2018/06/speaker-button-png-.png" onclick="runPron('+ pronuns[i]['id'] +')" class="listen"> Click to get pronunciation</input>'+
+                    '<div id = "audio'+ pronuns[i]['id'] +'" style ="display:none" >'+ '<iframe width="560" height="315" src="'+pronuns[i]['pronunciation']+'" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'  +'</div><br/>' +
                     '<a target="_blank" href = https://www.google.com/maps/search/'+ pronuns[i]['address'] +'>'+ pronuns[i]['address'] +'</a><br/><br/>'+
                     '<button type="button" onclick="showComment('+ pronuns[i]['id'] +')" class="btn btn-primary">Comment</button>'+
                     '<button type="button" id="like'+pronuns[i]['id']+'" onclick="likeIt('+ pronuns[i]['id'] +')" class="btn btn-primary">Like it!</button><br/>'+ 
@@ -268,7 +268,7 @@ export function likeIt(pronunID){ //user likes pronunciation
 //user deletes pronunication
 export function deletePronun(pronunID){
     (async() =>{
-        const data = {'ID' : pronunID};
+        const data = {'pronunID' : pronunID};
         const newURL= url+"/deletePronun";
 
         const resp = await postData(newURL, data);
