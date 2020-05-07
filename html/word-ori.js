@@ -82,7 +82,7 @@ function loadPronun(){
                     '<button type="button" onclick="showComment('+ pronuns[i]['id'] +')" class="btn btn-primary">Comment</button>'+
                     '<button type="button" id="like'+pronuns[i]['id']+'" onclick="likeIt('+ pronuns[i]['id'] +')" class="btn btn-primary">Like it!</button><br/>'+ 
                     '<div class = "comment" id = "commentblock'+ pronuns[i]['id']+'"> <br/></div>'+
-                    '<button type="button" onclick="deletPron('+ pronuns[i]['id'] +')" class = "btn btn-danger">Delete</button><br/>'+
+                    '<button type="button" onclick="deletePronun('+ pronuns[i]['id'] +')" class = "btn btn-danger">Delete</button><br/>'+
                     '<hr></div>' +
                     '<br/>';
                     insert = insert + text;
