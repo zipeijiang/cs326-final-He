@@ -28,9 +28,6 @@ export function loadWord() {
                 outputElement.innerHTML = "200: " +  word  + " not found.</b>";
                 outputImgElement.innerHTML =  "";
             }	    
-        } else{
-            outputElement.innerHTML = "200: input word missing.</b>";
-            outputImgElement.innerHTML =  "";
         }
     })();
 }
@@ -75,8 +72,6 @@ export function loadPronun(){
             } else {
                 outputBlock.innerHTML = "200: " +  word  + " has no pronunciations.</b>";
             }	    
-        } else{
-            outputBlock.innerHTML = "200: input word missing.</b>";
         }
     })();
 }
@@ -118,8 +113,6 @@ export function defRead(){
                 outputElement.innerHTML = "210: definition in" +  lang  + " not found.</b>";
         
             }	    
-        } else{
-            outputElement.innerHTML = "210: input missing.</b>";
         }
     })();
 }
@@ -135,8 +128,6 @@ export function showDefBar(){
             else{
                 barElement.style.visibility="visible";
             }
-        } else{
-            barElement.innerHTML = "<b> Error.</b>";
         }
     })();
 }
@@ -164,8 +155,6 @@ export function addDef(){
                 outputElement.innerHTML = "210: Error: Updation Failed</b>";
         
             }    
-        } else{
-            outputElement.innerHTML = "210: input missing.</b>";
         }
     })();
 }
@@ -174,7 +163,7 @@ export function goToPronunPage(){
     window.location.href="upload.html";
 }
 
-export function showComment(pronunID){
+export function showComment(pronunID:any){
     (async () => {
         let doc = document;
         let outputElement = doc.getElementById("commentblock" + pronunID) as HTMLOutputElement;
@@ -200,14 +189,12 @@ export function showComment(pronunID){
                 outputElement.innerHTML = insert;
             }
             
-        } else{
-            outputElement.innerHTML = "<b> Error.</b>";
         }
     })();
     
 }
 
-export function addComment(pronunID){
+export function addComment(pronunID:any){
     (async () => {
         let doc = document;
         let inputElement = doc.getElementById("add_comment"+ pronunID) as HTMLInputElement;
@@ -226,12 +213,10 @@ export function addComment(pronunID){
                 outputElement.innerHTML = "610: Error: Updation Failed</b>";
         
             } 
-        } else{
-            outputElement.innerHTML = "210: input missing.</b>";
         }
     })();
 }
-export function runPron(pronunID){ 
+export function runPron(pronunID:any){ 
     let doc = document;
     let outputElement = doc.getElementById("audio"+pronunID) as HTMLOutputElement;
     if(outputElement !== null){
@@ -244,7 +229,7 @@ export function runPron(pronunID){
     }
 }
 
-export function likeIt(pronunID){ //user likes pronunciation
+export function likeIt(pronunID:any){ //user likes pronunciation
     (async()=>{
         let doc = document;
         let outputElement = doc.getElementById("like" + pronunID) as HTMLOutputElement;
@@ -259,14 +244,12 @@ export function likeIt(pronunID){ //user likes pronunciation
             }else{
                 outputElement.innerHTML = "610: Error: Like Failed<br>";
             }
-        }else{
-            outputElement.innerHTML = "210: input missing.</br>";
         }
     })();
 }
 
 //user deletes pronunication
-export function deletePronun(pronunID){
+export function deletePronun(pronunID:any){
     (async() =>{
         const data = {'pronunID' : pronunID};
         const newURL= url+"/deletePronun";

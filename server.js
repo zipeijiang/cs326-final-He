@@ -129,7 +129,7 @@ class Server {
     }
     delpronHandler(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.delPronunciation(request.body.ID, response);
+            yield this.delPronunciation(request.body.pronunID, response);
         });
     }
     getPronunHandler(request, response) {
