@@ -137,7 +137,20 @@ Addis Gunst github: AddieGunst
 #### /word/addPronunLikes
     Increase the number of likes by 1 to the word
     Parameters: pronID(Id of the pronunciation)
-    
+
+## URL Routes ##
+### https://frozen-castle-51130.herokuapp.com/
+    The main page of the website. Allows users to sign up/log in. Provide information about words that users can visit.
+
+### https://frozen-castle-51130.herokuapp.com/word.html?
+    The page allows users to update words and definition. And allows registered users to modify and delete words.
+
+### https://frozen-castle-51130.herokuapp.com/wordPage.html?
+    The page contains all information about a word object. Allows users to view all definitions and supported languages of the word. Allows users to add new definitions to the word. Retrieves all pronunciations of the word, and for each pronunciations, users can view/add comments, and add likes to it. Allows users to delete pronunciations from a word.
+
+### https://frozen-castle-51130.herokuapp.com/upload.html
+    The page allow users to add pronunciations by passing address of the audio, the word and the location.
+
 ## Authentication/Authorization ##
 
 ## Division of Labor ##

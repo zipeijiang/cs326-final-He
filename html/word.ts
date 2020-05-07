@@ -59,14 +59,14 @@ export function loadPronun(){
                     commentBlock = '<div class = "comment" id = "commentblock'+ pronuns[i]['id']+'" style="display: none"> <br/>';
                     let text = '<div class="userData">'+
                     '<img src="https://www.mariowiki.com/images/thumb/2/2b/Isabelle_SSBU.png/1200px-Isabelle_SSBU.png" class="portrait">'+ //TBC
-                    '<p class="names">'+pronuns[i]['userid']+'</p>'+ //TBC
-                    '<input type="image" src="https://pngimage.net/wp-content/uploads/2018/06/speaker-button-png-.png" onclick="runPron('+ pronuns[i]['id'] +')" class="listen"> Click to get pronunciation</input>'+
-                    '<div id = "audio'+ pronuns[i]['id'] +'" style ="display:none" ><video width="320" height="240"><source src="'+ pronuns[i]['pronunciation'] +'" type="video/mp4"></video></div><br/>' +
+                    '<p class="names">Anonymous</p>'+ //TBC
+                    '<input type="image" src="https://pngimage.net/wp-content/uploads/2018/06/speaker-button-png-.png" onclick="runPronun('+ pronuns[i]['id'] +')" class="listen"> Click to get pronunciation</input>'+
+                    '<div id = "audio'+ pronuns[i]['id'] +'" style ="display:none" ><iframe width="420" height="315" src="'+pronuns[i]['pronunciation']+'"> </iframe></div><br/>' +
                     '<a target="_blank" href = https://www.google.com/maps/search/'+ pronuns[i]['address'] +'>'+ pronuns[i]['address'] +'</a><br/><br/>'+
                     '<button type="button" onclick="showComment('+ pronuns[i]['id'] +')" class="btn btn-primary">Comment</button>'+
                     '<button type="button" id="like'+pronuns[i]['id']+'" onclick="likeIt('+ pronuns[i]['id'] +')" class="btn btn-primary">Like it!</button><br/>'+ 
                     '<div class = "comment" id = "commentblock'+ pronuns[i]['id']+'"> <br/></div>'+
-                    '<button type="button" onclick="deletePronun('+ pronuns[i]['id'] +')" class = "btn btn-danger">Delete</button><br/>'+
+                    '<button type="button" onclick="deletPron('+ pronuns[i]['id'] +')" class = "btn btn-danger">Delete</button><br/>'+
                     '<hr></div>' +
                     '<br/>';
                     insert = insert + text;
