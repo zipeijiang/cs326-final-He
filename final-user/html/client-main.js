@@ -384,6 +384,20 @@ function wordDelete() {
 }
 exports.wordDelete = wordDelete;
 
+function search(){
+    (() => __awaiter(this, void 0, void 0, function* () {
+        let doc = document;
+        let inputELement = doc.getElementById("searchbar");
+        let word = wordElement.value;
+        if(word !== ''){
+            window.location.href = "wordPage.html?name=" + word;
+        } else{
+            return 
+        }
+    }))();
+}
+exports.search = search;
+
 },{"./postdata":2}],2:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
