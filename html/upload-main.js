@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const url = "https://frozen-castle-51130.herokuapp.com/public/word";
 const postdata_1 = require("./postdata");
-export function uploadPronun() {
+function uploadPronun() {
     (() => __awaiter(this, void 0, void 0, function* () {
         let doc = document;
         let wordElement = doc.getElementById("word");
