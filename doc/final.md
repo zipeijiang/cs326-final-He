@@ -168,7 +168,9 @@ Above are the framework and screenshot of the word page for our project. Each im
     
 ## Authentication/Authorization ##
     User need to login in the main page to see the delete word and browse word options.
-    After login, GET carry user login to the word page, in the login mode, when user post new word it will update the worduser table so they can retreive the word they post by themself. User can find what word they post in the login mode.
+    After login, GET carry user login to the word page, in the login mode, when user post new word it will
+    update the worduser table so they can retreive the word they post by themself. User can find what word they 
+    post in the login mode.
 
 
 
