@@ -28,9 +28,6 @@ export function loadWord() {
                 outputElement.innerHTML = "200: " +  word  + " not found.</b>";
                 outputImgElement.innerHTML =  "";
             }	    
-        } else{
-            outputElement.innerHTML = "200: input word missing.</b>";
-            outputImgElement.innerHTML =  "";
         }
     })();
 }
@@ -59,9 +56,9 @@ export function loadPronun(){
                     commentBlock = '<div class = "comment" id = "commentblock'+ pronuns[i]['id']+'" style="display: none"> <br/>';
                     let text = '<div class="userData">'+
                     '<img src="https://www.mariowiki.com/images/thumb/2/2b/Isabelle_SSBU.png/1200px-Isabelle_SSBU.png" class="portrait">'+ //TBC
-                    '<p class="names">'+pronuns[i]['userid']+'</p>'+ //TBC
+                    '<p class="names">Anonymous</p>'+ //TBC
                     '<input type="image" src="https://pngimage.net/wp-content/uploads/2018/06/speaker-button-png-.png" onclick="runPron('+ pronuns[i]['id'] +')" class="listen"> Click to get pronunciation</input>'+
-                    '<div id = "audio'+ pronuns[i]['id'] +'" style ="display:none" ><video width="320" height="240"><source src="'+ pronuns[i]['pronunciation'] +'" type="video/mp4"></video></div><br/>' +
+                    '<div id = "audio'+ pronuns[i]['id'] +'" style ="display:none" >'+ '<iframe width="560" height="315" src="'+pronuns[i]['pronunciation']+'" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'  +'</div><br/>' +
                     '<a target="_blank" href = https://www.google.com/maps/search/'+ pronuns[i]['address'] +'>'+ pronuns[i]['address'] +'</a><br/><br/>'+
                     '<button type="button" onclick="showComment('+ pronuns[i]['id'] +')" class="btn btn-primary">Comment</button>'+
                     '<button type="button" id="like'+pronuns[i]['id']+'" onclick="likeIt('+ pronuns[i]['id'] +')" class="btn btn-primary">Like it!</button><br/>'+ 
@@ -75,8 +72,6 @@ export function loadPronun(){
             } else {
                 outputBlock.innerHTML = "200: " +  word  + " has no pronunciations.</b>";
             }	    
-        } else{
-            outputBlock.innerHTML = "200: input word missing.</b>";
         }
     })();
 }
@@ -118,8 +113,6 @@ export function defRead(){
                 outputElement.innerHTML = "210: definition in" +  lang  + " not found.</b>";
         
             }	    
-        } else{
-            outputElement.innerHTML = "210: input missing.</b>";
         }
     })();
 }
@@ -135,8 +128,6 @@ export function showDefBar(){
             else{
                 barElement.style.visibility="visible";
             }
-        } else{
-            barElement.innerHTML = "<b> Error.</b>";
         }
     })();
 }
@@ -164,8 +155,6 @@ export function addDef(){
                 outputElement.innerHTML = "210: Error: Updation Failed</b>";
         
             }    
-        } else{
-            outputElement.innerHTML = "210: input missing.</b>";
         }
     })();
 }
@@ -174,7 +163,7 @@ export function goToPronunPage(){
     window.location.href="upload.html";
 }
 
-export function showComment(pronunID){
+export function showComment(pronunID:any){
     (async () => {
         let doc = document;
         let outputElement = doc.getElementById("commentblock" + pronunID) as HTMLOutputElement;
@@ -200,14 +189,12 @@ export function showComment(pronunID){
                 outputElement.innerHTML = insert;
             }
             
-        } else{
-            outputElement.innerHTML = "<b> Error.</b>";
         }
     })();
     
 }
 
-export function addComment(pronunID){
+export function addComment(pronunID:any){
     (async () => {
         let doc = document;
         let inputElement = doc.getElementById("add_comment"+ pronunID) as HTMLInputElement;
@@ -226,12 +213,10 @@ export function addComment(pronunID){
                 outputElement.innerHTML = "610: Error: Updation Failed</b>";
         
             } 
-        } else{
-            outputElement.innerHTML = "210: input missing.</b>";
         }
     })();
 }
-export function runPron(pronunID){ 
+export function runPron(pronunID:any){ 
     let doc = document;
     let outputElement = doc.getElementById("audio"+pronunID) as HTMLOutputElement;
     if(outputElement !== null){
@@ -244,7 +229,7 @@ export function runPron(pronunID){
     }
 }
 
-export function likeIt(pronunID){ //user likes pronunciation
+export function likeIt(pronunID:any){ //user likes pronunciation
     (async()=>{
         let doc = document;
         let outputElement = doc.getElementById("like" + pronunID) as HTMLOutputElement;
@@ -259,16 +244,14 @@ export function likeIt(pronunID){ //user likes pronunciation
             }else{
                 outputElement.innerHTML = "610: Error: Like Failed<br>";
             }
-        }else{
-            outputElement.innerHTML = "210: input missing.</br>";
         }
     })();
 }
 
 //user deletes pronunication
-export function deletePronun(pronunID){
+export function deletePronun(pronunID:any){
     (async() =>{
-        const data = {'ID' : pronunID};
+        const data = {'pronunID' : pronunID};
         const newURL= url+"/deletePronun";
 
         const resp = await postData(newURL, data);
